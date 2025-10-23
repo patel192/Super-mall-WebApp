@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SuperMall | Discover Deals Near You</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">🛍️ SuperMall</div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#categories">Categories</a>
+      <a href="#offers">Offers</a>
+      <a href="#contact">Contact</a>
+      <button class="login-btn">Login</button>
+    </nav>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content fade-up">
+      <h1>Welcome to <span>SuperMall</span></h1>
+      <p>Your one-stop digital shopping experience — discover exclusive offers from shops near you and across the world.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary">Explore Offers</button>
+        <button class="btn-secondary">Become a Seller</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features fade-up-delay">
+    <h2>Why Choose SuperMall?</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/839/839860.png" alt="Easy Access">
+        <h3>Shop Anywhere</h3>
+        <p>Access multiple shops under one platform — from your phone or computer.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/2331/2331966.png" alt="Secure Payments">
+        <h3>Secure & Reliable</h3>
+        <p>Built with Firebase security and authentication for safe shopping.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/869/869869.png" alt="Offers">
+        <h3>Exclusive Offers</h3>
+        <p>Get amazing deals and discounts from verified merchants instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section id="categories" class="categories fade-up">
+    <h2>Explore Popular Categories</h2>
+    <div class="category-grid">
+      <div class="category-card">
+        <img src="assets/men.jpg" alt="Men Fashion">
+        <h3>Men's Fashion</h3>
+      </div>
+      <div class="category-card">
+        <img src="assets/women.jpg" alt="Women Fashion">
+        <h3>Women's Collection</h3>
+      </div>
+      <div class="category-card">
+        <img src="assets/electronics.jpg" alt="Electronics">
+        <h3>Electronics</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Offers Section -->
+  <section id="offers" class="offers fade-up">
+    <h2>🔥 Trending Offers</h2>
+    <div id="offers-container" class="offers-grid"></div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials fade-up-delay">
+    <h2>What Our Users Say</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p>“SuperMall made it so easy to shop from my favorite stores online. I love the offers!”</p>
+        <h4>- Priya Sharma</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>“Finally, a place where I can find local deals and compare prices instantly!”</p>
+        <h4>- Rohan Mehta</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>“I used SuperMall to promote my small boutique. Great exposure and simple management.”</p>
+        <h4>- Kavita Patel (Merchant)</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter fade-up">
+    <h2>Stay Updated with SuperMall</h2>
+    <p>Subscribe to get new offers and shop updates directly in your inbox.</p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Enter your email" required />
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="footer">
+    <div class="footer-content">
+      <h3>SuperMall</h3>
+      <p>Connecting rural stores to the world — shop smarter, live better.</p>
+      <p>© 2025 SuperMall. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script>
+    // Mobile nav toggle
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      document.getElementById("navLinks").classList.toggle("show");
+    });
+  </script>
+</body>
+</html>
