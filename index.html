@@ -15,10 +15,10 @@
     <nav class="nav-links" id="navLinks">
       <a href="#home">Home</a>
       <a href="#features">Features</a>
-      <a href="#categories">Categories</a>
+      <a href="categories.html">Categories</a>
       <a href="#offers">Offers</a>
       <a href="#contact">Contact</a>
-      <button class="login-btn">Login</button>
+      <button class="login-btn" id="loginBtn">Login</button>
     </nav>
     <div class="menu-toggle" id="menuToggle">☰</div>
   </header>
@@ -27,10 +27,14 @@
   <section id="home" class="hero">
     <div class="hero-content fade-up">
       <h1>Welcome to <span>SuperMall</span></h1>
-      <p>Your one-stop digital shopping experience — discover exclusive offers from shops near you and across the world.</p>
+      <p>
+        Experience shopping like never before! SuperMall connects local and global merchants with customers,
+        allowing you to discover exclusive deals, explore top brands, and enjoy a seamless buying experience — 
+        all from the comfort of your home.
+      </p>
       <div class="hero-buttons">
-        <button class="btn-primary">Explore Offers</button>
-        <button class="btn-secondary">Become a Seller</button>
+        <button class="btn-primary" id="getStartedBtn">Get Started</button>
+        <button class="btn-secondary" id="exploreOffersBtn">Explore Offers</button>
       </div>
     </div>
   </section>
@@ -47,12 +51,17 @@
       <div class="feature-card">
         <img src="https://cdn-icons-png.flaticon.com/512/2331/2331966.png" alt="Secure Payments">
         <h3>Secure & Reliable</h3>
-        <p>Built with Firebase security and authentication for safe shopping.</p>
+        <p>Built with Firebase authentication for a safe and seamless experience.</p>
       </div>
       <div class="feature-card">
         <img src="https://cdn-icons-png.flaticon.com/512/869/869869.png" alt="Offers">
         <h3>Exclusive Offers</h3>
         <p>Get amazing deals and discounts from verified merchants instantly.</p>
+      </div>
+      <div class="feature-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/3126/3126571.png" alt="Merchant Support">
+        <h3>Grow Your Business</h3>
+        <p>Register your shop and reach thousands of customers through our online marketplace.</p>
       </div>
     </div>
   </section>
@@ -60,18 +69,23 @@
   <!-- Categories Section -->
   <section id="categories" class="categories fade-up">
     <h2>Explore Popular Categories</h2>
+    <p>Browse from hundreds of shops across various categories curated just for you.</p>
     <div class="category-grid">
       <div class="category-card">
         <img src="assets/men-fashion.jpeg" alt="Men Fashion">
         <h3>Men's Fashion</h3>
       </div>
       <div class="category-card">
-        <img src="assets\women-fashion.jpg" alt="Women Fashion">
+        <img src="assets/women-fashion.jpg" alt="Women Fashion">
         <h3>Women's Collection</h3>
       </div>
       <div class="category-card">
         <img src="assets/electronics.jpeg" alt="Electronics">
         <h3>Electronics</h3>
+      </div>
+      <div class="category-card">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Groceries">
+        <h3>Groceries</h3>
       </div>
     </div>
   </section>
@@ -79,6 +93,7 @@
   <!-- Offers Section -->
   <section id="offers" class="offers fade-up">
     <h2>🔥 Trending Offers</h2>
+    <p>Don’t miss the best deals from your favorite stores. Grab them before they’re gone!</p>
     <div id="offers-container" class="offers-grid"></div>
   </section>
 
@@ -104,7 +119,7 @@
   <!-- Newsletter Section -->
   <section class="newsletter fade-up">
     <h2>Stay Updated with SuperMall</h2>
-    <p>Subscribe to get new offers and shop updates directly in your inbox.</p>
+    <p>Subscribe to get new offers, updates, and shopping tips directly in your inbox.</p>
     <form class="newsletter-form">
       <input type="email" placeholder="Enter your email" required />
       <button type="submit">Subscribe</button>
@@ -116,6 +131,13 @@
     <div class="footer-content">
       <h3>SuperMall</h3>
       <p>Connecting rural stores to the world — shop smarter, live better.</p>
+      <div class="footer-links">
+        <a href="#home">Home</a> |
+        <a href="#features">Features</a> |
+        <a href="#categories">Categories</a> |
+        <a href="#offers">Offers</a> |
+        <a href="contact.html">Contact</a>
+      </div>
       <p>© 2025 SuperMall. All rights reserved.</p>
     </div>
   </footer>
@@ -124,9 +146,24 @@
   <script type="module" src="js/firebase-config.js"></script>
   <script type="module" src="js/main.js"></script>
   <script>
-    // Mobile nav toggle
+    // Navbar toggle for mobile
     document.getElementById("menuToggle").addEventListener("click", () => {
       document.getElementById("navLinks").classList.toggle("show");
+    });
+
+    // Navigation to Login page
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    // Get Started → Navigate to Signup page
+    document.getElementById("getStartedBtn").addEventListener("click", () => {
+      window.location.href = "signup.html";
+    });
+
+    // Explore Offers → Scroll to Offers section
+    document.getElementById("exploreOffersBtn").addEventListener("click", () => {
+      document.querySelector("#offers").scrollIntoView({ behavior: "smooth" });
     });
   </script>
 </body>
