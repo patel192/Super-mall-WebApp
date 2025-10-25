@@ -1,22 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | SuperMall</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
   <section class="auth-section fade-up">
     <div class="auth-card">
-      <h2>Login to SuperMall</h2>
+      <h2>Welcome Back 👋</h2>
+      <p class="subtitle">Login to your SuperMall account</p>
+
       <form id="login-form">
-        <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Password" required>
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
         <button class="btn-primary" type="submit">Login</button>
       </form>
+
+      <div class="divider">
+        <span>or</span>
+      </div>
+
+      <!-- Google Login Button -->
+      <button id="google-login" class="google-btn">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google logo" />
+        Continue with Google
+      </button>
+
       <p>Don’t have an account? <a href="signup.html">Create one</a></p>
     </div>
   </section>
+
+  <!-- Firebase Script (we’ll use this in next step) -->
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module">
+    import { auth, provider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // Google login button
+    const googleLoginBtn = document.getElementById("google-login");
+    googleLoginBtn.addEventListener("click", async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        alert(`Welcome ${user.displayName}!`);
+        window.location.href = "index.html"; // redirect after login
+      } catch (error) {
+        console.error(error.message);
+        alert("Google login failed. Please try again.");
+      }
+    });
+  </script>
 </body>
 </html>
