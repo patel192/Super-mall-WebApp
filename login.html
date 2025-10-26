@@ -11,11 +11,12 @@
   <section class="auth-section fade-up">
     <div class="auth-card">
       <h2>Welcome Back 👋</h2>
-      <p class="subtitle">Login to your SuperMall account</p>
+      <p class="subtitle">Login to continue exploring exclusive offers</p>
 
+      <!-- Login form -->
       <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Password" required />
         <button class="btn-primary" type="submit">Login</button>
       </form>
 
@@ -23,32 +24,82 @@
         <span>or</span>
       </div>
 
-      <!-- Google Login Button -->
+      <!-- Google login -->
       <button id="google-login" class="google-btn">
         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google logo" />
         Continue with Google
       </button>
 
-      <p>Don’t have an account? <a href="signup.html">Create one</a></p>
+      <p>Don’t have an account? <a href="signup.html">Sign up here</a></p>
     </div>
   </section>
 
-  <!-- Firebase Script (we’ll use this in next step) -->
+  <!-- Firebase -->
   <script type="module" src="js/firebase-config.js"></script>
-  <script type="module">
-    import { auth, provider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    // Google login button
+  <!-- Login Script -->
+  <script type="module">
+    import { auth, provider, db } from "./js/firebase-config.js";
+    import {
+      signInWithEmailAndPassword,
+      signInWithPopup
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Elements
+    const loginForm = document.getElementById("login-form");
     const googleLoginBtn = document.getElementById("google-login");
+
+    // Helper: simple message
+    function showAlert(msg) {
+      alert(msg);
+    }
+
+    // ✅ 1) Email + Password login
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+
+      if (!email || !password) {
+        showAlert("Please enter your credentials.");
+        return;
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        showAlert(`Welcome back, ${user.displayName || "User"}!`);
+        window.location.href = "index.html";
+      } catch (err) {
+        console.error("Login error:", err);
+        showAlert(err.message);
+      }
+    });
+
+    // ✅ 2) Google login
     googleLoginBtn.addEventListener("click", async () => {
       try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-        alert(`Welcome ${user.displayName}!`);
-        window.location.href = "index.html"; // redirect after login
-      } catch (error) {
-        console.error(error.message);
-        alert("Google login failed. Please try again.");
+
+        // Update user in Firestore if not already there
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          name: user.displayName || "Anonymous User",
+          email: user.email || "",
+          provider: "google",
+          photoURL: user.photoURL || "",
+          lastLogin: new Date().toISOString(),
+        }, { merge: true });
+
+        showAlert(`Welcome back, ${user.displayName || "User"}!`);
+        window.location.href = "index.html";
+      } catch (err) {
+        console.error("Google login error:", err);
+        showAlert(err.message);
       }
     });
   </script>
