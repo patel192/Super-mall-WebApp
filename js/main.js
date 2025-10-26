@@ -1,3 +1,6 @@
+
+
+
 // Smooth scroll animation for internal links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -21,3 +24,8 @@ document.getElementById("offers-container").innerHTML = `
     <p>Top gadgets with exclusive discounts.</p>
   </div>
 `;
+
+
+
+
+

@@ -1,23 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Signup | SuperMall</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <section class="auth-section fade-up">
     <div class="auth-card">
-      <h2>Create Your Account</h2>
+      <h2>Create Your Account ✨</h2>
+      <p class="subtitle">Join SuperMall and start exploring exclusive offers</p>
+
+      <!-- Email / Password signup form -->
       <form id="signup-form">
-        <input type="text" placeholder="Full Name" required>
-        <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Password" required>
+        <input type="text" id="fullname" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password (min 6 chars)" required />
         <button class="btn-primary" type="submit">Sign Up</button>
       </form>
+
+      <div class="divider"><span>or</span></div>
+
+      <!-- Google Signup Button -->
+      <button id="google-signup" class="google-btn">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google logo" />
+        Sign up with Google
+      </button>
+
       <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
   </section>
+
+  <!-- Firebase config (exports auth, provider, db) -->
+  <script type="module" src="js/firebase-config.js"></script>
+
+  <!-- Signup logic -->
+  <script type="module">
+    import { auth, provider, db } from './js/firebase-config.js';
+    import {
+      createUserWithEmailAndPassword,
+      signInWithPopup,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Elements
+    const signupForm = document.getElementById('signup-form');
+    const googleSignupBtn = document.getElementById('google-signup');
+
+    // Helper: show simple alerts (temporary)
+    function showAlert(msg) {
+      alert(msg);
+    }
+
+    // ✅ 1) Email/password signup
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fullName = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!fullName || !email || !password) {
+        showAlert('Please fill all fields.');
+        return;
+      }
+
+      if (password.length < 6) {
+        showAlert('Password must be at least 6 characters.');
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Update display name
+        await updateProfile(user, { displayName: fullName });
+
+        // ✅ This must be a valid object
+        const userData = {
+          uid: user.uid,
+          name: fullName,
+          email: user.email,
+          provider: "email",
+          createdAt: new Date().toISOString(),
+        };
+
+        // ✅ Pass the actual object
+        await setDoc(doc(db, "users", user.uid), userData);
+
+        showAlert(`Welcome ${fullName}! Your account has been created.`);
+        window.location.href = "login.html";
+
+      } catch (err) {
+        console.error('Signup error:', err);
+        showAlert(err.message);
+      }
+    });
+
+    // ✅ 2) Google signup
+    googleSignupBtn.addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        // ✅ Always construct the data object
+        const googleUserData = {
+          uid: user.uid,
+          name: user.displayName || "Anonymous User",
+          email: user.email || "",
+          provider: "google",
+          photoURL: user.photoURL || "",
+          createdAt: new Date().toISOString(),
+        };
+
+        await setDoc(doc(db, "users", user.uid), googleUserData, { merge: true });
+
+        showAlert(`Welcome ${user.displayName || 'User'}!`);
+        window.location.href = "login.html";
+
+      } catch (err) {
+        console.error('Google signup error:', err);
+        showAlert(err.message);
+      }
+    });
+  </script>
+
 </body>
+
 </html>
