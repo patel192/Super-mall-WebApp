@@ -13,18 +13,16 @@
       <h2>Welcome Back 👋</h2>
       <p class="subtitle">Login to continue exploring exclusive offers</p>
 
-      <!-- Login form -->
+      <!-- Email/Password Login -->
       <form id="login-form">
         <input type="email" id="login-email" placeholder="Email" required />
         <input type="password" id="login-password" placeholder="Password" required />
         <button class="btn-primary" type="submit">Login</button>
       </form>
 
-      <div class="divider">
-        <span>or</span>
-      </div>
+      <div class="divider"><span>or</span></div>
 
-      <!-- Google login -->
+      <!-- Google Login -->
       <button id="google-login" class="google-btn">
         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google logo" />
         Continue with Google
@@ -37,45 +35,60 @@
   <!-- Firebase -->
   <script type="module" src="js/firebase-config.js"></script>
 
-  <!-- Login Script -->
+  <!-- Login Logic -->
   <script type="module">
     import { auth, provider, db } from "./js/firebase-config.js";
     import {
       signInWithEmailAndPassword,
       signInWithPopup
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      doc,
+      setDoc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     // Elements
     const loginForm = document.getElementById("login-form");
     const googleLoginBtn = document.getElementById("google-login");
 
-    // Helper: simple message
+    // Helper
     function showAlert(msg) {
       alert(msg);
+    }
+
+    // Role-based redirect
+    async function redirectBasedOnRole(uid) {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+
+        if (data.role === "shopOwner") {
+          window.location.href = "Admin-Dashboard.html";
+        } else if (data.role === "customer") {
+          window.location.href = "Shop-Dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      } else {
+        // Default fallback
+        window.location.href = "index.html";
+      }
     }
 
     // ✅ 1) Email + Password login
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const email = document.getElementById("login-email").value.trim();
       const password = document.getElementById("login-password").value;
-
-      if (!email || !password) {
-        showAlert("Please enter your credentials.");
-        return;
-      }
 
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
-        showAlert(`Welcome back, ${user.displayName || "User"}!`);
-        window.location.href = "index.html";
+        await redirectBasedOnRole(user.uid);
       } catch (err) {
         console.error("Login error:", err);
-        showAlert(err.message);
+        showAlert("Invalid email or password.");
       }
     });
 
@@ -85,21 +98,21 @@
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
 
-        // Update user in Firestore if not already there
+        // Create/Update user record
         await setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
-          name: user.displayName || "Anonymous User",
+          name: user.displayName || "User",
           email: user.email || "",
-          provider: "google",
           photoURL: user.photoURL || "",
+          provider: "google",
+          role: "shopOwner", // 👈 default role (you can change it later)
           lastLogin: new Date().toISOString(),
         }, { merge: true });
 
-        showAlert(`Welcome back, ${user.displayName || "User"}!`);
-        window.location.href = "index.html";
+        await redirectBasedOnRole(user.uid);
       } catch (err) {
         console.error("Google login error:", err);
-        showAlert(err.message);
+        showAlert("Google sign-in failed. Please try again.");
       }
     });
   </script>

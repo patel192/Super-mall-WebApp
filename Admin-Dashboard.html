@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | SuperMall</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>🛍️ SuperMall</h2>
+      <p class="role-label">Admin Dashboard</p>
+      <button class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></button>
+    </div>
+
+    <nav class="sidebar-menu">
+      <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="#"><i class="fas fa-store"></i> Manage Shops</a>
+      <a href="#"><i class="fas fa-tags"></i> Manage Offers</a>
+      <a href="#"><i class="fas fa-layer-group"></i> Manage Categories</a>
+      <a href="#"><i class="fas fa-building"></i> Manage Floors</a>
+      <a href="#"><i class="fas fa-users"></i> View Users</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+      <h1>Dashboard Overview</h1>
+      <div class="admin-info">
+        <img src="https://i.pravatar.cc/40" alt="Admin" class="admin-avatar" />
+        <span id="admin-name">Admin</span>
+      </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <section class="dashboard-stats">
+      <div class="stat-card">
+        <h3>Total Shops</h3>
+        <p class="stat-number" id="shop-count">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Offers</h3>
+        <p class="stat-number" id="offer-count">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Categories</h3>
+        <p class="stat-number" id="category-count">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Floors</h3>
+        <p class="stat-number" id="floor-count">0</p>
+      </div>
+    </section>
+
+    <!-- Table Section -->
+    <section class="dashboard-table">
+      <h2>Recent Shops</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Shop Name</th>
+              <th>Owner</th>
+              <th>Category</th>
+              <th>Floor</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="shop-table">
+            <tr>
+              <td>Example Shop</td>
+              <td>John Doe</td>
+              <td>Electronics</td>
+              <td>1st Floor</td>
+              <td><span class="status active">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Mobile sidebar toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.add("show");
+    });
+
+    closeSidebar.addEventListener("click", () => {
+      sidebar.classList.remove("show");
+    });
+  </script>
+</body>
+</html>

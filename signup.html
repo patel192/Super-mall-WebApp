@@ -20,6 +20,14 @@
         <input type="text" id="fullname" placeholder="Full Name" required />
         <input type="email" id="email" placeholder="Email" required />
         <input type="password" id="password" placeholder="Password (min 6 chars)" required />
+
+        <!-- 👇 Role selection -->
+        <select id="role" required>
+          <option value="" disabled selected>Select Your Role</option>
+          <option value="shopOwner">Shop Owner</option>
+          <option value="customer">Customer</option>
+        </select>
+
         <button class="btn-primary" type="submit">Sign Up</button>
       </form>
 
@@ -52,7 +60,7 @@
     const signupForm = document.getElementById('signup-form');
     const googleSignupBtn = document.getElementById('google-signup');
 
-    // Helper: show simple alerts (temporary)
+    // Helper: show simple alerts
     function showAlert(msg) {
       alert(msg);
     }
@@ -64,9 +72,10 @@
       const fullName = document.getElementById('fullname').value.trim();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
+      const role = document.getElementById('role').value;
 
-      if (!fullName || !email || !password) {
-        showAlert('Please fill all fields.');
+      if (!fullName || !email || !password || !role) {
+        showAlert('Please fill all fields and select a role.');
         return;
       }
 
@@ -82,19 +91,19 @@
         // Update display name
         await updateProfile(user, { displayName: fullName });
 
-        // ✅ This must be a valid object
+        // ✅ Firestore user data
         const userData = {
           uid: user.uid,
           name: fullName,
           email: user.email,
+          role: role, // 👈 Save selected role
           provider: "email",
           createdAt: new Date().toISOString(),
         };
 
-        // ✅ Pass the actual object
         await setDoc(doc(db, "users", user.uid), userData);
 
-        showAlert(`Welcome ${fullName}! Your account has been created.`);
+        showAlert(`Welcome ${fullName}! Your ${role} account has been created.`);
         window.location.href = "login.html";
 
       } catch (err) {
@@ -105,23 +114,30 @@
 
     // ✅ 2) Google signup
     googleSignupBtn.addEventListener('click', async () => {
+      // Ask role before signup
+      const role = prompt("Please enter your role (admin/shopOwner/customer):", "shopOwner");
+      if (!role || !["admin", "shopOwner", "customer"].includes(role)) {
+        showAlert("Invalid or no role entered. Please try again.");
+        return;
+      }
+
       try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
 
-        // ✅ Always construct the data object
         const googleUserData = {
           uid: user.uid,
           name: user.displayName || "Anonymous User",
           email: user.email || "",
           provider: "google",
           photoURL: user.photoURL || "",
+          role: role, // 👈 Assigned from prompt
           createdAt: new Date().toISOString(),
         };
 
         await setDoc(doc(db, "users", user.uid), googleUserData, { merge: true });
 
-        showAlert(`Welcome ${user.displayName || 'User'}!`);
+        showAlert(`Welcome ${user.displayName || 'User'}! Your ${role} account has been created.`);
         window.location.href = "login.html";
 
       } catch (err) {
@@ -130,7 +146,6 @@
       }
     });
   </script>
-
 </body>
 
 </html>
