@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard | SuperMall</title>
+  <link rel="stylesheet" href="css/user.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">🛍️ SuperMall</div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#" class="active">Home</a>
+      <a href="#">Offers</a>
+      <a href="#">Shops</a>
+      <a href="#">Categories</a>
+      <a href="#">Profile</a>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </nav>
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <h1>Welcome to SuperMall</h1>
+    <p>Discover the best offers and shops at your fingertips</p>
+    <a href="#" class="btn-primary">Explore Offers</a>
+  </section>
+
+  <!-- Offers Section -->
+  <section class="offers-section">
+    <h2>🔥 Trending Offers</h2>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <img src="https://source.unsplash.com/300x200/?shopping,offer" alt="Offer" />
+        <div class="offer-info">
+          <h3>Flat 50% Off</h3>
+          <p>At Fashion Fiesta - 1st Floor</p>
+        </div>
+      </div>
+      <div class="offer-card">
+        <img src="https://source.unsplash.com/300x200/?food,restaurant" alt="Offer" />
+        <div class="offer-info">
+          <h3>Buy 1 Get 1 Free</h3>
+          <p>At Food Corner - Ground Floor</p>
+        </div>
+      </div>
+      <div class="offer-card">
+        <img src="https://source.unsplash.com/300x200/?electronics,store" alt="Offer" />
+        <div class="offer-info">
+          <h3>Up to 30% Off</h3>
+          <p>At Tech World - 2nd Floor</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shops Section -->
+  <section class="shops-section">
+    <h2>🏬 Featured Shops</h2>
+    <div class="shops-grid">
+      <div class="shop-card">
+        <img src="https://source.unsplash.com/300x200/?clothing,store" alt="Shop" />
+        <h3>Fashion Fiesta</h3>
+        <p>Category: Clothing</p>
+      </div>
+      <div class="shop-card">
+        <img src="https://source.unsplash.com/300x200/?food,cafe" alt="Shop" />
+        <h3>Food Corner</h3>
+        <p>Category: Food & Beverages</p>
+      </div>
+      <div class="shop-card">
+        <img src="https://source.unsplash.com/300x200/?gadgets,shop" alt="Shop" />
+        <h3>Tech World</h3>
+        <p>Category: Electronics</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 SuperMall | All rights reserved</p>
+  </footer>
+
+  <script>
+    // Toggle nav menu (mobile)
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
+  </script>
+</body>
+</html>
