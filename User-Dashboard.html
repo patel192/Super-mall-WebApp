@@ -4,97 +4,99 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Dashboard | SuperMall</title>
-  <link rel="stylesheet" href="css/user.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="user.css">
+  <link rel="stylesheet" href="css/user.css">
 </head>
-
 <body>
-  <!-- Navbar -->
-  <header class="navbar">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
     <div class="logo">🛍️ SuperMall</div>
-    <nav class="nav-links" id="navLinks">
-      <a href="#" class="active">Home</a>
-      <a href="#">Offers</a>
-      <a href="#">Shops</a>
-      <a href="#">Categories</a>
-      <a href="#">Profile</a>
-      <button id="logout-btn" class="logout-btn">Logout</button>
-    </nav>
-    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
-  </header>
+    <ul>
+      <li><i class="fas fa-home"></i><span>Home</span></li>
+      <li><i class="fas fa-tags"></i><span>Offers</span></li>
+      <li><i class="fas fa-store"></i><span>Shops</span></li>
+      <li><i class="fas fa-list"></i><span>Categories</span></li>
+      <li><i class="fas fa-user"></i><span>Profile</span></li>
+      <li><i class="fas fa-sign-out-alt"></i><span>Logout</span></li>
+    </ul>
+  </aside>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <h1>Welcome back 👋</h1>
-    <p>Discover the best offers and shops near you</p>
-    <a href="#" class="btn-primary">Explore Now</a>
-  </section>
+  <!-- Main Content -->
+  <section class="main-content">
+    <div class="topbar">
+      <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
+      <h2>Welcome, User 👋</h2>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search offers..." />
+      </div>
+    </div>
 
-  <!-- Offers Section -->
-  <section class="offers-section">
-    <h2>🔥 Trending Offers</h2>
-    <div class="offers-grid">
-      <div class="offer-card">
-        <img src="https://source.unsplash.com/400x250/?shopping,discount" alt="Offer" />
-        <div class="offer-info">
-          <h3>Flat 50% Off</h3>
-          <p>At Fashion Fiesta - 1st Floor</p>
+    <div class="dashboard-content">
+      <h3 class="section-title">🔥 Trending Offers</h3>
+      <div class="grid">
+        <div class="card">
+          <img src="https://source.unsplash.com/400x250/?shopping,discount" alt="Offer">
+          <div class="card-body">
+            <h3>Flat 50% Off</h3>
+            <p>At Fashion Fiesta</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://source.unsplash.com/400x250/?food,restaurant" alt="Offer">
+          <div class="card-body">
+            <h3>Buy 1 Get 1 Free</h3>
+            <p>At Food Corner</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://source.unsplash.com/400x250/?electronics,shop" alt="Offer">
+          <div class="card-body">
+            <h3>Up to 30% Off</h3>
+            <p>At Tech World</p>
+          </div>
         </div>
       </div>
-      <div class="offer-card">
-        <img src="https://source.unsplash.com/400x250/?restaurant,food" alt="Offer" />
-        <div class="offer-info">
-          <h3>Buy 1 Get 1 Free</h3>
-          <p>At Food Corner - Ground Floor</p>
+
+      <h3 class="section-title" style="margin-top: 2rem;">🏬 Featured Shops</h3>
+      <div class="grid">
+        <div class="card">
+          <img src="https://source.unsplash.com/400x250/?clothing,store" alt="Shop">
+          <div class="card-body">
+            <h3>Fashion Fiesta</h3>
+            <p>Category: Clothing</p>
+          </div>
         </div>
-      </div>
-      <div class="offer-card">
-        <img src="https://source.unsplash.com/400x250/?electronics,tech" alt="Offer" />
-        <div class="offer-info">
-          <h3>Up to 30% Off</h3>
-          <p>At Tech World - 2nd Floor</p>
+        <div class="card">
+          <img src="https://source.unsplash.com/400x250/?cafe,food" alt="Shop">
+          <div class="card-body">
+            <h3>Food Corner</h3>
+            <p>Category: Food & Beverages</p>
+          </div>
+        </div>
+        <div class="card">
+          <img src="https://source.unsplash.com/400x250/?tech,gadgets" alt="Shop">
+          <div class="card-body">
+            <h3>Tech World</h3>
+            <p>Category: Electronics</p>
+          </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Shops Section -->
-  <section class="shops-section">
-    <h2>🏬 Featured Shops</h2>
-    <div class="shops-grid">
-      <div class="shop-card">
-        <img src="https://source.unsplash.com/400x250/?clothing,store" alt="Shop" />
-        <h3>Fashion Fiesta</h3>
-        <p>Category: Clothing</p>
-      </div>
-      <div class="shop-card">
-        <img src="https://source.unsplash.com/400x250/?cafe,food" alt="Shop" />
-        <h3>Food Corner</h3>
-        <p>Category: Food & Beverages</p>
-      </div>
-      <div class="shop-card">
-        <img src="https://source.unsplash.com/400x250/?gadgets,store" alt="Shop" />
-        <h3>Tech World</h3>
-        <p>Category: Electronics</p>
-      </div>
-    </div>
+    <footer>
+      © 2025 SuperMall | All rights reserved
+    </footer>
   </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>&copy; 2025 SuperMall | All rights reserved</p>
-  </footer>
 
   <script>
+    const sidebar = document.getElementById("sidebar");
     const menuToggle = document.getElementById("menuToggle");
-    const navLinks = document.getElementById("navLinks");
 
     menuToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("show");
+      sidebar.classList.toggle("show");
     });
   </script>
 </body>
 </html>
-y
