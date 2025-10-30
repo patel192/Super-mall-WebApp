@@ -1,208 +1,238 @@
-/* ---------- Global ---------- */
+/* ===============================
+   USER DASHBOARD — SuperMall
+   =============================== */
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-    display: flex;
-    background-color: #f5f7fb;
-    color: #333;
-    min-height: 100vh;
-    overflow-x: hidden;
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #111827;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* ---------- Sidebar ---------- */
+/* ===============================
+   SIDEBAR
+   =============================== */
 .sidebar {
-    width: 250px;
-    background: #1e293b;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
+  width: 240px;
+  background: #1e293b;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.sidebar.collapsed {
-    width: 70px;
-}
-
-.sidebar .logo {
-    font-size: 1.4rem;
-    font-weight: 700;
-    padding: 1.5rem;
-    text-align: center;
-    background: #0f172a;
+.logo {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
 }
 
 .sidebar ul {
-    list-style: none;
-    padding: 1rem 0;
+  list-style: none;
 }
 
 .sidebar ul li {
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #cbd5e1;
 }
 
 .sidebar ul li:hover {
-    background: #334155;
+  background: #2563eb;
+  color: #fff;
 }
 
 .sidebar ul li i {
-    font-size: 1.2rem;
-    min-width: 25px;
-    text-align: center;
+  width: 20px;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
-.sidebar ul li span {
-    font-size: 0.95rem;
-    white-space: nowrap;
-}
-
-/* ---------- Main Content ---------- */
+/* ===============================
+   MAIN CONTENT
+   =============================== */
 .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #f9fafb;
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
 }
 
-/* ---------- Top Bar ---------- */
+/* ===============================
+   TOPBAR
+   =============================== */
 .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.topbar .menu-toggle {
-    display: none;
-    font-size: 1.4rem;
-    color: #1e293b;
-    cursor: pointer;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .topbar h2 {
-    font-size: 1.2rem;
-    color: #1e293b;
+  font-weight: 600;
+  color: #111827;
+  font-size: 1.2rem;
+}
+
+.menu-toggle {
+  font-size: 1.4rem;
+  color: #111827;
+  cursor: pointer;
+  display: none;
 }
 
 .search-box {
-    position: relative;
+  background: #f3f4f6;
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 240px;
+  transition: 0.3s;
 }
 
 .search-box input {
-    padding: 0.6rem 1rem 0.6rem 2.5rem;
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    outline: none;
-    width: 200px;
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 0.9rem;
 }
 
 .search-box i {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    color: #64748b;
+  color: #6b7280;
 }
 
-/* ---------- Dashboard Cards ---------- */
+/* ===============================
+   DASHBOARD CONTENT
+   =============================== */
 .dashboard-content {
-    padding: 2rem;
+  padding: 2rem;
+  flex: 1;
 }
 
 .section-title {
-    font-weight: 600;
-    color: #0078ff;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827;
 }
 
+/* ===============================
+   GRID CARDS
+   =============================== */
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
 
 .card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
 }
 
 .card-body {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .card-body h3 {
-    font-size: 1.05rem;
-    margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
 }
 
 .card-body p {
-    font-size: 0.9rem;
-    color: #666;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.3rem;
 }
 
-/* ---------- Footer ---------- */
+/* ===============================
+   FOOTER
+   =============================== */
 footer {
-    text-align: center;
-    padding: 1rem;
-    background: #1e293b;
-    color: white;
-    font-size: 0.9rem;
-    margin-top: auto;
+  text-align: center;
+  background: #fff;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 900px) {
-    .sidebar {
-        position: fixed;
-        left: -250px;
-        top: 0;
-        height: 100%;
-        z-index: 20;
-    }
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
 
-    .sidebar.show {
-        left: 0;
-    }
+  .sidebar.show {
+    transform: translateX(0);
+  }
 
-    .topbar .menu-toggle {
-        display: block;
-    }
+  .main-content {
+    margin-left: 0;
+  }
 
-    .main-content {
-        flex: 1;
-    }
+  .menu-toggle {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-box {
+    display: none;
+  }
+
+  .dashboard-content {
+    padding: 1rem;
+  }
+
+  .card img {
+    height: 150px;
+  }
 }
