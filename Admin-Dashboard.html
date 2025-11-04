@@ -327,33 +327,11 @@
         </div>
       </div>
 
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Category ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Image</th>
-              <th>#Of Shops</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="categories-table-body">
-            <tr>
-              <td>C-01</td>
-              <td>Clothing</td>
-              <td>Apparel, accessories, shoes.</td>
-              <td><img src="https://source.unsplash.com/60x40/?clothes" alt="category" /></td>
-              <td>120</td>
-              <td>
-                <button class="btn-edit">Edit</button>
-                <button class="btn-delete">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Category Cards Container -->
+      <div class="categories-grid" id="categories-grid">
+        <p>Loading categories...</p>
       </div>
+
 
       <!-- Category Modal -->
       <div class="modal" id="modal-category-form" aria-hidden="true">
@@ -572,6 +550,7 @@
   <script type="module" src="js/admin.js"></script>
   <script type="module" src="js/manage-shops.js"></script>
   <script type="module" src="js/manage-offers.js"></script>
+  <script type="module" src="js/manage-categories.js"></script>
 </body>
 
 </html>
