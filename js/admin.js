@@ -1,155 +1,176 @@
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-// Import from your Firebase config file
 
-// admin-tabs.js
-// Handles: sidebar clicks -> show/hide content sections, update active link, support URL hash deep-linking,
-// mobile sidebar toggle and close button, keyboard accessibility.
 (() => {
-  const links = Array.from(
-    document.querySelectorAll(".sidebar-menu a[data-section]")
-  );
+  // === Sidebar and Section Handling ===
+  const links = Array.from(document.querySelectorAll(".sidebar-menu a[data-section]"));
   const sections = Array.from(document.querySelectorAll(".content-section"));
   const pageTitle = document.getElementById("page-title");
   const sidebar = document.getElementById("sidebar");
   const menuToggle = document.getElementById("menuToggle");
   const closeSidebar = document.getElementById("closeSidebar");
 
-  if (!links.length || !sections.length) return; // nothing to do
-
-  // Utility: show a section by id, hide others
   function showSection(sectionId, updateHash = true) {
     sections.forEach((sec) => {
-      if (sec.id === sectionId) sec.classList.add("active-section");
-      else sec.classList.remove("active-section");
+      sec.classList.toggle("active-section", sec.id === sectionId);
     });
 
     links.forEach((link) => {
-      const target = link.dataset.section;
-      if (target === sectionId) link.classList.add("active");
-      else link.classList.remove("active");
+      link.classList.toggle("active", link.dataset.section === sectionId);
     });
 
-    // update page title in topbar
     const activeLink = links.find((l) => l.dataset.section === sectionId);
-    pageTitle.textContent = activeLink
-      ? activeLink.textContent.trim()
-      : document.title;
+    pageTitle.textContent = activeLink ? activeLink.textContent.trim() : document.title;
 
-    // update URL hash without adding history entry (so back button not spammed)
     if (updateHash) {
       try {
         history.replaceState(null, "", `#${sectionId}`);
-      } catch (e) {
-        // fallback if history API blocked
+      } catch {
         location.hash = `#${sectionId}`;
       }
     }
 
-    // on small screens, hide sidebar after click for better UX
     if (window.innerWidth <= 992 && sidebar.classList.contains("show")) {
       sidebar.classList.remove("show");
     }
   }
 
-  // Click handlers for links
   links.forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       const sectionId = link.dataset.section;
-      if (!sectionId) return;
-      showSection(sectionId);
-    });
-
-    // keyboard: Enter/Space activates link
-    link.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        link.click();
-      }
+      if (sectionId) showSection(sectionId);
     });
   });
 
-  // Mobile sidebar toggle
-  if (menuToggle) {
-    menuToggle.addEventListener("click", () => {
-      sidebar.classList.toggle("show");
-    });
-  }
-  if (closeSidebar) {
-    closeSidebar.addEventListener("click", () =>
-      sidebar.classList.remove("show")
-    );
-  }
+  if (menuToggle) menuToggle.addEventListener("click", () => sidebar.classList.toggle("show"));
+  if (closeSidebar) closeSidebar.addEventListener("click", () => sidebar.classList.remove("show"));
 
-  // Respond to hashchange (deep linking / back-button)
   window.addEventListener("hashchange", () => {
     const hash = location.hash.replace("#", "");
-    if (!hash) return;
-    const found = sections.some((s) => s.id === hash);
-    if (found) showSection(hash, /*updateHash=*/ false);
+    if (hash && sections.some((s) => s.id === hash)) showSection(hash, false);
   });
 
-  // On page load: prefer hash -> active link -> first section
   (function init() {
     const initialHash = location.hash.replace("#", "");
     if (initialHash && sections.some((s) => s.id === initialHash)) {
-      showSection(initialHash, /*updateHash=*/ false);
-      return;
+      showSection(initialHash, false);
+    } else {
+      const preActive = links.find((l) => l.classList.contains("active"));
+      if (preActive) showSection(preActive.dataset.section, false);
+      else if (sections[0]) showSection(sections[0].id, false);
     }
-
-    // if any link already has .active in markup -> show that
-    const preActive = links.find((l) => l.classList.contains("active"));
-    if (preActive) {
-      showSection(preActive.dataset.section, /*updateHash=*/ false);
-      return;
-    }
-
-    // fallback to first section
-    const first = sections[0];
-    if (first) showSection(first.id, /*updateHash=*/ false);
   })();
 
-  // Optional: handle window resize to remove 'show' class if moving to desktop
   window.addEventListener("resize", () => {
-    if (window.innerWidth > 992 && sidebar.classList.contains("show")) {
-      sidebar.classList.remove("show");
-    }
+    if (window.innerWidth > 992) sidebar.classList.remove("show");
   });
 
-  // Select the elements where we’ll show user data
+  // === Admin Info Header ===
   const adminNameEl = document.getElementById("admin-name");
   const adminEmailEl = document.querySelector(".admin-email");
   const adminAvatarEl = document.querySelector(".admin-avatar");
 
-  // Listen for auth state changes
+  // === Dashboard Overview Elements ===
+  const totalShopsEl = document.getElementById("total-shops");
+  const totalOffersEl = document.getElementById("total-offers");
+  const totalUsersEl = document.getElementById("total-users");
+  const totalRevenueEl = document.getElementById("total-revenue");
+  const topShopsEl = document.getElementById("top-shops");
+  const activityFeedEl = document.getElementById("activity-feed");
+
+  // === Load Dashboard Data ===
+  async function loadDashboardData() {
+    try {
+      const [shopsSnap, offersSnap, usersSnap] = await Promise.all([
+        getDocs(collection(db, "shops")),
+        getDocs(collection(db, "offers")),
+        getDocs(collection(db, "users")),
+      ]);
+
+      // Shops Summary
+      let active = 0, pending = 0, disabled = 0;
+      const shopTraffic = [];
+      shopsSnap.forEach((doc) => {
+        const data = doc.data();
+        if (data.status === "active") active++;
+        else if (data.status === "pending") pending++;
+        else if (data.status === "disabled") disabled++;
+        if (data.traffic) shopTraffic.push({ name: data.name || "Unknown", traffic: data.traffic });
+      });
+      totalShopsEl.textContent = shopsSnap.size;
+      totalShopsEl.nextElementSibling.textContent = `Active ${active} / Pending ${pending} / Disabled ${disabled}`;
+
+      // Offers Summary
+      let activeOffers = 0, expiredOffers = 0, totalRevenue = 0;
+      offersSnap.forEach((doc) => {
+        const data = doc.data();
+        if (data.status === "active") activeOffers++;
+        else if (data.status === "expired") expiredOffers++;
+        if (data.revenue) totalRevenue += Number(data.revenue);
+      });
+      totalOffersEl.textContent = offersSnap.size;
+      totalOffersEl.nextElementSibling.textContent = `Active ${activeOffers} / Expired ${expiredOffers}`;
+      totalRevenueEl.textContent = `₹${totalRevenue.toLocaleString()}`;
+
+      // Users Summary
+      let customers = 0, shopOwners = 0, admins = 0;
+      usersSnap.forEach((doc) => {
+        const data = doc.data();
+        if (data.role === "customer") customers++;
+        else if (data.role === "shopOwner") shopOwners++;
+        else if (data.role === "admin") admins++;
+      });
+      totalUsersEl.textContent = usersSnap.size;
+      totalUsersEl.nextElementSibling.textContent = `Customers ${customers} / ShopOwners ${shopOwners} / Admins ${admins}`;
+
+      // Top Shops
+      shopTraffic.sort((a, b) => b.traffic - a.traffic);
+      const top3 = shopTraffic.slice(0, 3);
+      topShopsEl.innerHTML = top3.map(
+        (s) => `<li>${s.name} <span class="muted">— ${s.traffic.toLocaleString()} visits</span></li>`
+      ).join("");
+
+      // Activity Feed Example
+      activityFeedEl.innerHTML = `
+        <li><div class="feed-time">Just now</div><div class="feed-text">Loaded ${shopsSnap.size} shops, ${offersSnap.size} offers, ${usersSnap.size} users.</div></li>
+      ` + activityFeedEl.innerHTML;
+
+      console.log("✅ Dashboard data loaded!");
+    } catch (err) {
+      console.error("❌ Error loading dashboard data:", err);
+    }
+  }
+
+  // === Auth State & User Info ===
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       try {
-        // Get the user's document from Firestore
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
         if (userSnap.exists()) {
           const userData = userSnap.data();
-          console.log("User data:", userData);
-
-          // Fill data in header
           adminNameEl.textContent = userData.name || "Admin User";
           adminEmailEl.textContent = user.email;
           adminAvatarEl.src = user.photoURL || "https://i.pravatar.cc/40";
 
-          // Optional: check if role is admin
+          if (userData.role === "admin" || userData.role === "shopOwner") {
+            loadDashboardData(); // Only load dashboard if admin/shopOwner
+          } else {
+            console.warn("⚠️ Access denied: Not an admin or shop owner.");
+          }
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     } else {
-      // No user is logged in — redirect to login page
       window.location.href = "login.html";
     }
   });
