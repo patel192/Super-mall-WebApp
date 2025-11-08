@@ -1,556 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin Dashboard — SuperMall (Full)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" href="css/admin.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <h2>🛍️ SuperMall</h2>
-      <p class="role-label">Admin Panel</p>
-      <button class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></button>
-    </div>
-
-    <nav class="sidebar-menu" aria-label="Admin navigation">
-      <a href="#" class="active" data-section="overview">Dashboard</a>
-      <a href="#" data-section="manage-shops">Manage Shops</a>
-      <a href="#" data-section="manage-offers">Manage Offers</a>
-      <a href="#" data-section="manage-categories">Manage Categories</a>
-      <a href="#" data-section="manage-floors">Manage Floors</a>
-      <a href="#" data-section="view-users">View Users</a>
-      <a href="#" data-section="activity-log">Activity Log</a>
-      <a href="#" data-section="settings">Settings</a>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">🛍️ SuperMall Admin</div>
+    <nav class="nav">
+      <a href="#overview" class="active" data-section="overview">Overview</a>
+      <a href="#shops" data-section="shops">Shops</a>
+      <a href="#offers" data-section="offers">Offers</a>
+      <a href="#users" data-section="users">Users</a>
+      <a href="#analytics" data-section="analytics">Analytics</a>
+      <a href="#messages" data-section="messages">Messages</a>
     </nav>
-
-    <div class="sidebar-footer">
-      <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </div>
   </aside>
 
-  <!-- MAIN -->
-  <main class="main-content" role="main">
-    <!-- TOPBAR -->
-    <header class="topbar" role="banner">
-      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Header -->
+    <header class="header">
       <h1 id="page-title">Dashboard Overview</h1>
       <div class="admin-info">
-        <div class="admin-meta">
-          <img src="https://i.pravatar.cc/40" alt="Admin avatar" class="admin-avatar" />
-          <div class="admin-text">
-            <div id="admin-name">Admin Name</div>
-            <div class="admin-email">admin@example.com</div>
-          </div>
-        </div>
+        <span class="status-dot"></span>
+        <p id="admin-name">Welcome, Admin</p>
       </div>
     </header>
 
-    <!-- === SECTIONS (no JS logic included) === -->
-
-    <!-- OVERVIEW -->
-    <section id="overview" class="content-section active-section" aria-labelledby="overview-title">
-      <h2 id="overview-title" class="section-heading">Dashboard Overview</h2>
-
-      <!-- Top stats -->
-      <div class="dashboard-stats">
-        <div class="stat-card">
+    <!-- ====== SECTIONS ====== -->
+    <!-- Overview -->
+    <section id="overview" class="content-section active-section">
+      <div class="cards-grid">
+        <div class="card fade-in">
           <h3>Total Shops</h3>
-          <p class="stat-number" id="total-shops">0</p>
-          <small class="stat-sub">Active / Pending / Disabled</small>
+          <p id="total-shops" class="number">0</p>
+          <span class="sub">Loading...</span>
         </div>
-        <div class="stat-card">
+
+        <div class="card fade-in">
           <h3>Total Offers</h3>
-          <p class="stat-number" id="total-offers">0</p>
-          <small class="stat-sub">Active / Expired</small>
+          <p id="total-offers" class="number">0</p>
+          <span class="sub">Loading...</span>
         </div>
-        <div class="stat-card">
+
+        <div class="card fade-in">
           <h3>Total Users</h3>
-          <p class="stat-number" id="total-users">0</p>
-          <small class="stat-sub">Customers / ShopOwners / Admins</small>
+          <p id="total-users" class="number">0</p>
+          <span class="sub">Loading...</span>
         </div>
-        <div class="stat-card">
-          <h3>Revenue (Est.)</h3>
-          <p class="stat-number" id="total-revenue">₹0</p>
-          <small class="stat-sub">This month estimate</small>
+
+        <div class="card fade-in">
+          <h3>Total Revenue</h3>
+          <p id="total-revenue" class="number">₹0</p>
+          <span class="sub">Loading...</span>
         </div>
       </div>
 
-      <!-- Charts + activity -->
-      <div class="overview-grid">
-        <div class="card">
-          <h3 class="card-title">Offers Trend</h3>
-          <!-- placeholder for chart -->
-          <div id="chart-offers" class="chart-placeholder" aria-hidden="true">
-            <!-- Chart.js or other chart will render here -->
-            <div class="chart-caption">[Offers trend chart placeholder]</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3 class="card-title">Top Shops (by traffic)</h3>
-          <ul class="mini-list" id="top-shops">
-            <li>Fashion Fiesta <span class="muted">— 12.3k visits</span></li>
-            <li>Tech World <span class="muted">— 9.8k visits</span></li>
-            <li>Food Corner <span class="muted">— 7.6k visits</span></li>
+      <section class="lists fade-in">
+        <div class="list-card">
+          <h3>Top Shops</h3>
+          <ul id="top-shops">
+            <li>Loading...</li>
           </ul>
         </div>
-      </div>
 
-      <!-- Activity feed -->
-      <div class="card">
-        <h3 class="card-title">Recent Activity</h3>
-        <ul class="activity-feed" id="activity-feed">
-          <li>
-            <div class="feed-time">2h ago</div>
-            <div class="feed-text">Shop <strong>Fashion Fiesta</strong> approved by <em>Admin</em>.</div>
-          </li>
-          <li>
-            <div class="feed-time">5h ago</div>
-            <div class="feed-text">Offer <strong>O001</strong> expired and archived.</div>
-          </li>
-        </ul>
-      </div>
+        <div class="list-card">
+          <h3>Recent Activity</h3>
+          <ul id="activity-feed">
+            <li>Loading...</li>
+          </ul>
+        </div>
+      </section>
     </section>
 
-    <!-- MANAGE SHOPS -->
-    <section id="manage-shops" class="content-section" aria-labelledby="manage-shops-title">
-      <h2 id="manage-shops-title" class="section-heading">Manage Shops</h2>
-
-      <!-- Controls -->
-      <div class="controls-row">
-        <div class="control-left">
-          <button class="btn-primary" id="btn-add-shop">+ Add Shop</button>
-          <div class="filter-group">
-            <label for="filter-category">Category</label>
-            <select id="filter-category">
-              <option value="">All</option>
-              <option value="clothing">Clothing</option>
-              <option value="electronics">Electronics</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label for="filter-floor">Floor</label>
-            <select id="filter-floor">
-              <option value="">All</option>
-              <option value="g">Ground</option>
-              <option value="1">1st</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="control-right">
-          <input type="search" id="shop-search" placeholder="Search shops by name or owner..." />
-        </div>
-      </div>
-
-      <!-- Shops table -->
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Shop ID</th>
-              <th>Name</th>
-              <th>Owner</th>
-              <th>Category</th>
-              <th>Floor</th>
-              <th>Status</th>
-              <th>Created</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="shops-table-body">
-            <!-- Example row -->
-            <tr>
-              <td>SH-001</td>
-              <td>Fashion Fiesta</td>
-              <td>Jane Doe</td>
-              <td>Clothing</td>
-              <td>1st Floor</td>
-              <td><span class="status active">Active</span></td>
-              <td>2025-07-12</td>
-              <td>
-                <button class="btn-edit">Edit</button>
-                <button class="btn-approve">Approve</button>
-                <button class="btn-delete">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagination (markup only) -->
-      <div class="pagination">
-        <button class="page-btn">« Prev</button>
-        <button class="page-num active">1</button>
-        <button class="page-num">2</button>
-        <button class="page-num">3</button>
-        <button class="page-btn">Next »</button>
-      </div>
-
-      <!-- Add / Edit Shop modal (markup only) -->
-      <div class="modal" id="modal-shop-form" aria-hidden="true">
-        <div class="modal-content">
-          <header class="modal-header">
-            <h3 id="modal-shop-title">Add Shop</h3>
-            <button class="modal-close" aria-label="Close">✕</button>
-          </header>
-          <form id="shop-form">
-            <div class="form-grid">
-              <label>Shop Name<input type="text" name="shopName" required></label>
-              <label>Owner (user id/email)<input type="text" name="owner" required></label>
-              <label>Category
-                <select name="category" required>
-                  <option value="clothing">Clothing</option>
-                  <option value="electronics">Electronics</option>
-                </select>
-              </label>
-              <label>Floor
-                <select name="floor" required>
-                  <option value="G">Ground</option>
-                  <option value="1">1st Floor</option>
-                </select>
-              </label>
-              <label>Shop Description<textarea name="description"></textarea></label>
-              <label>Shop Image (URL)<input type="url" name="image" /></label>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Save Shop</button>
-              <button type="button" class="btn-secondary modal-close">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
+    <!-- Shops -->
+    <section id="shops" class="content-section" aria-labelledby="shops-title">
+      <h2 id="shops-title" class="section-heading">Manage Shops</h2>
+      <p class="placeholder">Shops management section (coming soon).</p>
     </section>
 
-    <!-- MANAGE OFFERS -->
-    <section id="manage-offers" class="content-section" aria-labelledby="manage-offers-title">
-      <h2 id="manage-offers-title" class="section-heading">Manage Offers</h2>
-
-      <div class="controls-row">
-        <div>
-          <button class="btn-primary" id="btn-add-offer">+ Create Offer</button>
-          <div class="filter-group">
-            <label for="offer-shop">Shop</label>
-            <select id="offer-shop">
-              <option value="">All shops</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <input type="search" id="offer-search" placeholder="Search offers..." />
-        </div>
-      </div>
-
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Offer ID</th>
-              <th>Title</th>
-              <th>Shop</th>
-              <th>Discount</th>
-              <th>Valid From</th>
-              <th>Valid Till</th>
-              <th>Redeemed</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="offers-table-body">
-            <tr>
-              <td>OF-001</td>
-              <td>50% Off on Electronics</td>
-              <td>Tech World</td>
-              <td>50%</td>
-              <td>2025-10-01</td>
-              <td>2025-12-31</td>
-              <td>120</td>
-              <td>
-                <button class="btn-edit">Edit</button>
-                <button class="btn-disable">Disable</button>
-                <button class="btn-delete">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Offer Modal -->
-      <div class="modal" id="modal-offer-form" aria-hidden="true">
-        <div class="modal-content">
-          <header class="modal-header">
-            <h3 id="modal-offer-title">Create Offer</h3>
-            <button class="modal-close" aria-label="Close">✕</button>
-          </header>
-          <form id="offer-form">
-            <div class="form-grid">
-              <label>Offer Title<input type="text" name="title" required></label>
-              <label>Shop
-                <select name="shop" required>
-                  <option value="">Select Shop</option>
-                </select>
-              </label>
-              <label>Discount (%)<input type="number" name="discount" min="1" max="100" required></label>
-              <label>Start Date<input type="date" name="startDate" required></label>
-              <label>End Date<input type="date" name="endDate" required></label>
-              <label>Terms<textarea name="terms"></textarea></label>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Save Offer</button>
-              <button type="button" class="btn-secondary modal-close">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
+    <!-- Offers -->
+    <section id="offers" class="content-section" aria-labelledby="offers-title">
+      <h2 id="offers-title" class="section-heading">Manage Offers</h2>
+      <p class="placeholder">Offers section (coming soon).</p>
     </section>
 
-    <!-- MANAGE CATEGORIES -->
-    <section id="manage-categories" class="content-section" aria-labelledby="manage-categories-title">
-      <h2 id="manage-categories-title" class="section-heading">Manage Categories</h2>
-
-      <div class="controls-row">
-        <div>
-          <button class="btn-primary" id="btn-add-category">+ Add Category</button>
-        </div>
-
-        <div>
-          <input type="search" id="category-search" placeholder="Search categories..." />
-        </div>
-      </div>
-
-      <!-- Category Cards Container -->
-      <div class="categories-grid" id="categories-grid">
-        <p>Loading categories...</p>
-      </div>
-
-
-      <!-- Category Modal -->
-      <div class="modal" id="modal-category-form" aria-hidden="true">
-        <div class="modal-content">
-          <header class="modal-header">
-            <h3 id="modal-category-title">Add Category</h3>
-            <button class="modal-close" aria-label="Close">✕</button>
-          </header>
-          <form id="category-form">
-            <div class="form-grid">
-              <label>Category Name<input type="text" name="name" required></label>
-              <label>Description<textarea name="description"></textarea></label>
-              <label>Image URL<input type="url" name="image"></label>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Save Category</button>
-              <button type="button" class="btn-secondary modal-close">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
+    <!-- Users -->
+    <section id="users" class="content-section" aria-labelledby="users-title">
+      <h2 id="users-title" class="section-heading">Manage Users</h2>
+      <p class="placeholder">Users management section (coming soon).</p>
     </section>
 
-    <!-- MANAGE FLOORS -->
-    <section id="manage-floors" class="content-section" aria-labelledby="manage-floors-title">
-      <h2 id="manage-floors-title" class="section-heading">Manage Floors</h2>
-
-      <div class="controls-row">
-        <div>
-          <button class="btn-primary" id="btn-add-floor">+ Add Floor</button>
-        </div>
-        <div>
-          <input type="search" id="floor-search" placeholder="Search floors..." />
-        </div>
-      </div>
-
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Floor ID</th>
-              <th>Floor Name</th>
-              <th>Total Shops</th>
-              <th>Map/Plan</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="floors-table-body">
-            <tr>
-              <td>F-01</td>
-              <td>Ground Floor</td>
-              <td>24</td>
-              <td><a href="#" class="btn-view">View Map</a></td>
-              <td>
-                <button class="btn-edit">Edit</button>
-                <button class="btn-delete">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Floor Modal -->
-      <div class="modal" id="modal-floor-form" aria-hidden="true">
-        <div class="modal-content">
-          <header class="modal-header">
-            <h3 id="modal-floor-title">Add Floor</h3>
-            <button class="modal-close" aria-label="Close">✕</button>
-          </header>
-          <form id="floor-form">
-            <div class="form-grid">
-              <label>Floor Name<input type="text" name="floorName" required></label>
-              <label>Number<input type="number" name="floorNumber" required></label>
-              <label>Map/Image URL<input type="url" name="mapUrl"></label>
-              <label>Description<textarea name="description"></textarea></label>
-            </div>
-
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Save Floor</button>
-              <button type="button" class="btn-secondary modal-close">Cancel</button>
-            </div>
-          </form>
-        </div>
-      </div>
+    <!-- Analytics -->
+    <section id="analytics" class="content-section" aria-labelledby="analytics-title">
+      <h2 id="analytics-title" class="section-heading">Analytics Overview</h2>
+      <p class="placeholder">Charts and stats will be displayed here.</p>
     </section>
 
-    <!-- VIEW USERS -->
-    <section id="view-users" class="content-section" aria-labelledby="view-users-title">
-      <h2 id="view-users-title" class="section-heading">View Users</h2>
-
-      <div class="controls-row">
-        <div>
-          <label for="user-role-filter">Role</label>
-          <select id="user-role-filter">
-            <option value="">All</option>
-            <option value="customer">Customer</option>
-            <option value="shopOwner">Shop Owner</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-
-        <div>
-          <input type="search" id="user-search" placeholder="Search users by name or email..." />
-        </div>
-      </div>
-
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Registered</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="users-table-body">
-            <tr>
-              <td>U-001</td>
-              <td>Michael</td>
-              <td>michael@example.com</td>
-              <td>Customer</td>
-              <td>2025-10-10</td>
-              <td><span class="status active">Active</span></td>
-              <td>
-                <button class="btn-view">View</button>
-                <button class="btn-edit">Edit</button>
-                <button class="btn-delete">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- Messages -->
+    <section id="messages" class="content-section" aria-labelledby="messages-title">
+      <h2 id="messages-title" class="section-heading">Messages</h2>
+      <p class="placeholder">Admin messages or user feedback will appear here.</p>
     </section>
-
-    <!-- ACTIVITY LOG -->
-    <section id="activity-log" class="content-section" aria-labelledby="activity-log-title">
-      <h2 id="activity-log-title" class="section-heading">Activity Log</h2>
-
-      <div class="card">
-        <h3 class="card-title">Audit Timeline</h3>
-        <ul class="timeline" id="audit-timeline">
-          <li>
-            <div class="timeline-time">2025-10-29 10:24</div>
-            <div class="timeline-content"><strong>Admin</strong> created shop <em>Fashion Fiesta</em>.</div>
-          </li>
-          <li>
-            <div class="timeline-time">2025-10-28 16:03</div>
-            <div class="timeline-content">Offer <strong>OF-001</strong> disabled due to expiry.</div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title">System Logs</h3>
-        <pre class="syslog" id="syslog">
-[INFO] 2025-10-29 11:00 - Scheduled backup completed.
-[WARN] 2025-10-28 22:12 - Offer OF-007 nearing expiry.
-[ERROR] 2025-10-27 09:10 - Failed to send email to user@example.com
-        </pre>
-      </div>
-    </section>
-
-    <!-- SETTINGS -->
-    <section id="settings" class="content-section" aria-labelledby="settings-title">
-      <h2 id="settings-title" class="section-heading">Settings & Profile</h2>
-
-      <div class="card">
-        <h3 class="card-title">Admin Profile</h3>
-        <form id="admin-profile-form">
-          <div class="form-grid">
-            <label>Full Name<input type="text" name="adminName" value="Admin Name"></label>
-            <label>Email<input type="email" name="adminEmail" value="admin@example.com"></label>
-            <label>Phone<input type="tel" name="adminPhone" value="+91-9876543210"></label>
-            <label>Change Password<input type="password" name="adminPassword"></label>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn-primary">Save Profile</button>
-            <button type="button" class="btn-secondary">Cancel</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="card">
-        <h3 class="card-title">Site Configuration</h3>
-        <form id="site-config-form">
-          <div class="form-grid">
-            <label>Site Title<input type="text" name="siteTitle" value="SuperMall"></label>
-            <label>Contact Email<input type="email" name="contactEmail" value="support@supermall.com"></label>
-            <label>Default Currency<select name="currency">
-                <option value="INR" selected>INR</option>
-                <option value="USD">USD</option>
-              </select></label>
-            <label>Maintenance Mode
-              <select name="maintenance">
-                <option value="off">Off</option>
-                <option value="on">On</option>
-              </select>
-            </label>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn-primary">Save Config</button>
-            <button type="button" class="btn-secondary">Cancel</button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>© 2025 SuperMall — Admin Panel</footer>
   </main>
-  <script type="module" src="js/admin.js"></script>
-  <script type="module" src="js/manage-shops.js"></script>
-  <script type="module" src="js/manage-offers.js"></script>
-  <script type="module" src="js/manage-categories.js"></script>
-</body>
 
+  <script type="module" src="js/admin.js"></script>
+</body>
 </html>

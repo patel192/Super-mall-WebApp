@@ -1,177 +1,112 @@
-import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+// admin.js
+import { db } from "./firebase-config.js";
 import {
   collection,
-  doc,
-  getDoc,
-  getDocs,
+  getCountFromServer,
+  query,
+  orderBy,
+  limit,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-(() => {
-  // === Sidebar and Section Handling ===
-  const links = Array.from(document.querySelectorAll(".sidebar-menu a[data-section]"));
-  const sections = Array.from(document.querySelectorAll(".content-section"));
-  const pageTitle = document.getElementById("page-title");
-  const sidebar = document.getElementById("sidebar");
-  const menuToggle = document.getElementById("menuToggle");
-  const closeSidebar = document.getElementById("closeSidebar");
+// ======== TAB SWITCH CODE (already written) ======== //
+const navLinks = document.querySelectorAll(".nav a");
+const sections = document.querySelectorAll(".content-section");
 
-  function showSection(sectionId, updateHash = true) {
-    sections.forEach((sec) => {
-      sec.classList.toggle("active-section", sec.id === sectionId);
-    });
-
-    links.forEach((link) => {
-      link.classList.toggle("active", link.dataset.section === sectionId);
-    });
-
-    const activeLink = links.find((l) => l.dataset.section === sectionId);
-    pageTitle.textContent = activeLink ? activeLink.textContent.trim() : document.title;
-
-    if (updateHash) {
-      try {
-        history.replaceState(null, "", `#${sectionId}`);
-      } catch {
-        location.hash = `#${sectionId}`;
-      }
-    }
-
-    if (window.innerWidth <= 992 && sidebar.classList.contains("show")) {
-      sidebar.classList.remove("show");
-    }
+function hideAllSections() {
+  sections.forEach((section) => section.classList.remove("active-section"));
+}
+function showSection(id) {
+  const cleanId = id.replace("#", "");
+  const section = document.getElementById(cleanId);
+  if (section) {
+    hideAllSections();
+    section.classList.add("active-section");
   }
-
-  links.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const sectionId = link.dataset.section;
-      if (sectionId) showSection(sectionId);
-    });
+}
+function setActiveLink(clickedLink) {
+  navLinks.forEach((link) => link.classList.remove("active"));
+  clickedLink.classList.add("active");
+}
+navLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const target = link.getAttribute("href");
+    setActiveLink(link);
+    showSection(target);
   });
-
-  if (menuToggle) menuToggle.addEventListener("click", () => sidebar.classList.toggle("show"));
-  if (closeSidebar) closeSidebar.addEventListener("click", () => sidebar.classList.remove("show"));
-
-  window.addEventListener("hashchange", () => {
-    const hash = location.hash.replace("#", "");
-    if (hash && sections.some((s) => s.id === hash)) showSection(hash, false);
-  });
-
-  (function init() {
-    const initialHash = location.hash.replace("#", "");
-    if (initialHash && sections.some((s) => s.id === initialHash)) {
-      showSection(initialHash, false);
-    } else {
-      const preActive = links.find((l) => l.classList.contains("active"));
-      if (preActive) showSection(preActive.dataset.section, false);
-      else if (sections[0]) showSection(sections[0].id, false);
-    }
-  })();
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 992) sidebar.classList.remove("show");
-  });
-
-  // === Admin Info Header ===
-  const adminNameEl = document.getElementById("admin-name");
-  const adminEmailEl = document.querySelector(".admin-email");
-  const adminAvatarEl = document.querySelector(".admin-avatar");
-
-  // === Dashboard Overview Elements ===
-  const totalShopsEl = document.getElementById("total-shops");
-  const totalOffersEl = document.getElementById("total-offers");
-  const totalUsersEl = document.getElementById("total-users");
-  const totalRevenueEl = document.getElementById("total-revenue");
-  const topShopsEl = document.getElementById("top-shops");
-  const activityFeedEl = document.getElementById("activity-feed");
-
-  // === Load Dashboard Data ===
-  async function loadDashboardData() {
-    try {
-      const [shopsSnap, offersSnap, usersSnap] = await Promise.all([
-        getDocs(collection(db, "shops")),
-        getDocs(collection(db, "offers")),
-        getDocs(collection(db, "users")),
-      ]);
-
-      // Shops Summary
-      let active = 0, pending = 0, disabled = 0;
-      const shopTraffic = [];
-      shopsSnap.forEach((doc) => {
-        const data = doc.data();
-        if (data.status === "active") active++;
-        else if (data.status === "pending") pending++;
-        else if (data.status === "disabled") disabled++;
-        if (data.traffic) shopTraffic.push({ name: data.name || "Unknown", traffic: data.traffic });
-      });
-      totalShopsEl.textContent = shopsSnap.size;
-      totalShopsEl.nextElementSibling.textContent = `Active ${active} / Pending ${pending} / Disabled ${disabled}`;
-
-      // Offers Summary
-      let activeOffers = 0, expiredOffers = 0, totalRevenue = 0;
-      offersSnap.forEach((doc) => {
-        const data = doc.data();
-        if (data.status === "active") activeOffers++;
-        else if (data.status === "expired") expiredOffers++;
-        if (data.revenue) totalRevenue += Number(data.revenue);
-      });
-      totalOffersEl.textContent = offersSnap.size;
-      totalOffersEl.nextElementSibling.textContent = `Active ${activeOffers} / Expired ${expiredOffers}`;
-      totalRevenueEl.textContent = `₹${totalRevenue.toLocaleString()}`;
-
-      // Users Summary
-      let customers = 0, shopOwners = 0, admins = 0;
-      usersSnap.forEach((doc) => {
-        const data = doc.data();
-        if (data.role === "customer") customers++;
-        else if (data.role === "shopOwner") shopOwners++;
-        else if (data.role === "admin") admins++;
-      });
-      totalUsersEl.textContent = usersSnap.size;
-      totalUsersEl.nextElementSibling.textContent = `Customers ${customers} / ShopOwners ${shopOwners} / Admins ${admins}`;
-
-      // Top Shops
-      shopTraffic.sort((a, b) => b.traffic - a.traffic);
-      const top3 = shopTraffic.slice(0, 3);
-      topShopsEl.innerHTML = top3.map(
-        (s) => `<li>${s.name} <span class="muted">— ${s.traffic.toLocaleString()} visits</span></li>`
-      ).join("");
-
-      // Activity Feed Example
-      activityFeedEl.innerHTML = `
-        <li><div class="feed-time">Just now</div><div class="feed-text">Loaded ${shopsSnap.size} shops, ${offersSnap.size} offers, ${usersSnap.size} users.</div></li>
-      ` + activityFeedEl.innerHTML;
-
-      console.log("✅ Dashboard data loaded!");
-    } catch (err) {
-      console.error("❌ Error loading dashboard data:", err);
-    }
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const firstLink = navLinks[0];
+  if (firstLink) {
+    setActiveLink(firstLink);
+    showSection(firstLink.getAttribute("href"));
+    loadOverviewData(); // Load data for Overview
   }
+});
 
-  // === Auth State & User Info ===
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      try {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
+// ======== OVERVIEW DASHBOARD LOGIC ======== //
+async function loadOverviewData() {
+  try {
+    // --- Count totals --- //
+    const shopsSnap = await getCountFromServer(collection(db, "shops"));
+    const offersSnap = await getCountFromServer(collection(db, "offers"));
+    const usersSnap = await getCountFromServer(collection(db, "users"));
 
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          adminNameEl.textContent = userData.name || "Admin User";
-          adminEmailEl.textContent = user.email;
-          adminAvatarEl.src = user.photoURL || "https://i.pravatar.cc/40";
+    document.getElementById("total-shops").textContent = shopsSnap.data().count;
+    document.getElementById("total-offers").textContent = offersSnap.data().count;
+    document.getElementById("total-users").textContent = usersSnap.data().count;
+    document.getElementById("total-revenue").textContent = "₹" + (shopsSnap.data().count * 5000).toLocaleString();
 
-          if (userData.role === "admin" || userData.role === "shopOwner") {
-            loadDashboardData(); // Only load dashboard if admin/shopOwner
-          } else {
-            console.warn("⚠️ Access denied: Not an admin or shop owner.");
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
+    // --- Top Shops --- //
+    const topShopsQuery = query(collection(db, "shops"), orderBy("rating", "desc"), limit(5));
+    const topShopsSnap = await getDocs(topShopsQuery);
+    const topList = document.getElementById("top-shops");
+    topList.innerHTML = "";
+    if (topShopsSnap.empty) {
+      topList.innerHTML = "<li>No shops found</li>";
     } else {
-      window.location.href = "login.html";
+      topShopsSnap.forEach((doc) => {
+        const shop = doc.data();
+        topList.innerHTML += `
+          <li>
+            <strong>${shop.name || "Unnamed Shop"}</strong><br>
+            <small>⭐ ${shop.rating || "N/A"} | ${shop.category || "General"}</small>
+          </li>`;
+      });
     }
-  });
-})();
+
+    // --- Recent Activity --- //
+    const logsQuery = query(collection(db, "appLogs"), orderBy("timestamp", "desc"), limit(5));
+    const logsSnap = await getDocs(logsQuery);
+    const activityList = document.getElementById("activity-feed");
+    activityList.innerHTML = "";
+    if (logsSnap.empty) {
+      activityList.innerHTML = "<li>No recent activity</li>";
+    } else {
+      logsSnap.forEach((doc) => {
+        const log = doc.data();
+        const time = log.timestamp?.toDate
+          ? log.timestamp.toDate().toLocaleString()
+          : "Unknown time";
+        activityList.innerHTML += `
+          <li>
+            <strong>${log.action || "Activity"}</strong><br>
+            <small>${time}</small>
+          </li>`;
+      });
+    }
+  } catch (err) {
+    console.error("❌ Error loading overview data:", err);
+  }
+}
+
+function animateNumber(id) {
+  const el = document.getElementById(id);
+  el.classList.add("updated");
+  setTimeout(() => el.classList.remove("updated"), 400);
+}
+animateNumber("total-shops");
+animateNumber("total-offers");
+animateNumber("total-users");
+animateNumber("total-revenue");
