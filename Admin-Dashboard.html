@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="css/admin.css" />
 </head>
+
 <body>
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -79,24 +81,28 @@
 
     <!-- Shops -->
     <section id="shops" class="content-section" aria-labelledby="shops-title">
-  <h2 id="shops-title" class="section-heading">Manage Shops</h2>
+      <h2 id="shops-title" class="section-heading">Manage Shops</h2>
 
-  <button class="btn-primary" id="add-shop-btn">+ Add Shop</button>
+      <button class="btn-primary" id="add-shop-btn">+ Add Shop</button>
 
-  <div id="shops-container" class="shops-grid">
-    <!-- Dynamic cards inserted here -->
-  </div>
+      <div id="shops-container" class="shops-grid">
+        <!-- Dynamic cards inserted here -->
+      </div>
 
-  <!-- Fallback message -->
-  <p id="shops-empty" class="placeholder">Loading shops...</p>
-</section>
+      <!-- Fallback message -->
+      <p id="shops-empty" class="placeholder">Loading shops...</p>
+    </section>
 
 
     <!-- Offers -->
     <section id="offers" class="content-section" aria-labelledby="offers-title">
       <h2 id="offers-title" class="section-heading">Manage Offers</h2>
-      <p class="placeholder">Offers section (coming soon).</p>
+
+      <div id="offers-container" class="offers-grid"></div>
+
+      <p id="offers-empty" class="empty-message">No offers available.</p>
     </section>
+
 
     <!-- Users -->
     <section id="users" class="content-section" aria-labelledby="users-title">
@@ -119,6 +125,6 @@
 
   <script type="module" src="js/admin.js"></script>
   <script type="module" src="js/admin-overview.js"></script>
-  
 </body>
+
 </html>

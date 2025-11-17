@@ -6,9 +6,10 @@ import {
   query,
   orderBy,
   limit,
-  getDocs
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { loadShops } from "./admin-shops.js";
+import { loadOffers } from "./admin-offers.js";
 // ======== TAB SWITCH CODE (already written) ======== //
 const navLinks = document.querySelectorAll(".nav a");
 const sections = document.querySelectorAll(".content-section");
@@ -32,10 +33,14 @@ navLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
     const target = link.getAttribute("href");
+
     setActiveLink(link);
     showSection(target);
+
+    handleNavigation(target);  // ⭐ FORCE LOAD
   });
 });
+
 document.addEventListener("DOMContentLoaded", () => {
   const firstLink = navLinks[0];
   if (firstLink) {
@@ -54,12 +59,18 @@ async function loadOverviewData() {
     const usersSnap = await getCountFromServer(collection(db, "users"));
 
     document.getElementById("total-shops").textContent = shopsSnap.data().count;
-    document.getElementById("total-offers").textContent = offersSnap.data().count;
+    document.getElementById("total-offers").textContent =
+      offersSnap.data().count;
     document.getElementById("total-users").textContent = usersSnap.data().count;
-    document.getElementById("total-revenue").textContent = "₹" + (shopsSnap.data().count * 5000).toLocaleString();
+    document.getElementById("total-revenue").textContent =
+      "₹" + (shopsSnap.data().count * 5000).toLocaleString();
 
     // --- Top Shops --- //
-    const topShopsQuery = query(collection(db, "shops"), orderBy("rating", "desc"), limit(5));
+    const topShopsQuery = query(
+      collection(db, "shops"),
+      orderBy("rating", "desc"),
+      limit(5)
+    );
     const topShopsSnap = await getDocs(topShopsQuery);
     const topList = document.getElementById("top-shops");
     topList.innerHTML = "";
@@ -71,13 +82,19 @@ async function loadOverviewData() {
         topList.innerHTML += `
           <li>
             <strong>${shop.name || "Unnamed Shop"}</strong><br>
-            <small>⭐ ${shop.rating || "N/A"} | ${shop.category || "General"}</small>
+            <small>⭐ ${shop.rating || "N/A"} | ${
+          shop.category || "General"
+        }</small>
           </li>`;
       });
     }
 
     // --- Recent Activity --- //
-    const logsQuery = query(collection(db, "appLogs"), orderBy("timestamp", "desc"), limit(5));
+    const logsQuery = query(
+      collection(db, "appLogs"),
+      orderBy("timestamp", "desc"),
+      limit(5)
+    );
     const logsSnap = await getDocs(logsQuery);
     const activityList = document.getElementById("activity-feed");
     activityList.innerHTML = "";
@@ -100,12 +117,14 @@ async function loadOverviewData() {
     console.error("❌ Error loading overview data:", err);
   }
 }
-window.addEventListener("hashchange",()=>{
-  if(location.hash === "#shops") loadShops();
-});
-document.addEventListener("DOMContentLoaded",()=>{
-  if(location.hash === "#shops") loadShops();
-});
+function handleNavigation(hash = location.hash) {
+  if (hash === "#overview" || hash === "" || !hash) loadOverviewData();
+  if (hash === "#shops") loadShops();
+  if (hash === "#offers") loadOffers();
+}
+
+window.addEventListener("hashchange", handleNavigation);
+document.addEventListener("DOMContentLoaded", handleNavigation);
 
 function animateNumber(id) {
   const el = document.getElementById(id);
@@ -116,4 +135,3 @@ animateNumber("total-shops");
 animateNumber("total-offers");
 animateNumber("total-users");
 animateNumber("total-revenue");
-
