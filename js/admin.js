@@ -10,6 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { loadShops } from "./admin-shops.js";
 import { loadOffers } from "./admin-offers.js";
+import { loadUsers } from "./admin-users.js";
 // ======== TAB SWITCH CODE (already written) ======== //
 const navLinks = document.querySelectorAll(".nav a");
 const sections = document.querySelectorAll(".content-section");
@@ -121,8 +122,8 @@ function handleNavigation(hash = location.hash) {
   if (hash === "#overview" || hash === "" || !hash) loadOverviewData();
   if (hash === "#shops") loadShops();
   if (hash === "#offers") loadOffers();
+  if (hash === "#users") loadUsers(); 
 }
-
 window.addEventListener("hashchange", handleNavigation);
 document.addEventListener("DOMContentLoaded", handleNavigation);
 
