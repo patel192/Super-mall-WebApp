@@ -8,7 +8,7 @@ import {
   limit,
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { loadShops } from "./admin-shops.js";
 // ======== TAB SWITCH CODE (already written) ======== //
 const navLinks = document.querySelectorAll(".nav a");
 const sections = document.querySelectorAll(".content-section");
@@ -100,6 +100,12 @@ async function loadOverviewData() {
     console.error("❌ Error loading overview data:", err);
   }
 }
+window.addEventListener("hashchange",()=>{
+  if(location.hash === "#shops") loadShops();
+});
+document.addEventListener("DOMContentLoaded",()=>{
+  if(location.hash === "#shops") loadShops();
+});
 
 function animateNumber(id) {
   const el = document.getElementById(id);
@@ -110,3 +116,4 @@ animateNumber("total-shops");
 animateNumber("total-offers");
 animateNumber("total-users");
 animateNumber("total-revenue");
+

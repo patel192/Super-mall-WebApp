@@ -79,9 +79,18 @@
 
     <!-- Shops -->
     <section id="shops" class="content-section" aria-labelledby="shops-title">
-      <h2 id="shops-title" class="section-heading">Manage Shops</h2>
-      <p class="placeholder">Shops management section (coming soon).</p>
-    </section>
+  <h2 id="shops-title" class="section-heading">Manage Shops</h2>
+
+  <button class="btn-primary" id="add-shop-btn">+ Add Shop</button>
+
+  <div id="shops-container" class="shops-grid">
+    <!-- Dynamic cards inserted here -->
+  </div>
+
+  <!-- Fallback message -->
+  <p id="shops-empty" class="placeholder">Loading shops...</p>
+</section>
+
 
     <!-- Offers -->
     <section id="offers" class="content-section" aria-labelledby="offers-title">
@@ -110,5 +119,6 @@
 
   <script type="module" src="js/admin.js"></script>
   <script type="module" src="js/admin-overview.js"></script>
+  
 </body>
 </html>
