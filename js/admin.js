@@ -125,7 +125,7 @@ function handleNavigation(hash = location.hash) {
   if (hash === "#shops") loadShops();
   if (hash === "#offers") loadOffers();
   if (hash === "#users") loadUsers(); 
-  if(hash === "#analytics") loadAnalytics();
+  if (hash === "#analytics") loadAnalyticsData();
   if(hash === "#messages") loadMessages();
 }
 window.addEventListener("hashchange", handleNavigation);

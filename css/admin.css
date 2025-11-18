@@ -91,6 +91,19 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 10px #22c55e;
 }
+.notification-icon {
+  width: 20px;
+  height: 20px;
+  color: #64748b;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: color 0.3s ease, transform 0.3s;
+}
+
+.notification-icon:hover {
+  color: #0ea5e9;
+  transform: scale(1.2);
+}
 
 /* ===== DASHBOARD CARDS ===== */
 .cards-grid {
