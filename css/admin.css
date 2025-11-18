@@ -422,3 +422,90 @@ body {
   padding: 5px 8px;
   background-color: rgba(16, 185, 129, 0.1);
 }
+
+
+/* ======= ANALYTICS ======= */
+.analytics-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  margin-top: 24px;
+}
+
+.analytics-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  animation: fadeUp 0.7s ease forwards;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.analytics-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: #0ea5e9;
+}
+
+
+/* ====== MESSAGES ====== */
+.messages-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  margin-top: 20px;
+}
+
+.message-card {
+  background: #ffffff;
+  border-left: 6px solid #0ea5e9;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+  animation: fadeUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.message-card p {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.message-card .meta {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.message-card .tag {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #e0f2fe;
+  color: #0284c7;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+
+.tag.success {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.message-card img {
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.message-card .meta {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.message-card .tag {
+  margin-top: 6px;
+  display: inline-block;
+}

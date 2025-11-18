@@ -101,8 +101,8 @@
       <div id="offers-container" class="offers-grid"></div>
 
       <p id="offers-empty" class="empty-message">No offers available.</p>
-    </section> 
-    
+    </section>
+
     <!-- Users -->
     <section id="users" class="content-section" aria-labelledby="users-title">
       <h2 id="users-title" class="section-heading">Manage Users</h2>
@@ -115,17 +115,42 @@
     </section>
 
 
+
     <!-- Analytics -->
     <section id="analytics" class="content-section" aria-labelledby="analytics-title">
       <h2 id="analytics-title" class="section-heading">Analytics Overview</h2>
-      <p class="placeholder">Charts and stats will be displayed here.</p>
+
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <h3>Monthly Shop Growth</h3>
+          <canvas id="shopsChart"></canvas>
+        </div>
+
+        <div class="analytics-card">
+          <h3>Offer Creation Trend</h3>
+          <canvas id="offersChart"></canvas>
+        </div>
+
+        <div class="analytics-card">
+          <h3>User Registration Trend</h3>
+          <canvas id="usersChart"></canvas>
+        </div>
+      </div>
     </section>
+
 
     <!-- Messages -->
     <section id="messages" class="content-section" aria-labelledby="messages-title">
       <h2 id="messages-title" class="section-heading">Messages</h2>
-      <p class="placeholder">Admin messages or user feedback will appear here.</p>
+
+      <div id="messages-container" class="messages-grid">
+        <!-- Review cards will load here -->
+      </div>
+
+      <p id="messages-empty" class="placeholder">No messages found.</p>
     </section>
+
+
   </main>
 
   <script type="module" src="js/admin.js"></script>

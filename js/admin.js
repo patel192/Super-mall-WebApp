@@ -11,6 +11,8 @@ import {
 import { loadShops } from "./admin-shops.js";
 import { loadOffers } from "./admin-offers.js";
 import { loadUsers } from "./admin-users.js";
+import {loadAnalytics} from "./admin-analytics.js";
+import { loadMessages } from "./admin-messages.js";
 // ======== TAB SWITCH CODE (already written) ======== //
 const navLinks = document.querySelectorAll(".nav a");
 const sections = document.querySelectorAll(".content-section");
@@ -123,12 +125,14 @@ function handleNavigation(hash = location.hash) {
   if (hash === "#shops") loadShops();
   if (hash === "#offers") loadOffers();
   if (hash === "#users") loadUsers(); 
+  if(hash === "#analytics") loadAnalytics();
+  if(hash === "#messages") loadMessages();
 }
 window.addEventListener("hashchange", handleNavigation);
 document.addEventListener("DOMContentLoaded", handleNavigation);
 
 function animateNumber(id) {
-  const el = document.getElementById(id);
+  const el = document.getElementById(id); 
   el.classList.add("updated");
   setTimeout(() => el.classList.remove("updated"), 400);
 }
