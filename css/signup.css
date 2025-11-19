@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background: #2d2f3f;
+  background: white;
   font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
@@ -16,6 +16,7 @@ body {
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   animation: fadeSlide 0.6s ease;
+  height: 500px;
 }
 
 @keyframes fadeSlide {
