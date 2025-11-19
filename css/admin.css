@@ -521,3 +521,52 @@ body {
   margin-top: 6px;
   display: inline-block;
 }
+
+
+.shop-summary {
+  display: flex;
+  gap: 1.5rem;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.shop-summary .left {
+  flex: 1;
+}
+
+.shop-summary .right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shop-image {
+  border-radius: 8px;
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.status-active {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.sub-heading {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}

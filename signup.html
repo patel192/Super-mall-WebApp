@@ -2,149 +2,135 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Signup | SuperMall</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SuperMall Signup</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/signup.css" />
 </head>
 
 <body>
-  <section class="auth-section fade-up">
-    <div class="auth-card">
-      <h2>Create Your Account ✨</h2>
-      <p class="subtitle">Join SuperMall and start exploring exclusive offers</p>
 
-      <!-- Email / Password signup form -->
-      <form id="signup-form">
-        <input type="text" id="fullname" placeholder="Full Name" required />
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password (min 6 chars)" required />
+  <div class="auth-wrapper">
 
-        <!-- 👇 Role selection -->
-        <select id="role" required>
-          <option value="" disabled selected>Select Your Role</option>
-          <option value="shopOwner">Shop Owner</option>
+    <!-- Left visual section -->
+    <div class="auth-visual">
+      <img src="assets/2788686.jpg" alt="Signup Visual">
+      <div class="step-dots">
+        <span class="dot active" id="dot1" data-step="0"></span>
+        <span class="dot" id="dot2" data-step="1"></span>
+        <span class="dot" id="dot3" data-step="2"></span>
+      </div>
+
+    </div>
+
+    <!-- Right form side -->
+    <div class="auth-form-container">
+
+      <h2>Create Your Account</h2>
+      <p class="sub">Already have an account? <a href="#">Login</a></p>
+
+      <!-- STEP 1: Personal Details -->
+      <div class="form-step active-step" id="step1">
+        <input type="text" id="fullName" placeholder="Full Name">
+        <input type="email" id="email" placeholder="Email Address">
+        <div class="input-row">
+          <input type="password" id="password" placeholder="Password">
+          <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        </div>
+        <div class="btn-row">
+          <button class="btn-primary" id="next1">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Contact Details -->
+      <div class="form-step" id="step2">
+        <input type="text" id="phone" placeholder="Phone Number">
+        <div class="input-row">
+          <input type="text" id="city" placeholder="City">
+          <input type="text" id="state" placeholder="State">
+        </div>
+        <input type="text" id="street" placeholder="Street / Address">
+        <div class="btn-row">
+          <button class="btn-secondary" id="back1">Back</button>
+          <button class="btn-primary" id="next2">Next</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Role Selection -->
+      <div class="form-step" id="step3">
+        <select id="role">
+          <option value="" disabled selected>Select your role</option>
           <option value="customer">Customer</option>
+          <option value="shopOwner">Shop Owner</option>
         </select>
 
-        <button class="btn-primary" type="submit">Sign Up</button>
-      </form>
+        <label class="checkbox">
+          <input type="checkbox" id="terms">
+          <p>
+            I agree to SuperMall terms & conditions
+          </p>
+        </label>
 
-      <div class="divider"><span>or</span></div>
+        <div class="btn-row">
+          <button class="btn-secondary" id="back2">Back</button>
+          <button class="btn-primary" id="finish">Create Account</button>
+        </div>
+      </div>
 
-      <!-- Google Signup Button -->
-      <button id="google-signup" class="google-btn">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google logo" />
-        Sign up with Google
-      </button>
-
-      <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
-  </section>
 
-  <!-- Firebase config (exports auth, provider, db) -->
-  <script type="module" src="js/firebase-config.js"></script>
+  </div>
 
-  <!-- Signup logic -->
-  <script type="module">
-    import { auth, provider, db } from './js/firebase-config.js';
-    import {
-      createUserWithEmailAndPassword,
-      signInWithPopup,
-      updateProfile
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <script>
+    const steps = [
+      document.getElementById("step1"),
+      document.getElementById("step2"),
+      document.getElementById("step3")
+    ];
 
-    // Elements
-    const signupForm = document.getElementById('signup-form');
-    const googleSignupBtn = document.getElementById('google-signup');
+    const dots = [
+      document.getElementById("dot1"),
+      document.getElementById("dot2"),
+      document.getElementById("dot3")
+    ];
 
-    // Helper: show simple alerts
-    function showAlert(msg) {
-      alert(msg);
+    let currentStep = 0;
+
+    function showStep(index) {
+      steps.forEach(step => step.classList.remove("active-step"));
+      dots.forEach(dot => dot.classList.remove("active"));
+
+      steps[index].classList.add("active-step");
+      dots[index].classList.add("active");
+
+      currentStep = index;
     }
 
-    // ✅ 1) Email/password signup
-    signupForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    /* ------------ STEP BUTTONS ------------ */
+    document.getElementById("next1").onclick = () => showStep(1);
+    document.getElementById("next2").onclick = () => showStep(2);
 
-      const fullName = document.getElementById('fullname').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const role = document.getElementById('role').value;
+    document.getElementById("back1").onclick = () => showStep(0);
+    document.getElementById("back2").onclick = () => showStep(1);
 
-      if (!fullName || !email || !password || !role) {
-        showAlert('Please fill all fields and select a role.');
-        return;
-      }
+    /* ------------ CLICKABLE DOTS ------------ */
+    dots.forEach(dot => {
+      dot.addEventListener("click", () => {
+        const stepIndex = parseInt(dot.getAttribute("data-step"));
 
-      if (password.length < 6) {
-        showAlert('Password must be at least 6 characters.');
-        return;
-      }
+        // (Optional) you can restrict jumping ahead unless previous fields are filled.
+        // Otherwise user can jump freely.
 
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        // Update display name
-        await updateProfile(user, { displayName: fullName });
-
-        // ✅ Firestore user data
-        const userData = {
-          uid: user.uid,
-          name: fullName,
-          email: user.email,
-          role: role, // 👈 Save selected role
-          provider: "email",
-          createdAt: new Date().toISOString(),
-        };
-
-        await setDoc(doc(db, "users", user.uid), userData);
-
-        showAlert(`Welcome ${fullName}! Your ${role} account has been created.`);
-        window.location.href = "login.html";
-
-      } catch (err) {
-        console.error('Signup error:', err);
-        showAlert(err.message);
-      }
+        showStep(stepIndex);
+      });
     });
 
-    // ✅ 2) Google signup
-    googleSignupBtn.addEventListener('click', async () => {
-      // Ask role before signup
-      const role = prompt("Please enter your role (admin/shopOwner/customer):", "shopOwner");
-      if (!role || !["admin", "shopOwner", "customer"].includes(role)) {
-        showAlert("Invalid or no role entered. Please try again.");
-        return;
-      }
+    /* ------------ FINAL SUBMIT ------------ */
+    document.getElementById("finish").onclick = () => {
+      alert("Account created successfully!");
+    };
 
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-
-        const googleUserData = {
-          uid: user.uid,
-          name: user.displayName || "Anonymous User",
-          email: user.email || "",
-          provider: "google",
-          photoURL: user.photoURL || "",
-          role: role, // 👈 Assigned from prompt
-          createdAt: new Date().toISOString(),
-        };
-
-        await setDoc(doc(db, "users", user.uid), googleUserData, { merge: true });
-
-        showAlert(`Welcome ${user.displayName || 'User'}! Your ${role} account has been created.`);
-        window.location.href = "login.html";
-
-      } catch (err) {
-        console.error('Google signup error:', err);
-        showAlert(err.message);
-      }
-    });
   </script>
 </body>
 
