@@ -1,16 +1,20 @@
+// ---------- FIREBASE IMPORTS ----------
+import { db, auth, provider } from "../firebase-config.js";
 
-// ----------FIREBASE INTEGRATION FOR SIGNUP LOGIC----------
-import { db, auth } from "../firebase-config.js";
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 import {
   doc,
-  setDoc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* -----------------------------
-EXISTING SIGNUP STEP LOGIC
------------------------------- */
 
+// ======================================================
+// SIGNUP STEPS LOGIC
+// ======================================================
 const steps = [
   document.getElementById("step1"),
   document.getElementById("step2"),
@@ -23,16 +27,11 @@ const dots = [
   document.getElementById("dot3"),
 ];
 
-let currentStep = 0;
-
 function showStep(index) {
-  steps.forEach((step) => step.classList.remove("active-step"));
-  dots.forEach((dot) => dot.classList.remove("active"));
-
+  steps.forEach(s => s.classList.remove("active-step"));
+  dots.forEach(d => d.classList.remove("active"));
   steps[index].classList.add("active-step");
   dots[index].classList.add("active");
-
-  currentStep = index;
 }
 
 document.getElementById("next1").onclick = () => showStep(1);
@@ -40,115 +39,158 @@ document.getElementById("next2").onclick = () => showStep(2);
 document.getElementById("back1").onclick = () => showStep(0);
 document.getElementById("back2").onclick = () => showStep(1);
 
-dots.forEach((dot) => {
-  dot.addEventListener("click", () => {
-    showStep(parseInt(dot.getAttribute("data-step")));
-  });
+dots.forEach(dot => {
+  dot.addEventListener("click", () => showStep(parseInt(dot.dataset.step)));
 });
 
 
-//    Signup Logic
+// ======================================================
+// EMAIL/PASSWORD SIGNUP
+// ======================================================
+
 const finishBtn = document.getElementById("finish");
 
 finishBtn.addEventListener("click", async () => {
-  //   Dom Elements Access
-  // STEP 1
+  // Step 1
   const fullName = document.getElementById("fullName").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const confirmPassword = document
-    .getElementById("confirmPassword")
-    .value.trim();
-  // STEP 2
+  const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+  // Step 2
   const phoneNumber = document.getElementById("phone").value.trim();
   const city = document.getElementById("city").value.trim();
   const state = document.getElementById("state").value.trim();
   const pincode = document.getElementById("pincode").value.trim();
   const streetAddress = document.getElementById("street").value.trim();
-  // STEP 3
+
+  // Step 3
   const role = document.getElementById("role").value.trim();
   const terms = document.getElementById("terms").checked;
 
-  // validation
-  if (!fullName || !email || !password || !confirmPassword) {
-    alert("Please fill all personal details.");
-    return;
-  }
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters Long.");
-    return;
-  }
-  if (password !== confirmPassword) {
-    alert("Passwords do not match");
-    return;
-  }
-  if (!phoneNumber || !city || !state || !pincode || !streetAddress) {
-    alert("Please fill all address details.");
-    return;
-  }
-  if (!role) {
-    alert("Please select a role.");
-    return;
-  }
-  if (!terms) {
-    alert("You must agree the terms and conditions.");
-    return;
-  }
+  // Validations
+  if (!fullName || !email || !password || !confirmPassword)
+    return alert("Fill all personal details.");
+
+  if (password.length < 6)
+    return alert("Password must be minimum 6 characters.");
+
+  if (password !== confirmPassword)
+    return alert("Passwords do not match.");
+
+  if (!phoneNumber || !city || !state || !pincode || !streetAddress)
+    return alert("Fill all address details.");
+
+  if (!role)
+    return alert("Select your role.");
+
+  if (!terms)
+    return alert("You must agree to terms & conditions.");
+
+
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const uid = cred.user.uid;
+
     const userData = {
       fullName,
       email,
-      password,
       phoneNumber,
+      role,
       address: {
         city,
         state,
         pincode,
         streetAddress,
       },
-      role,
       createdAt: new Date().toISOString(),
+      provider: "email",
     };
+
     await setDoc(doc(db, "users", uid), userData);
-    alert("Account created Successfully");
+
+    alert("Account created successfully!");
+
   } catch (err) {
-    alert("Error creating account: " + err.message);
+    alert("Signup Error: " + err.message);
   }
 });
 
-/* --------------------------------------
-        NEW: SIGNUP <-> LOGIN SLIDE SWITCH
-    --------------------------------------- */
+
+// ======================================================
+// GOOGLE SIGNUP / LOGIN
+// ======================================================
+
+const googleBtn = document.querySelectorAll("#googleBtn");
+
+googleBtn.forEach(btn => {
+  btn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        fullName: user.displayName || "Unknown User",
+        email: user.email,
+        photoURL: user.photoURL || "",
+        provider: "google",
+        role: "customer",
+        createdAt: new Date().toISOString(),
+      }, { merge: true });
+
+      alert("Google Sign-in successful!");
+
+    } catch (err) {
+      alert("Google Sign-in Error: " + err.message);
+    }
+  });
+});
+
+
+// ======================================================
+// SIGNUP <-> LOGIN MODE SWITCH
+// ======================================================
 
 const wrapper = document.getElementById("authWrapper");
 const toggleAuth = document.getElementById("toggleAuth");
 const sub = document.querySelector(".sub");
 const signupContainer = document.getElementById("signupContainer");
 const loginContainer = document.getElementById("loginContainer");
-
 const authTitle = document.getElementById("authTitle");
 const body = document.body;
 
-toggleAuth.addEventListener("click", (e) => {
+function switchToLogin() {
+  wrapper.classList.add("login-mode");
+  signupContainer.classList.add("hidden");
+  loginContainer.classList.remove("hidden");
+
+  authTitle.textContent = "Welcome Back!";
+  toggleAuth.textContent = "Signup";
+  sub.style.marginLeft = "40px";
+}
+
+function switchToSignup() {
+  wrapper.classList.remove("login-mode");
+  signupContainer.classList.remove("hidden");
+  loginContainer.classList.add("hidden");
+
+  authTitle.textContent = "Create Your Account!";
+  toggleAuth.textContent = "Login";
+}
+
+toggleAuth.addEventListener("click", e => {
   e.preventDefault();
-
-  const isLogin = wrapper.classList.toggle("login-mode");
-
-  if (isLogin) {
-    signupContainer.classList.add("hidden");
-    loginContainer.classList.remove("hidden");
-    toggleAuth.textContent = "Signup";
-    authTitle.textContent = "Welcome Back!";
-    sub.style.marginLeft = "30px";
-    body.style.background = "linear-gradient(170deg, #ffffff, #1b245d)";
-  } else {
-    signupContainer.classList.remove("hidden");
-    loginContainer.classList.add("hidden");
-    toggleAuth.textContent = "Login";
-    authTitle.textContent = "Create Your Account";
-    sub.style.marginLeft = "25px";
-    body.style.background = "linear-gradient(170deg, #ffffff, #2d2e41)";
-  }
+  const isLogin = wrapper.classList.contains("login-mode");
+  isLogin ? switchToSignup() : switchToLogin();
 });
+
+
+// ======================================================
+// AUTO SWITCH IF URL CONTAINS ?mode=login
+// ======================================================
+
+const params = new URLSearchParams(window.location.search);
+if (params.get("mode") === "login") {
+  switchToLogin();
+}
