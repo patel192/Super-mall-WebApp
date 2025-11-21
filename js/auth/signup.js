@@ -3,14 +3,13 @@ import { db, auth, provider } from "../firebase-config.js";
 
 import {
   createUserWithEmailAndPassword,
-  signInWithPopup
+  signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
   doc,
-  setDoc
+  setDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
 
 // ======================================================
 // SIGNUP STEPS LOGIC
@@ -28,8 +27,8 @@ const dots = [
 ];
 
 function showStep(index) {
-  steps.forEach(s => s.classList.remove("active-step"));
-  dots.forEach(d => d.classList.remove("active"));
+  steps.forEach((s) => s.classList.remove("active-step"));
+  dots.forEach((d) => d.classList.remove("active"));
   steps[index].classList.add("active-step");
   dots[index].classList.add("active");
 }
@@ -39,10 +38,9 @@ document.getElementById("next2").onclick = () => showStep(2);
 document.getElementById("back1").onclick = () => showStep(0);
 document.getElementById("back2").onclick = () => showStep(1);
 
-dots.forEach(dot => {
+dots.forEach((dot) => {
   dot.addEventListener("click", () => showStep(parseInt(dot.dataset.step)));
 });
-
 
 // ======================================================
 // EMAIL/PASSWORD SIGNUP
@@ -55,7 +53,9 @@ finishBtn.addEventListener("click", async () => {
   const fullName = document.getElementById("fullName").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const confirmPassword = document.getElementById("confirmPassword").value.trim();
+  const confirmPassword = document
+    .getElementById("confirmPassword")
+    .value.trim();
 
   // Step 2
   const phoneNumber = document.getElementById("phone").value.trim();
@@ -75,18 +75,14 @@ finishBtn.addEventListener("click", async () => {
   if (password.length < 6)
     return alert("Password must be minimum 6 characters.");
 
-  if (password !== confirmPassword)
-    return alert("Passwords do not match.");
+  if (password !== confirmPassword) return alert("Passwords do not match.");
 
   if (!phoneNumber || !city || !state || !pincode || !streetAddress)
     return alert("Fill all address details.");
 
-  if (!role)
-    return alert("Select your role.");
+  if (!role) return alert("Select your role.");
 
-  if (!terms)
-    return alert("You must agree to terms & conditions.");
-
+  if (!terms) return alert("You must agree to terms & conditions.");
 
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -110,43 +106,45 @@ finishBtn.addEventListener("click", async () => {
     await setDoc(doc(db, "users", uid), userData);
 
     alert("Account created successfully!");
-
+    switchToLogin();
   } catch (err) {
     alert("Signup Error: " + err.message);
   }
 });
 
-
 // ======================================================
-// GOOGLE SIGNUP / LOGIN
+// GOOGLE SIGNUP 
 // ======================================================
 
 const googleBtn = document.querySelectorAll("#googleBtn");
 
-googleBtn.forEach(btn => {
+googleBtn.forEach((btn) => {
   btn.addEventListener("click", async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        fullName: user.displayName || "Unknown User",
-        email: user.email,
-        photoURL: user.photoURL || "",
-        provider: "google",
-        role: "customer",
-        createdAt: new Date().toISOString(),
-      }, { merge: true });
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          uid: user.uid,
+          fullName: user.displayName || "Unknown User",
+          email: user.email,
+          photoURL: user.photoURL || "",
+          provider: "google",
+          role: "customer",
+          createdAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
 
-      alert("Google Sign-in successful!");
-
+      alert("Google Signup successful!");
+      switchToLogin();
     } catch (err) {
-      alert("Google Sign-in Error: " + err.message);
+      alert("Google Signup Error: " + err.message);
     }
   });
 });
-
 
 // ======================================================
 // SIGNUP <-> LOGIN MODE SWITCH
@@ -179,12 +177,11 @@ function switchToSignup() {
   toggleAuth.textContent = "Login";
 }
 
-toggleAuth.addEventListener("click", e => {
+toggleAuth.addEventListener("click", (e) => {
   e.preventDefault();
   const isLogin = wrapper.classList.contains("login-mode");
   isLogin ? switchToSignup() : switchToLogin();
 });
-
 
 // ======================================================
 // AUTO SWITCH IF URL CONTAINS ?mode=login
