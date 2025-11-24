@@ -8,107 +8,123 @@ import {
   limit,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 import { loadShops } from "../admin/admin-shops.js";
 import { loadOffers } from "../admin/admin-offers.js";
 import { loadUsers } from "../admin/admin-users.js";
-import {loadAnalytics} from "../admin/admin-analytics.js";
+import { loadAnalytics } from "../admin/admin-analytics.js";
 import { loadMessages } from "../admin/admin-messages.js";
-// ======== TAB SWITCH CODE (already written) ======== //
-const navLinks = document.querySelectorAll(".nav a");
+
+// =========================
+// 🌟 NEW TOP NAVBAR SUPPORT
+// =========================
+const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll(".content-section");
 
+// Hide all sections
 function hideAllSections() {
-  sections.forEach((section) => section.classList.remove("active-section"));
+  sections.forEach(sec => sec.classList.remove("active-section"));
 }
-function showSection(id) {
-  const cleanId = id.replace("#", "");
-  const section = document.getElementById(cleanId);
+
+// Show a specific section
+function showSection(sectionId) {
+  hideAllSections();
+  const section = document.getElementById(sectionId);
   if (section) {
-    hideAllSections();
     section.classList.add("active-section");
   }
 }
-function setActiveLink(clickedLink) {
-  navLinks.forEach((link) => link.classList.remove("active"));
-  clickedLink.classList.add("active");
+
+// Activate navbar link
+function highlightLink(clicked) {
+  navLinks.forEach(link => link.classList.remove("active"));
+  clicked.classList.add("active");
 }
-navLinks.forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    const target = link.getAttribute("href");
 
-    setActiveLink(link);
-    showSection(target);
+// Click listener for top navbar
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    const section = link.getAttribute("data-section");
 
-    handleNavigation(target);  // ⭐ FORCE LOAD
+    highlightLink(link);
+    showSection(section);
+    handleNavigation(section); // Load section-specific data
   });
 });
 
+// =========================
+// 🌟 DEFAULT LOAD (Overview)
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
-  const firstLink = navLinks[0];
-  if (firstLink) {
-    setActiveLink(firstLink);
-    showSection(firstLink.getAttribute("href"));
-    loadOverviewData(); // Load data for Overview
+  const first = navLinks[0];
+  if (first) {
+    highlightLink(first);
+    showSection("overview");
+    loadOverviewData();
   }
+  handleNavigation("overview");
 });
 
-// ======== OVERVIEW DASHBOARD LOGIC ======== //
+// =========================
+// 🌟 OVERVIEW DASHBOARD LOGIC
+// =========================
 async function loadOverviewData() {
   try {
-    // --- Count totals --- //
+    // --- Count Totals --- //
     const shopsSnap = await getCountFromServer(collection(db, "shops"));
     const offersSnap = await getCountFromServer(collection(db, "offers"));
     const usersSnap = await getCountFromServer(collection(db, "users"));
 
     document.getElementById("total-shops").textContent = shopsSnap.data().count;
-    document.getElementById("total-offers").textContent =
-      offersSnap.data().count;
+    document.getElementById("total-offers").textContent = offersSnap.data().count;
     document.getElementById("total-users").textContent = usersSnap.data().count;
     document.getElementById("total-revenue").textContent =
       "₹" + (shopsSnap.data().count * 5000).toLocaleString();
 
-    // --- Top Shops --- //
+    // --- Top Shops List --- //
     const topShopsQuery = query(
       collection(db, "shops"),
       orderBy("rating", "desc"),
       limit(5)
     );
+
     const topShopsSnap = await getDocs(topShopsQuery);
     const topList = document.getElementById("top-shops");
+
     topList.innerHTML = "";
     if (topShopsSnap.empty) {
       topList.innerHTML = "<li>No shops found</li>";
     } else {
-      topShopsSnap.forEach((doc) => {
+      topShopsSnap.forEach(doc => {
         const shop = doc.data();
         topList.innerHTML += `
           <li>
             <strong>${shop.name || "Unnamed Shop"}</strong><br>
-            <small>⭐ ${shop.rating || "N/A"} | ${
-          shop.category || "General"
-        }</small>
+            <small>⭐ ${shop.rating || "N/A"} | ${shop.category || "General"}</small>
           </li>`;
       });
     }
 
-    // --- Recent Activity --- //
+    // --- Recent Activity Log --- //
     const logsQuery = query(
       collection(db, "appLogs"),
       orderBy("timestamp", "desc"),
       limit(5)
     );
+
     const logsSnap = await getDocs(logsQuery);
     const activityList = document.getElementById("activity-feed");
+
     activityList.innerHTML = "";
     if (logsSnap.empty) {
       activityList.innerHTML = "<li>No recent activity</li>";
     } else {
-      logsSnap.forEach((doc) => {
+      logsSnap.forEach(doc => {
         const log = doc.data();
         const time = log.timestamp?.toDate
           ? log.timestamp.toDate().toLocaleString()
           : "Unknown time";
+
         activityList.innerHTML += `
           <li>
             <strong>${log.action || "Activity"}</strong><br>
@@ -116,27 +132,38 @@ async function loadOverviewData() {
           </li>`;
       });
     }
+
   } catch (err) {
     console.error("❌ Error loading overview data:", err);
   }
 }
-function handleNavigation(hash = location.hash) {
-  if (hash === "#overview" || hash === "" || !hash) loadOverviewData();
-  if (hash === "#shops") loadShops();
-  if (hash === "#offers") loadOffers();
-  if (hash === "#users") loadUsers(); 
-  if (hash === "#analytics") loadAnalytics();
-  if(hash === "#messages") loadMessages();
-}
-window.addEventListener("hashchange", handleNavigation);
-document.addEventListener("DOMContentLoaded", handleNavigation);
 
+// =========================
+// 🌟 NAVIGATION HANDLER
+// =========================
+function handleNavigation(section) {
+  switch (section) {
+    case "overview": loadOverviewData(); break;
+    case "shops": loadShops(); break;
+    case "offers": loadOffers(); break;
+    case "users": loadUsers(); break;
+    case "analytics": loadAnalytics(); break;
+    case "messages": loadMessages(); break;
+    case "myshops": /* later */ break;
+  }
+}
+
+// =========================
+// 🌟 Number Animation
+// =========================
 function animateNumber(id) {
-  const el = document.getElementById(id); 
+  const el = document.getElementById(id);
   el.classList.add("updated");
   setTimeout(() => el.classList.remove("updated"), 400);
 }
+
 animateNumber("total-shops");
 animateNumber("total-offers");
 animateNumber("total-users");
 animateNumber("total-revenue");
+

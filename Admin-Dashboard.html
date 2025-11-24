@@ -11,19 +11,30 @@
 </head>
 
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">🛍️ SuperMall Admin</div>
-    <nav class="nav">
-      <a href="#overview" class="active" data-section="overview">Overview</a>
-      <a href="#shops" data-section="shops">Shops</a>
-      <a href="#offers" data-section="offers">Offers</a>
-      <a href="#users" data-section="users">Users</a>
-      <a href="#analytics" data-section="analytics">Analytics</a>
-      <a href="#messages" data-section="messages">Messages</a>
-      <a href="#myshops" data-section="myshops">My Shop</a>
-    </nav>
-  </aside>
+  <header class="top-nav">
+    <div class="nav-left">
+      <div class="brand">🛍️ SuperMall Admin</div>
+
+      <nav class="nav-links">
+        <a class="nav-link active" data-section="overview">Overview</a>
+        <a class="nav-link" data-section="shops">Shops</a>
+        <a class="nav-link" data-section="offers">Offers</a>
+        <a class="nav-link" data-section="users">Users</a>
+        <a class="nav-link" data-section="analytics">Analytics</a>
+        <a class="nav-link" data-section="messages">Messages</a>
+        <a class="nav-link" data-section="myshops">My Shop</a>
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <img src="assets/Bell.svg" class="nav-icon">
+      <div class="admin-profile">
+        <span class="status-circle"></span>
+        <span id="admin-name">Admin</span>
+      </div>
+    </div>
+  </header>
+
 
   <!-- Main Content -->
   <main class="main">
@@ -31,7 +42,6 @@
     <header class="header">
       <h1 id="page-title">Dashboard Overview</h1>
       <div class="admin-info">
-        <img src="assets\Bell.svg" alt="" class="notification-icon">
         <span class="status-dot"></span>
         <p id="admin-name">Welcome, Admin</p>
       </div>
@@ -39,7 +49,6 @@
     </header>
 
     <!-- ====== SECTIONS ====== -->
-    <!-- Overview -->
     <section id="overview" class="content-section active-section">
 
       <!-- ====== TOP KPI METRICS ====== -->
@@ -87,7 +96,52 @@
 
       </div>
 
-      <!-- ====== LOWER ROW: TOP SHOPS + ACTIVITIES ====== -->
+      <!-- ====== TODAY'S METRICS ====== -->
+      <div class="today-grid">
+
+        <div class="today-card">
+          <span class="today-label">New Users Today</span>
+          <span class="today-value" id="users-today">0</span>
+        </div>
+
+        <div class="today-card">
+          <span class="today-label">New Shops Today</span>
+          <span class="today-value" id="shops-today">0</span>
+        </div>
+
+        <div class="today-card">
+          <span class="today-label">Revenue Today</span>
+          <span class="today-value" id="revenue-today">₹0</span>
+        </div>
+
+        <div class="today-card">
+          <span class="today-label">Orders Today</span>
+          <span class="today-value" id="orders-today">0</span>
+        </div>
+
+      </div>
+
+      <!-- ====== MINI CHART SECTION ====== -->
+      <div class="chart-row">
+
+        <div class="chart-card">
+          <h3>Users Trend</h3>
+          <canvas id="chartUsers"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>Revenue Trend</h3>
+          <canvas id="chartRevenue"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>Shops Growth</h3>
+          <canvas id="chartShops"></canvas>
+        </div>
+
+      </div>
+
+      <!-- ====== PANELS ====== -->
       <div class="row-grid">
 
         <!-- Top Shops -->
@@ -114,10 +168,30 @@
 
       </div>
 
+      <!-- ====== EXTRA PANELS ====== -->
+      <div class="row-grid extra-row">
+
+        <!-- Alerts -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>System Alerts</h3>
+          </div>
+          <ul id="alert-feed" class="panel-list">
+            <li>No alerts</li>
+          </ul>
+        </div>
+
+        <!-- New Registrations -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>New Registrations</h3>
+          </div>
+          <ul id="new-registrations" class="panel-list">
+            <li>Loading...</li>
+          </ul>
+        </div>
+      </div>
     </section>
-
-
-
     <!-- Shops -->
     <section id="shops" class="content-section" aria-labelledby="shops-title">
       <h2 id="shops-title" class="section-heading">Manage Shops</h2>
