@@ -169,7 +169,7 @@ function switchToLogin() {
   sub.style.marginLeft = "40px";
 
   // FIXED
-  body.style.background = "linear-gradient(170deg, #ffffff, #1d3081)";
+  body.style.background = "linear-gradient(170deg, #ffffff, #141c4c)";
 }
 
 function switchToSignup() {

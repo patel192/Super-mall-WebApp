@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/admin-overview.css">
 
 </head>
 
@@ -40,48 +41,82 @@
     <!-- ====== SECTIONS ====== -->
     <!-- Overview -->
     <section id="overview" class="content-section active-section">
-      <div class="cards-grid">
-        <div class="card fade-in">
-          <h3>Total Shops</h3>
-          <p id="total-shops" class="number">0</p>
-          <span class="sub">Loading...</span>
+
+      <!-- ====== TOP KPI METRICS ====== -->
+      <div class="kpi-grid">
+
+        <!-- Shops -->
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon">🏬</div>
+            <span class="kpi-label">Total Shops</span>
+          </div>
+          <div class="kpi-value" id="total-shops">0</div>
+          <div class="kpi-sub">Registered Stores</div>
         </div>
 
-        <div class="card fade-in">
-          <h3>Total Offers</h3>
-          <p id="total-offers" class="number">0</p>
-          <span class="sub">Loading...</span>
+        <!-- Offers -->
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon">🏷️</div>
+            <span class="kpi-label">Total Offers</span>
+          </div>
+          <div class="kpi-value" id="total-offers">0</div>
+          <div class="kpi-sub">Active Promotions</div>
         </div>
 
-        <div class="card fade-in">
-          <h3>Total Users</h3>
-          <p id="total-users" class="number">0</p>
-          <span class="sub">Loading...</span>
+        <!-- Users -->
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon">👥</div>
+            <span class="kpi-label">Total Users</span>
+          </div>
+          <div class="kpi-value" id="total-users">0</div>
+          <div class="kpi-sub">Active Customers</div>
         </div>
 
-        <div class="card fade-in">
-          <h3>Total Revenue</h3>
-          <p id="total-revenue" class="number">₹0</p>
-          <span class="sub">Loading...</span>
+        <!-- Revenue -->
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon">💰</div>
+            <span class="kpi-label">Revenue</span>
+          </div>
+          <div class="kpi-value" id="total-revenue">₹0</div>
+          <div class="kpi-sub">All-Time Earnings</div>
         </div>
+
       </div>
 
-      <section class="lists fade-in">
-        <div class="list-card">
-          <h3>Top Shops</h3>
-          <ul id="top-shops">
+      <!-- ====== LOWER ROW: TOP SHOPS + ACTIVITIES ====== -->
+      <div class="row-grid">
+
+        <!-- Top Shops -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Top Performing Shops</h3>
+            <button class="panel-action">View All →</button>
+          </div>
+          <ul id="top-shops" class="panel-list">
             <li>Loading...</li>
           </ul>
         </div>
 
-        <div class="list-card">
-          <h3>Recent Activity</h3>
-          <ul id="activity-feed">
+        <!-- Recent Activity -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Recent Activity</h3>
+            <button class="panel-action">Refresh</button>
+          </div>
+          <ul id="activity-feed" class="panel-list">
             <li>Loading...</li>
           </ul>
         </div>
-      </section>
+
+      </div>
+
     </section>
+
+
 
     <!-- Shops -->
     <section id="shops" class="content-section" aria-labelledby="shops-title">
@@ -151,7 +186,7 @@
       <p id="messages-empty" class="placeholder">No messages found.</p>
     </section>
 
-<!-- My-Shop -->
+    <!-- My-Shop -->
     <section id="myshops" class="content-section" aria-labelledby="my-shop-title">
       <h2 id="my-shop-title" class="section-heading">My Shop</h2>
 

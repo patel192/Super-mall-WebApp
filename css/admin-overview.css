@@ -1,0 +1,141 @@
+/* ------------------------------------------------------------
+   OVERVIEW SECTION — FULL MODERN PURPLE THEME
+------------------------------------------------------------- */
+
+/* KPI GRID */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+  margin-bottom: 35px;
+}
+
+/* KPI CARD */
+.kpi-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 22px;
+  border: 1px solid rgba(150, 110, 255, 0.25);
+  box-shadow: 0 8px 28px rgba(83, 0, 185, 0.12);
+  transition: all 0.35s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 34px rgba(106, 0, 255, 0.18);
+}
+
+/* KPI TOP ROW */
+.kpi-top {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Icon Bubble */
+.kpi-icon {
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  padding: 12px;
+  border-radius: 14px;
+  color: white;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Label */
+.kpi-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4c1d95;
+}
+
+/* Value */
+.kpi-value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #3b0764;
+  margin-bottom: 4px;
+}
+
+/* Subtext */
+.kpi-sub {
+  font-size: 0.82rem;
+  color: #6d28d9;
+  opacity: 0.85;
+}
+
+/* ------------------------------------------------------------
+   PANELS (Top Shops + Activity Feed)
+------------------------------------------------------------- */
+
+.row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+/* Panel Container */
+.panel {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(150, 110, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(83, 0, 185, 0.12);
+  transition: 0.35s ease;
+}
+
+.panel:hover {
+  transform: translateY(-4px);
+}
+
+/* Panel Header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.panel-header h3 {
+  color: #3b0764;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Panel Button */
+.panel-action {
+  background: transparent;
+  border: none;
+  color: #7c3aed;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.panel-action:hover {
+  color: #5b21b6;
+  transform: translateX(3px);
+}
+
+/* Panel List */
+.panel-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.panel-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(150, 110, 255, 0.25);
+  color: #432371;
+  font-size: 0.9rem;
+}
+
+.panel-list li:last-child {
+  border-bottom: none;
+}
