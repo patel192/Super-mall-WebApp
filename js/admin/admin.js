@@ -1,5 +1,5 @@
 // admin.js
-import { db } from "./firebase-config.js";
+import { db } from "../firebase-config.js";
 import {
   collection,
   getCountFromServer,
@@ -8,11 +8,11 @@ import {
   limit,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { loadShops } from "./admin-shops.js";
-import { loadOffers } from "./admin-offers.js";
-import { loadUsers } from "./admin-users.js";
-import {loadAnalytics} from "./admin-analytics.js";
-import { loadMessages } from "./admin-messages.js";
+import { loadShops } from "../admin/admin-shops.js";
+import { loadOffers } from "../admin/admin-offers.js";
+import { loadUsers } from "../admin/admin-users.js";
+import {loadAnalytics} from "../admin/admin-analytics.js";
+import { loadMessages } from "../admin/admin-messages.js";
 // ======== TAB SWITCH CODE (already written) ======== //
 const navLinks = document.querySelectorAll(".nav a");
 const sections = document.querySelectorAll(".content-section");
@@ -125,7 +125,7 @@ function handleNavigation(hash = location.hash) {
   if (hash === "#shops") loadShops();
   if (hash === "#offers") loadOffers();
   if (hash === "#users") loadUsers(); 
-  if (hash === "#analytics") loadAnalyticsData();
+  if (hash === "#analytics") loadAnalytics();
   if(hash === "#messages") loadMessages();
 }
 window.addEventListener("hashchange", handleNavigation);

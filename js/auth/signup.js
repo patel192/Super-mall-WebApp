@@ -158,6 +158,7 @@ const loginContainer = document.getElementById("loginContainer");
 const authTitle = document.getElementById("authTitle");
 const body = document.body;
 
+
 function switchToLogin() {
   wrapper.classList.add("login-mode");
   signupContainer.classList.add("hidden");
@@ -166,6 +167,9 @@ function switchToLogin() {
   authTitle.textContent = "Welcome Back!";
   toggleAuth.textContent = "Signup";
   sub.style.marginLeft = "40px";
+
+  // FIXED
+  body.style.background = "linear-gradient(170deg, #ffffff, #1d3081)";
 }
 
 function switchToSignup() {
@@ -175,6 +179,7 @@ function switchToSignup() {
 
   authTitle.textContent = "Create Your Account!";
   toggleAuth.textContent = "Login";
+  body.style.background = "linear-gradient(170deg, #ffffff, #671ae3)";
 }
 
 toggleAuth.addEventListener("click", (e) => {
