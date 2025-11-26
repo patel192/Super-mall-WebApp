@@ -1,20 +1,32 @@
 /* ==============================================
    OVERVIEW — PURPLE MODERN THEME
 ================================================= */
+.stats{
+  background: rgba(23, 3, 75, 0.25);
+  padding: 20px;
+  border-radius: 20px;
+  margin-top: 0px;
+  opacity: 1;
+}
 
+
+.header{
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
 /* KPIs Grid */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 22px;
   margin-bottom: 30px;
+  padding: 0px 20px;
 }
 
 .kpi-card {
   padding: 22px;
   border-radius: 20px;
-  backdrop-filter: blur(6px);
-  background: linear-gradient(135deg, rgba(120, 70, 255, 0.25), rgba(65, 30, 145, 0.4));
+  backdrop-filter: blur(6px); 
   box-shadow: 0 8px 20px rgba(80, 0, 140, 0.15);
   transition: 0.3s ease;
   color: #fff;
@@ -22,7 +34,6 @@
 
 .kpi-card:hover {
   transform: translateY(-5px);
-  background: linear-gradient(135deg, rgba(140, 90, 255, 0.4), rgba(85, 40, 170, 0.55));
 }
 
 .kpi-top {
@@ -30,20 +41,32 @@
   align-items: center;
   gap: 12px;
 }
+.kpi-bottom{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
 
 .kpi-icon {
-  font-size: 28px;
+ align-self: center;
+ padding:12px 0px;
+ margin-top: 10px;
+}
+.kpi-icon img {
+  width: 40px;
+  height: 35px;
 }
 
 .kpi-label {
-  font-size: 16px;
+  font-size: 25px;
   opacity: 0.85;
 }
 
 .kpi-value {
-  font-size: 32px;
+  font-size: 55px;
   font-weight: 700;
   margin-top: 10px;
+  align-self: center;
 }
 
 .kpi-sub {

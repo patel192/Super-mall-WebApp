@@ -39,61 +39,57 @@
   <!-- Main Content -->
   <main class="main">
     <!-- Header -->
-    <header class="header">
-      <h1 id="page-title">Dashboard Overview</h1>
-      <div class="admin-info">
-        <span class="status-dot"></span>
-        <p id="admin-name">Welcome, Admin</p>
-      </div>
-
-    </header>
 
     <!-- ====== SECTIONS ====== -->
     <section id="overview" class="content-section active-section">
 
       <!-- ====== TOP KPI METRICS ====== -->
-      <div class="kpi-grid">
-
-        <!-- Shops -->
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon">🏬</div>
-            <span class="kpi-label">Total Shops</span>
+      <div class="stats">
+        <header class="header">
+          <h1 id="page-title">Dashboard Overview</h1>
+          <div class="admin-info">
+            <span class="status-dot"></span>
           </div>
-          <div class="kpi-value" id="total-shops">0</div>
-          <div class="kpi-sub">Registered Stores</div>
-        </div>
+        </header>
+        <div class="kpi-grid">
 
-        <!-- Offers -->
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon">🏷️</div>
-            <span class="kpi-label">Total Offers</span>
+          <!-- Shops -->
+          <div class="kpi-card">
+            <div class="kpi-label">Total Shops</div>
+            <div class="kpi-bottom">
+              <div class="kpi-value" id="total-shops">0</div>
+              <div class="kpi-icon"><img src="assets\icons\shopping-bag.png" alt=""></div>
+            </div>
           </div>
-          <div class="kpi-value" id="total-offers">0</div>
-          <div class="kpi-sub">Active Promotions</div>
-        </div>
 
-        <!-- Users -->
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon">👥</div>
-            <span class="kpi-label">Total Users</span>
+          <!-- Offers -->
+          <div class="kpi-card">
+            <div class="kpi-label">Total Offers</div>
+            <div class="kpi-bottom">
+              <div class="kpi-value" id="total-offers">0</div>
+              <div class="kpi-icon"><img src="assets\icons\price-tag.png" alt=""></div>
+            </div>
           </div>
-          <div class="kpi-value" id="total-users">0</div>
-          <div class="kpi-sub">Active Customers</div>
-        </div>
 
-        <!-- Revenue -->
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon">💰</div>
-            <span class="kpi-label">Revenue</span>
+          <!-- Users -->
+          <div class="kpi-card">
+            <div class="kpi-label">Total Users</div>
+            <div class="kpi-bottom">
+              <div class="kpi-value" id="total-users">0</div>
+              <div class="kpi-icon"><img src="assets\icons\group.png" alt=""></div>
+            </div>
           </div>
-          <div class="kpi-value" id="total-revenue">₹0</div>
-          <div class="kpi-sub">All-Time Earnings</div>
-        </div>
 
+          <!-- Revenue -->
+          <div class="kpi-card">
+            <div class="kpi-label">Revenue</div>
+            <div class="kpi-bottom">
+              <div class="kpi-value" id="total-revenue">₹0</div>
+              <div class="kpi-icon"><img src="assets\icons\save-money.png" alt=""></div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <!-- ====== TODAY'S METRICS ====== -->
