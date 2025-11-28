@@ -1,0 +1,110 @@
+/* -----------------------------------------------------------
+   SHOPS SECTION - Modern Purple Glass Card Design
+----------------------------------------------------------- */
+
+.section-heading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #4c1d95;
+  margin-bottom: 20px;
+}
+
+/* Shop Grid */
+.shops-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Shop Card */
+.shop-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
+  transition: 0.35s ease;
+  animation: fadeUpShop 0.4s ease both;
+}
+
+/* Hover Effect */
+.shop-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 22px rgba(107, 33, 168, 0.22);
+}
+
+/* Shop Image */
+.shop-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-bottom: 3px solid #f3e8ff;
+}
+
+/* Shop Content */
+.shop-content {
+  padding: 16px 18px;
+}
+
+.shop-content h3 {
+  font-size: 1.3rem;
+  color: #5b21b6;
+  margin-bottom: 10px;
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: #6b21a8;
+  margin-bottom: 5px;
+}
+
+/* Status Badge */
+.shop-status {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Status Colors */
+.shop-status.active {
+  background: #d9f99d;
+  color: #4d7c0f;
+}
+
+.shop-status.disabled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.shop-status.pending {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+/* Placeholder / Empty */
+.placeholder {
+  margin-top: 24px;
+  padding: 18px;
+  background: #faf5ff;
+  color: #6b21a8;
+  border: 1px dashed #e9d5ff;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Smooth fade animation */
+@keyframes fadeUpShop {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

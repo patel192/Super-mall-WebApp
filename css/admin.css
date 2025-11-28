@@ -127,8 +127,57 @@ body {
   box-shadow: 0 0 8px #8b5cf6;
 }
 
+/* ---------------------------------------------------
+   DYNAMIC SUB-SIDEBAR
+--------------------------------------------------- */
+
+.sub-sidebar {
+  width: 230px;
+  min-height: calc(100vh - 70px);
+  position: fixed;
+  top: 70px;
+  left: 0;
+  padding: 20px 16px;
+  background: #ffffff;
+  border-right: 1px solid #e8d5ff;
+  box-shadow: 3px 0 12px rgba(90, 0, 160, 0.05);
+  animation: fadeSlide .3s ease;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.sub-sidebar .sub-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #5b21b6;
+}
+
+.sub-sidebar .sub-link {
+  display: block;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  color: #6b21a8;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.sub-sidebar .sub-link:hover {
+  background: #f3e8ff;
+}
+
+.sub-sidebar .sub-link.active {
+  background: #e9d5ff;
+  color: #4c1d95;
+  font-weight: 600;
+}
 /* Push content down under top navbar */
 main {
+  margin-left: 260px;
   padding-top: 90px !important;
 }
 .content-section {

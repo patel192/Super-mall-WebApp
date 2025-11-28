@@ -16,61 +16,77 @@ import { loadAnalytics } from "../admin/admin-analytics.js";
 import { loadMessages } from "../admin/admin-messages.js";
 
 // =========================
-// 🌟 NEW TOP NAVBAR SUPPORT
+// 🌟 TOP NAVBAR SUPPORT
 // =========================
 const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll(".content-section");
+const subSidebar = document.getElementById("subSidebar");
 
-// Hide all sections
+// SUB-SIDEBAR DATA
+const subLinksData = {
+  overview: ["Dashboard Summary", "Today's Metrics", "Performance Charts", "Activity Logs", "New Registrations"],
+  shops: ["All Shops", "Add New Shop", "Pending Approvals", "Shop Categories", "Shops Analytics"],
+  offers: ["All Offers", "Create Offer", "Expired Offers", "Offer Analytics"],
+  users: ["All Users", "User Roles", "Active Users", "Verification Requests"],
+  analytics: ["Revenue Graphs", "User Growth", "Shop Growth", "Orders Trend"],
+  messages: ["Inbox", "Support Tickets", "Unread", "Spam"],
+  myshops: ["Shop Overview", "Products", "Sales", "Offers", "Reviews"]
+};
+
+// UPDATE SUBSIDEBAR
+function updateSubSidebar(section) {
+  const links = subLinksData[section] || [];
+  subSidebar.innerHTML = `
+    <div class="sub-title">${section.charAt(0).toUpperCase() + section.slice(1)}</div>
+    ${links.map(txt => `<div class="sub-link">${txt}</div>`).join("")}
+  `;
+}
+
+// HIDE/SHOW SECTIONS
 function hideAllSections() {
   sections.forEach(sec => sec.classList.remove("active-section"));
 }
 
-// Show a specific section
 function showSection(sectionId) {
   hideAllSections();
   const section = document.getElementById(sectionId);
-  if (section) {
-    section.classList.add("active-section");
-  }
+  if (section) section.classList.add("active-section");
 }
 
-// Activate navbar link
+// ACTIVATE NAV LINK
 function highlightLink(clicked) {
   navLinks.forEach(link => link.classList.remove("active"));
   clicked.classList.add("active");
 }
 
-// Click listener for top navbar
+// NAV CLICK HANDLING
 navLinks.forEach(link => {
   link.addEventListener("click", () => {
-    const section = link.getAttribute("data-section");
+    const section = link.dataset.section;
 
     highlightLink(link);
     showSection(section);
-    handleNavigation(section); // Load section-specific data
+    updateSubSidebar(section);
+    handleNavigation(section);
   });
 });
 
-// =========================
-// 🌟 DEFAULT LOAD (Overview)
-// =========================
+// DEFAULT LOAD
 document.addEventListener("DOMContentLoaded", () => {
   const first = navLinks[0];
   if (first) {
     highlightLink(first);
     showSection("overview");
+    updateSubSidebar("overview");
     loadOverviewData();
   }
-  handleNavigation("overview");
 });
 
 // =========================
-// 🌟 OVERVIEW DASHBOARD LOGIC
+// 🌟 OVERVIEW LOGIC
 // =========================
 async function loadOverviewData() {
   try {
-    // --- Count Totals --- //
     const shopsSnap = await getCountFromServer(collection(db, "shops"));
     const offersSnap = await getCountFromServer(collection(db, "offers"));
     const usersSnap = await getCountFromServer(collection(db, "users"));
@@ -81,65 +97,56 @@ async function loadOverviewData() {
     document.getElementById("total-revenue").textContent =
       "₹" + (shopsSnap.data().count * 5000).toLocaleString();
 
-    // --- Top Shops List --- //
-    const topShopsQuery = query(
-      collection(db, "shops"),
-      orderBy("rating", "desc"),
-      limit(5)
+    // TOP SHOPS
+    const topShopsSnap = await getDocs(
+      query(collection(db, "shops"), orderBy("rating", "desc"), limit(5))
     );
 
-    const topShopsSnap = await getDocs(topShopsQuery);
     const topList = document.getElementById("top-shops");
-
     topList.innerHTML = "";
+
     if (topShopsSnap.empty) {
       topList.innerHTML = "<li>No shops found</li>";
     } else {
-      topShopsSnap.forEach(doc => {
+      topShopsSnap.forEach((doc) => {
         const shop = doc.data();
         topList.innerHTML += `
           <li>
-            <strong>${shop.name || "Unnamed Shop"}</strong><br>
-            <small>⭐ ${shop.rating || "N/A"} | ${shop.category || "General"}</small>
+            <strong>${shop.name}</strong><br>
+            <small>⭐ ${shop.rating} | ${shop.category}</small>
           </li>`;
       });
     }
 
-    // --- Recent Activity Log --- //
-    const logsQuery = query(
-      collection(db, "appLogs"),
-      orderBy("timestamp", "desc"),
-      limit(5)
+    // RECENT LOGS
+    const logsSnap = await getDocs(
+      query(collection(db, "appLogs"), orderBy("timestamp", "desc"), limit(5))
     );
 
-    const logsSnap = await getDocs(logsQuery);
     const activityList = document.getElementById("activity-feed");
-
     activityList.innerHTML = "";
+
     if (logsSnap.empty) {
       activityList.innerHTML = "<li>No recent activity</li>";
     } else {
-      logsSnap.forEach(doc => {
+      logsSnap.forEach((doc) => {
         const log = doc.data();
-        const time = log.timestamp?.toDate
-          ? log.timestamp.toDate().toLocaleString()
-          : "Unknown time";
+        const time = log.timestamp?.toDate().toLocaleString() ?? "Unknown";
 
         activityList.innerHTML += `
           <li>
-            <strong>${log.action || "Activity"}</strong><br>
+            <strong>${log.action}</strong><br>
             <small>${time}</small>
           </li>`;
       });
     }
-
-  } catch (err) {
-    console.error("❌ Error loading overview data:", err);
+  } catch (e) {
+    console.error("Error loading overview:", e);
   }
 }
 
 // =========================
-// 🌟 NAVIGATION HANDLER
+// SECTION HANDLER
 // =========================
 function handleNavigation(section) {
   switch (section) {
@@ -149,21 +156,5 @@ function handleNavigation(section) {
     case "users": loadUsers(); break;
     case "analytics": loadAnalytics(); break;
     case "messages": loadMessages(); break;
-    case "myshops": /* later */ break;
   }
 }
-
-// =========================
-// 🌟 Number Animation
-// =========================
-function animateNumber(id) {
-  const el = document.getElementById(id);
-  el.classList.add("updated");
-  setTimeout(() => el.classList.remove("updated"), 400);
-}
-
-animateNumber("total-shops");
-animateNumber("total-offers");
-animateNumber("total-users");
-animateNumber("total-revenue");
-

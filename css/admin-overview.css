@@ -2,7 +2,7 @@
    OVERVIEW — PURPLE MODERN THEME
 ================================================= */
 .stats{
-  background: rgba(23, 3, 75, 0.25);
+  background: #8a55df;
   padding: 20px;
   border-radius: 20px;
   margin-top: 0px;
@@ -63,7 +63,7 @@
 }
 
 .kpi-value {
-  font-size: 55px;
+  font-size: 45px;
   font-weight: 700;
   margin-top: 10px;
   align-self: center;
