@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/admin-overview.css">
   <link rel="stylesheet" href="css/admin-shops.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
@@ -46,9 +47,9 @@
     <!-- Header -->
 
     <!-- ====== SECTIONS ====== -->
+    <!-- ====== OVERVIEW ====== -->
     <section id="overview" class="content-section active-section">
 
-      <!-- ====== TOP KPI METRICS ====== -->
       <div class="stats">
         <header class="header">
           <h1 id="page-title">Dashboard Overview</h1>
@@ -56,14 +57,14 @@
             <span class="status-dot"></span>
           </div>
         </header>
-        <div class="kpi-grid">
 
+        <div class="kpi-grid">
           <!-- Shops -->
           <div class="kpi-card">
             <div class="kpi-label">Total Shops</div>
             <div class="kpi-bottom">
               <div class="kpi-value" id="total-shops">0</div>
-              <div class="kpi-icon"><img src="assets\icons\shopping-bag.png" alt=""></div>
+              <div class="kpi-icon"><img src="assets/icons/shopping-bag.png" alt=""></div>
             </div>
           </div>
 
@@ -72,7 +73,7 @@
             <div class="kpi-label">Total Offers</div>
             <div class="kpi-bottom">
               <div class="kpi-value" id="total-offers">0</div>
-              <div class="kpi-icon"><img src="assets\icons\price-tag.png" alt=""></div>
+              <div class="kpi-icon"><img src="assets/icons/price-tag.png" alt=""></div>
             </div>
           </div>
 
@@ -81,7 +82,7 @@
             <div class="kpi-label">Total Users</div>
             <div class="kpi-bottom">
               <div class="kpi-value" id="total-users">0</div>
-              <div class="kpi-icon"><img src="assets\icons\group.png" alt=""></div>
+              <div class="kpi-icon"><img src="assets/icons/group.png" alt=""></div>
             </div>
           </div>
 
@@ -90,41 +91,35 @@
             <div class="kpi-label">Revenue</div>
             <div class="kpi-bottom">
               <div class="kpi-value" id="total-revenue">₹0</div>
-              <div class="kpi-icon"><img src="assets\icons\save-money.png" alt=""></div>
+              <div class="kpi-icon"><img src="assets/icons/save-money.png" alt=""></div>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- ====== TODAY'S METRICS ====== -->
+      <!-- TODAY METRICS -->
       <div class="today-grid">
-
         <div class="today-card">
           <span class="today-label">New Users Today</span>
           <span class="today-value" id="users-today">0</span>
         </div>
-
         <div class="today-card">
           <span class="today-label">New Shops Today</span>
           <span class="today-value" id="shops-today">0</span>
         </div>
-
         <div class="today-card">
           <span class="today-label">Revenue Today</span>
           <span class="today-value" id="revenue-today">₹0</span>
         </div>
-
         <div class="today-card">
           <span class="today-label">Orders Today</span>
           <span class="today-value" id="orders-today">0</span>
         </div>
-
       </div>
 
-      <!-- ====== MINI CHART SECTION ====== -->
+      <!-- CHARTS -->
       <div class="chart-row">
-
         <div class="chart-card">
           <h3>Users Trend</h3>
           <canvas id="chartUsers"></canvas>
@@ -139,13 +134,10 @@
           <h3>Shops Growth</h3>
           <canvas id="chartShops"></canvas>
         </div>
-
       </div>
 
-      <!-- ====== PANELS ====== -->
+      <!-- TOP SHOPS + ACTIVITY -->
       <div class="row-grid">
-
-        <!-- Top Shops -->
         <div class="panel">
           <div class="panel-header">
             <h3>Top Performing Shops</h3>
@@ -156,7 +148,6 @@
           </ul>
         </div>
 
-        <!-- Recent Activity -->
         <div class="panel">
           <div class="panel-header">
             <h3>Recent Activity</h3>
@@ -166,13 +157,10 @@
             <li>Loading...</li>
           </ul>
         </div>
-
       </div>
 
-      <!-- ====== EXTRA PANELS ====== -->
+      <!-- EXTRA PANELS -->
       <div class="row-grid extra-row">
-
-        <!-- Alerts -->
         <div class="panel">
           <div class="panel-header">
             <h3>System Alerts</h3>
@@ -182,7 +170,6 @@
           </ul>
         </div>
 
-        <!-- New Registrations -->
         <div class="panel">
           <div class="panel-header">
             <h3>New Registrations</h3>
@@ -192,6 +179,7 @@
           </ul>
         </div>
       </div>
+
     </section>
     <!-- Shops -->
     <section id="shops" class="content-section" aria-labelledby="shops-title">

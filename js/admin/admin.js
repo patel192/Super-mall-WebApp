@@ -24,23 +24,83 @@ const subSidebar = document.getElementById("subSidebar");
 
 // SUB-SIDEBAR DATA
 const subLinksData = {
-  overview: ["Dashboard Summary", "Today's Metrics", "Performance Charts", "Activity Logs", "New Registrations"],
-  shops: ["All Shops", "Add New Shop", "Pending Approvals", "Shop Categories", "Shops Analytics"],
-  offers: ["All Offers", "Create Offer", "Expired Offers", "Offer Analytics"],
-  users: ["All Users", "User Roles", "Active Users", "Verification Requests"],
-  analytics: ["Revenue Graphs", "User Growth", "Shop Growth", "Orders Trend"],
-  messages: ["Inbox", "Support Tickets", "Unread", "Spam"],
-  myshops: ["Shop Overview", "Products", "Sales", "Offers", "Reviews"]
+  overview: [
+    { label: "Dashboard Summary", icon: '<i data-lucide="layout-dashboard"></i>' },
+    { label: "Today\'s Metrics", icon: '<i data-lucide="calendar"></i>' },
+    { label: "Performance Charts", icon: '<i data-lucide="bar-chart"></i>' },
+    { label: "Activity Logs", icon: '<i data-lucide="clipboard-list"></i>' },
+    { label: "New Registrations", icon: '<i data-lucide="users"></i>' }
+  ],
+
+  shops: [
+    { label: "All Shops", icon: '<i data-lucide="store"></i>' },
+    { label: "Add New Shop", icon: '<i data-lucide="plus-circle"></i>' },
+    { label: "Pending Approvals", icon: '<i data-lucide="clock"></i>' },
+    { label: "Shop Categories", icon: '<i data-lucide="folder"></i>' },
+    { label: "Shops Analytics", icon: '<i data-lucide="pie-chart"></i>' }
+  ],
+
+  offers: [
+    { label: "All Offers", icon: '<i data-lucide="tag"></i>' },
+    { label: "Create Offer", icon: '<i data-lucide="plus"></i>' },
+    { label: "Expired Offers", icon: '<i data-lucide="alert-circle"></i>' },
+    { label: "Offer Analytics", icon: '<i data-lucide="chart-line"></i>' }
+  ],
+
+  users: [
+    { label: "All Users", icon: '<i data-lucide="users"></i>' },
+    { label: "User Roles", icon: '<i data-lucide="shield"></i>' },
+    { label: "Active Users", icon: '<i data-lucide="check-circle"></i>' },
+    { label: "Verification Requests", icon: '<i data-lucide="badge-check"></i>' }
+  ],
+
+  analytics: [
+    { label: "Revenue Graphs", icon: '<i data-lucide="trending-up"></i>' },
+    { label: "User Growth", icon: '<i data-lucide="arrow-up-circle"></i>' },
+    { label: "Shop Growth", icon: '<i data-lucide="activity"></i>' },
+    { label: "Orders Trend", icon: '<i data-lucide="line-chart"></i>' }
+  ],
+
+  messages: [
+    { label: "Inbox", icon: '<i data-lucide="inbox"></i>' },
+    { label: "Support Tickets", icon: '<i data-lucide="life-buoy"></i>' },
+    { label: "Unread", icon: '<i data-lucide="mail"></i>' },
+    { label: "Spam", icon: '<i data-lucide="ban"></i>' }
+  ],
+
+  myshops: [
+    { label: "Shop Overview", icon: '<i data-lucide="store"></i>' },
+    { label: "Products", icon: '<i data-lucide="package"></i>' },
+    { label: "Sales", icon: '<i data-lucide="wallet"></i>' },
+    { label: "Offers", icon: '<i data-lucide="tag"></i>' },
+    { label: "Reviews", icon: '<i data-lucide="star"></i>' }
+  ]
 };
+
+
 
 // UPDATE SUBSIDEBAR
 function updateSubSidebar(section) {
   const links = subLinksData[section] || [];
+
   subSidebar.innerHTML = `
     <div class="sub-title">${section.charAt(0).toUpperCase() + section.slice(1)}</div>
-    ${links.map(txt => `<div class="sub-link">${txt}</div>`).join("")}
+    ${links
+      .map(
+        (item) =>
+          `<div class="sub-link">
+             ${item.icon}
+             <span>${item.label}</span>
+           </div>`
+      )
+      .join("")}
   `;
+
+  // Activate lucide icons AFTER render
+  lucide.createIcons();
 }
+
+
 
 // HIDE/SHOW SECTIONS
 function hideAllSections() {
