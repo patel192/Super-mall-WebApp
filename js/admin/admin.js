@@ -22,7 +22,9 @@ const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll(".content-section");
 const subSidebar = document.getElementById("subSidebar");
 
+// =========================
 // SUB-SIDEBAR DATA
+// =========================
 const subLinksData = {
   overview: [
     { label: "Dashboard Summary", icon: '<i data-lucide="layout-dashboard"></i>' },
@@ -74,12 +76,12 @@ const subLinksData = {
     { label: "Sales", icon: '<i data-lucide="wallet"></i>' },
     { label: "Offers", icon: '<i data-lucide="tag"></i>' },
     { label: "Reviews", icon: '<i data-lucide="star"></i>' }
-  ]
+  ],
 };
 
-
-
-// UPDATE SUBSIDEBAR
+// =========================
+// UPDATE SUB-SIDEBAR
+// =========================
 function updateSubSidebar(section) {
   const links = subLinksData[section] || [];
 
@@ -87,24 +89,41 @@ function updateSubSidebar(section) {
     <div class="sub-title">${section.charAt(0).toUpperCase() + section.slice(1)}</div>
     ${links
       .map(
-        (item) =>
-          `<div class="sub-link">
-             ${item.icon}
-             <span>${item.label}</span>
-           </div>`
+        (item) => `
+        <div class="sub-link">
+           ${item.icon}
+           <span>${item.label}</span>
+        </div>`
       )
       .join("")}
   `;
 
-  // Activate lucide icons AFTER render
+  // activate lucide icons
   lucide.createIcons();
+
+  // activate click behavior
+  attachSubLinkEvents();
 }
 
+// =========================
+// SUB-LINK ACTIVE BEHAVIOR
+// =========================
+function activateSublink(e) {
+  document.querySelectorAll(".sub-link").forEach((l) => l.classList.remove("active"));
+  e.currentTarget.classList.add("active");
+}
 
+function attachSubLinkEvents() {
+  document.querySelectorAll(".sub-link").forEach((link) => {
+    link.addEventListener("click", activateSublink);
+  });
+}
 
-// HIDE/SHOW SECTIONS
+// =========================
+// HIDE / SHOW SECTIONS
+// =========================
 function hideAllSections() {
-  sections.forEach(sec => sec.classList.remove("active-section"));
+  sections.forEach((sec) => sec.classList.remove("active-section"));
 }
 
 function showSection(sectionId) {
@@ -113,14 +132,15 @@ function showSection(sectionId) {
   if (section) section.classList.add("active-section");
 }
 
-// ACTIVATE NAV LINK
+// =========================
+// NAV CLICK
+// =========================
 function highlightLink(clicked) {
-  navLinks.forEach(link => link.classList.remove("active"));
+  navLinks.forEach((link) => link.classList.remove("active"));
   clicked.classList.add("active");
 }
 
-// NAV CLICK HANDLING
-navLinks.forEach(link => {
+navLinks.forEach((link) => {
   link.addEventListener("click", () => {
     const section = link.dataset.section;
 
@@ -131,7 +151,9 @@ navLinks.forEach(link => {
   });
 });
 
-// DEFAULT LOAD
+// =========================
+// DEFAULT PAGE LOAD
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
   const first = navLinks[0];
   if (first) {
@@ -143,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =========================
-// 🌟 OVERVIEW LOGIC
+// OVERVIEW DATA
 // =========================
 async function loadOverviewData() {
   try {
@@ -157,13 +179,12 @@ async function loadOverviewData() {
     document.getElementById("total-revenue").textContent =
       "₹" + (shopsSnap.data().count * 5000).toLocaleString();
 
-    // TOP SHOPS
+    const topList = document.getElementById("top-shops");
+    topList.innerHTML = "";
+
     const topShopsSnap = await getDocs(
       query(collection(db, "shops"), orderBy("rating", "desc"), limit(5))
     );
-
-    const topList = document.getElementById("top-shops");
-    topList.innerHTML = "";
 
     if (topShopsSnap.empty) {
       topList.innerHTML = "<li>No shops found</li>";
@@ -178,7 +199,7 @@ async function loadOverviewData() {
       });
     }
 
-    // RECENT LOGS
+    // ACTIVITY LOGS
     const logsSnap = await getDocs(
       query(collection(db, "appLogs"), orderBy("timestamp", "desc"), limit(5))
     );
@@ -191,12 +212,10 @@ async function loadOverviewData() {
     } else {
       logsSnap.forEach((doc) => {
         const log = doc.data();
-        const time = log.timestamp?.toDate().toLocaleString() ?? "Unknown";
-
         activityList.innerHTML += `
           <li>
             <strong>${log.action}</strong><br>
-            <small>${time}</small>
+            <small>${log.timestamp?.toDate().toLocaleString() || "Unknown"}</small>
           </li>`;
       });
     }
@@ -206,15 +225,27 @@ async function loadOverviewData() {
 }
 
 // =========================
-// SECTION HANDLER
+// NAVIGATION HANDLER
 // =========================
 function handleNavigation(section) {
   switch (section) {
-    case "overview": loadOverviewData(); break;
-    case "shops": loadShops(); break;
-    case "offers": loadOffers(); break;
-    case "users": loadUsers(); break;
-    case "analytics": loadAnalytics(); break;
-    case "messages": loadMessages(); break;
+    case "overview":
+      loadOverviewData();
+      break;
+    case "shops":
+      loadShops();
+      break;
+    case "offers":
+      loadOffers();
+      break;
+    case "users":
+      loadUsers();
+      break;
+    case "analytics":
+      loadAnalytics();
+      break;
+    case "messages":
+      loadMessages();
+      break;
   }
 }
