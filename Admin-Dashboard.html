@@ -49,135 +49,153 @@
     <!-- ====== SECTIONS ====== -->
     <!-- ====== OVERVIEW ====== -->
     <section id="overview" class="content-section active-section">
+      <!-- Dashboard Overview Sub-Section -->
+      <div id="overview-summary" class="overview-sub">
 
-      <div class="stats">
-        <header class="header">
-          <h1 id="page-title">Dashboard Overview</h1>
-          <div class="admin-info">
-            <span class="status-dot"></span>
-          </div>
-        </header>
-
-        <div class="kpi-grid">
-          <!-- Shops -->
-          <div class="kpi-card">
-            <div class="kpi-label">Total Shops</div>
-            <div class="kpi-bottom">
-              <div class="kpi-value" id="total-shops">0</div>
-              <div class="kpi-icon"><img src="assets/icons/shopping-bag.png" alt=""></div>
+        <div class="stats">
+          <header class="header">
+            <h1 id="page-title">Dashboard Overview</h1>
+            <div class="admin-info">
+              <span class="status-dot"></span>
             </div>
-          </div>
+          </header>
 
-          <!-- Offers -->
-          <div class="kpi-card">
-            <div class="kpi-label">Total Offers</div>
-            <div class="kpi-bottom">
-              <div class="kpi-value" id="total-offers">0</div>
-              <div class="kpi-icon"><img src="assets/icons/price-tag.png" alt=""></div>
+          <div class="kpi-grid">
+
+            <!-- Shops -->
+            <div class="kpi-card">
+              <div class="kpi-label">Total Shops</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="total-shops">0</div>
+                <div class="kpi-icon"><img src="assets/icons/shopping-bag.png"></div>
+              </div>
             </div>
-          </div>
 
-          <!-- Users -->
-          <div class="kpi-card">
-            <div class="kpi-label">Total Users</div>
-            <div class="kpi-bottom">
-              <div class="kpi-value" id="total-users">0</div>
-              <div class="kpi-icon"><img src="assets/icons/group.png" alt=""></div>
+            <!-- Offers -->
+            <div class="kpi-card">
+              <div class="kpi-label">Total Offers</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="total-offers">0</div>
+                <div class="kpi-icon"><img src="assets/icons/price-tag.png"></div>
+              </div>
             </div>
-          </div>
 
-          <!-- Revenue -->
-          <div class="kpi-card">
-            <div class="kpi-label">Revenue</div>
-            <div class="kpi-bottom">
-              <div class="kpi-value" id="total-revenue">₹0</div>
-              <div class="kpi-icon"><img src="assets/icons/save-money.png" alt=""></div>
+            <!-- Users -->
+            <div class="kpi-card">
+              <div class="kpi-label">Total Users</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="total-users">0</div>
+                <div class="kpi-icon"><img src="assets/icons/group.png"></div>
+              </div>
             </div>
-          </div>
 
+            <!-- Revenue -->
+            <div class="kpi-card">
+              <div class="kpi-label">Revenue</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="total-revenue">₹0</div>
+                <div class="kpi-icon"><img src="assets/icons/save-money.png"></div>
+              </div>
+            </div>
+
+          </div>
         </div>
+
       </div>
 
-      <!-- TODAY METRICS -->
-      <div class="today-grid">
-        <div class="today-card">
-          <span class="today-label">New Users Today</span>
-          <span class="today-value" id="users-today">0</span>
+      <!-- Today's Metrics Sub-Section -->
+      <div id="overview-today" class="overview-sub hidden">
+
+        <div class="today-grid">
+          <div class="today-card">
+            <span class="today-label">New Users Today</span>
+            <span class="today-value" id="users-today">0</span>
+          </div>
+
+          <div class="today-card">
+            <span class="today-label">New Shops Today</span>
+            <span class="today-value" id="shops-today">0</span>
+          </div>
+
+          <div class="today-card">
+            <span class="today-label">Revenue Today</span>
+            <span class="today-value" id="revenue-today">₹0</span>
+          </div>
+
+          <div class="today-card">
+            <span class="today-label">Orders Today</span>
+            <span class="today-value" id="orders-today">0</span>
+          </div>
         </div>
-        <div class="today-card">
-          <span class="today-label">New Shops Today</span>
-          <span class="today-value" id="shops-today">0</span>
-        </div>
-        <div class="today-card">
-          <span class="today-label">Revenue Today</span>
-          <span class="today-value" id="revenue-today">₹0</span>
-        </div>
-        <div class="today-card">
-          <span class="today-label">Orders Today</span>
-          <span class="today-value" id="orders-today">0</span>
-        </div>
+
       </div>
 
-      <!-- CHARTS -->
-      <div class="chart-row">
-        <div class="chart-card">
-          <h3>Users Trend</h3>
-          <canvas id="chartUsers"></canvas>
+      <!-- Charts Sub-Section -->
+      <div id="overview-charts" class="overview-sub hidden">
+        <div class="chart-row">
+          <div class="chart-card">
+            <h3>Users Trend</h3>
+            <canvas id="chartUsers"></canvas>
+          </div>
+
+          <div class="chart-card">
+            <h3>Revenue Trend</h3>
+            <canvas id="chartRevenue"></canvas>
+          </div>
+
+          <div class="chart-card">
+            <h3>Shops Growth</h3>
+            <canvas id="chartShops"></canvas>
+          </div>
         </div>
 
-        <div class="chart-card">
-          <h3>Revenue Trend</h3>
-          <canvas id="chartRevenue"></canvas>
-        </div>
-
-        <div class="chart-card">
-          <h3>Shops Growth</h3>
-          <canvas id="chartShops"></canvas>
-        </div>
       </div>
 
-      <!-- TOP SHOPS + ACTIVITY -->
-      <div class="row-grid">
-        <div class="panel">
-          <div class="panel-header">
-            <h3>Top Performing Shops</h3>
-            <button class="panel-action">View All →</button>
+
+      <!-- Activity Sub-Section -->
+      <div id="overview-activity" class="overview-sub hidden">
+
+        <div class="row-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Recent Activity</h3>
+              <button class="panel-action">Refresh</button>
+            </div>
+            <ul id="activity-feed" class="panel-list">
+              <li>Loading...</li>
+            </ul>
           </div>
-          <ul id="top-shops" class="panel-list">
-            <li>Loading...</li>
-          </ul>
         </div>
 
-        <div class="panel">
-          <div class="panel-header">
-            <h3>Recent Activity</h3>
-            <button class="panel-action">Refresh</button>
-          </div>
-          <ul id="activity-feed" class="panel-list">
-            <li>Loading...</li>
-          </ul>
-        </div>
       </div>
 
-      <!-- EXTRA PANELS -->
-      <div class="row-grid extra-row">
-        <div class="panel">
-          <div class="panel-header">
-            <h3>System Alerts</h3>
+      <!-- Alerts & Registrations Sub-Section -->
+      <div id="overview-newregistrations" class="overview-sub hidden">
+
+        <div class="row-grid extra-row">
+
+          <!-- Alerts -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3>System Alerts</h3>
+            </div>
+            <ul id="alert-feed" class="panel-list">
+              <li>No alerts</li>
+            </ul>
           </div>
-          <ul id="alert-feed" class="panel-list">
-            <li>No alerts</li>
-          </ul>
+
+          <!-- New Registrations -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3>New Registrations</h3>
+            </div>
+            <ul id="new-registrations" class="panel-list">
+              <li>Loading...</li>
+            </ul>
+          </div>
+
         </div>
 
-        <div class="panel">
-          <div class="panel-header">
-            <h3>New Registrations</h3>
-          </div>
-          <ul id="new-registrations" class="panel-list">
-            <li>Loading...</li>
-          </ul>
-        </div>
       </div>
 
     </section>

@@ -1,6 +1,6 @@
-/* ---------------------------------------------------
+/* =========================================================
    GLOBAL RESET
---------------------------------------------------- */
+========================================================= */
 * {
   margin: 0;
   padding: 0;
@@ -15,9 +15,9 @@ body {
   overflow-x: hidden;
 }
 
-/* ---------------------------------------------------
+/* =========================================================
    TOP NAVBAR
---------------------------------------------------- */
+========================================================= */
 .top-nav {
   position: fixed;
   top: 0;
@@ -32,7 +32,6 @@ body {
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid #e9d5ff;
-
   z-index: 999;
 }
 
@@ -74,10 +73,10 @@ body {
 .nav-link.active::after {
   content: "";
   position: absolute;
-  left: 0;
   bottom: -4px;
-  height: 3px;
+  left: 0;
   width: 100%;
+  height: 3px;
   background: #9333ea;
   border-radius: 20px;
   animation: slideIn .25s ease;
@@ -122,59 +121,35 @@ body {
   box-shadow: 0 0 8px #8b5cf6;
 }
 
-/* ---------------------------------------------------
+/* =========================================================
    COLLAPSIBLE SUB-SIDEBAR
---------------------------------------------------- */
+========================================================= */
 
 .sub-sidebar {
   position: fixed;
   top: 70px;
   left: 0;
-
   width: 240px;
   height: calc(100vh - 70px);
 
   padding: 18px 16px;
 
-  background: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(12px);
   border-right: 1px solid #e9d5ff;
   box-shadow: 4px 0 10px rgba(120, 40, 200, 0.08);
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 
   transition: width .35s ease;
-  overflow: hidden;
 }
 
 .sub-sidebar.collapsed {
-  width: 70px;
+  width: 75px;
 }
 
-/* Collapse Toggle Button */
-.sidebar-toggle {
-  position: absolute;
-  top: 15px;
-  right: -15px;
-  width: 28px;
-  height: 28px;
-  background: #e9d5ff;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid #d8b4fe;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: .3s;
-}
-
-.sidebar-toggle:hover {
-  background: #d8b4fe;
-}
-
-/* Sidebar Section Title */
 .sub-title {
   font-size: 1rem;
   font-weight: 600;
@@ -182,22 +157,22 @@ body {
   margin: 8px 4px;
 }
 
-/* ---------------------------------------------------
-   SUB-LINK STYLES (NO SQUARE ICON ANYMORE)
---------------------------------------------------- */
-
+/* Sub-links */
 .sub-link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+
   padding: 10px 14px;
   border-radius: 10px;
+
   background: rgba(243, 230, 255, 0.4);
   color: #4c1d95;
   font-size: 0.95rem;
   font-weight: 500;
+
   cursor: pointer;
-  transition: .3s ease;
+  transition: .3s;
 }
 
 .sub-link:hover {
@@ -211,30 +186,21 @@ body {
   font-weight: 600;
 }
 
-/* Icons inside links */
 .sub-link i {
   width: 20px;
   height: 20px;
   color: #6b21a8;
 }
 
-/* When collapsed hide text */
-.sub-sidebar.collapsed .sub-link {
-  padding-left: 18px;
-}
-
+/* Collapse behavior */
 .sub-sidebar.collapsed .sub-link span {
   display: none;
 }
 
-.sub-sidebar.collapsed .sub-title {
-  opacity: 0;
-  height: 0;
-}
+/* =========================================================
+   MAIN SECTIONS
+========================================================= */
 
-/* ---------------------------------------------------
-   MAIN CONTENT
---------------------------------------------------- */
 .main {
   padding-top: 90px;
   padding-right: 30px;
@@ -243,7 +209,7 @@ body {
 }
 
 .sub-sidebar.collapsed + .main {
-  margin-left: 80px;
+  margin-left: 90px;
 }
 
 .content-section {
@@ -259,86 +225,10 @@ body {
   transform: translateY(0);
 }
 
-/* ---------------------------------------------------
-   KPI CARDS
---------------------------------------------------- */
-
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 22px;
-  margin-bottom: 30px;
-}
-
-.kpi-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(100, 30, 180, 0.12);
-  transition: .3s;
-}
-
-.kpi-card:hover {
-  transform: translateY(-5px);
-}
-
-/* ---------------------------------------------------
-   TODAY METRICS
---------------------------------------------------- */
-
-.today-grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 18px;
-}
-
-.today-card {
-  background: #f6edff;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e9d5ff;
-}
-
-/* ---------------------------------------------------
-   CHARTS
---------------------------------------------------- */
-
-.chart-row {
-  margin-top: 32px;
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-
-.chart-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 4px 10px rgba(100, 30, 180, 0.1);
-}
-
-/* ---------------------------------------------------
-   PANELS
---------------------------------------------------- */
-
-.row-grid {
-  margin-top: 30px;
-  display: grid;
-  gap: 22px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.panel {
-  background: #fff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 3px 12px rgba(100, 30, 180, 0.1);
-}
-
-/* ---------------------------------------------------
+/* =========================================================
    RESPONSIVE
---------------------------------------------------- */
+========================================================= */
+
 @media(max-width: 900px) {
   .sub-sidebar {
     display: none;
