@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="css/admin.css" />
-  <link rel="stylesheet" href="css/admin-overview.css"> 
+  <link rel="stylesheet" href="css/admin-overview.css">
   <link rel="stylesheet" href="css/admin-shops.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -201,14 +201,57 @@
 
     <!-- Shops -->
     <section id="shops" class="content-section" aria-labelledby="shops-title">
+
       <h2 id="shops-title" class="section-heading">Manage Shops</h2>
-      <div id="shops-container" class="shops-grid">
-        <!-- Dynamic cards inserted here -->
+
+      <!-- ====== PART 1: ALL SHOPS ====== -->
+      <div class="shops-part shops-part-active" data-shops-part="all">
+        <div id="shops-container" class="shops-grid"></div>
+        <p id="shops-empty" class="placeholder">Loading shops...</p>
       </div>
 
-      <!-- Fallback message -->
-      <p id="shops-empty" class="placeholder">Loading shops...</p>
+      <!-- ====== PART 2: ADD SHOP ====== -->
+      <div class="shops-part" data-shops-part="add">
+        <h3 class="sub-heading">Add New Shop</h3>
+
+        <form id="add-shop-form" class="shop-form">
+          <label>Shop Name</label>
+          <input type="text" id="shop-name-input" placeholder="Enter shop name">
+
+          <label>Category</label>
+          <input type="text" id="shop-category-input" placeholder="Category">
+
+          <label>Floor</label>
+          <input type="text" id="shop-floor-input" placeholder="Floor No">
+
+          <button type="submit" class="btn-primary">Add Shop</button>
+        </form>
+      </div>
+
+      <!-- ====== PART 3: PENDING APPROVALS ====== -->
+      <div class="shops-part" data-shops-part="pending">
+        <h3 class="sub-heading">Pending Approvals</h3>
+        <div id="pending-shops-list" class="shops-grid">
+          <p class="placeholder">Loading pending shops...</p>
+        </div>
+      </div>
+
+      <!-- ====== PART 4: SHOP CATEGORIES ====== -->
+      <div class="shops-part" data-shops-part="categories">
+        <h3 class="sub-heading">Shop Categories</h3>
+        <div id="categories-list" class="categories-grid">
+          <p class="placeholder">Loading categories...</p>
+        </div>
+      </div>
+
+      <!-- ====== PART 5: SHOPS ANALYTICS ====== -->
+      <div class="shops-part" data-shops-part="analytics">
+        <h3 class="sub-heading">Shops Analytics</h3>
+        <canvas id="shops-analytics-chart"></canvas>
+      </div>
+
     </section>
+
 
 
     <!-- Offers -->
@@ -323,7 +366,7 @@
 
   </main>
 
-  <script type="module" src="/js/admin/admin-overview.js"></script> 
+  <script type="module" src="/js/admin/admin-overview.js"></script>
   <script type="module" src="/js/admin/admin.js"></script>
 </body>
 

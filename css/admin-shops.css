@@ -108,3 +108,10 @@
     transform: translateY(0);
   }
 }
+.shops-part {
+  display: none;
+}
+
+.shops-part-active {
+  display: block !important;
+}
