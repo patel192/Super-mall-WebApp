@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/admin-overview.css">
   <link rel="stylesheet" href="css/admin-shops.css">
+  <link rel="stylesheet" href="css/admin-offers.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
@@ -254,14 +255,60 @@
 
 
 
+    
     <!-- Offers -->
     <section id="offers" class="content-section" aria-labelledby="offers-title">
       <h2 id="offers-title" class="section-heading">Manage Offers</h2>
 
-      <div id="offers-container" class="offers-grid"></div>
+      <!-- ===== Offers Part 1: ALL OFFERS ===== -->
+      <div class="offers-part offers-part-active" data-offers-part="all">
+        <div id="offers-container" class="offers-grid"></div>
+        <p id="offers-empty" class="empty-message">Loading offers...</p>
+      </div>
 
-      <p id="offers-empty" class="empty-message">No offers available.</p>
+      <!-- ===== Offers Part 2: CREATE OFFER ===== -->
+      <div class="offers-part" data-offers-part="create">
+        <form id="create-offer-form" class="offer-form">
+          <div class="form-row">
+            <label>Offer Title</label>
+            <input type="text" id="offer-title" placeholder="50% OFF Winter Sale" />
+          </div>
+
+          <div class="form-row">
+            <label>Description</label>
+            <input type="text" id="offer-description" placeholder="Details about the offer..." />
+          </div>
+
+          <div class="form-row">
+            <label>Discount (%)</label>
+            <input type="number" id="offer-discount" placeholder="30" />
+          </div>
+
+          <div class="form-row">
+            <label>Valid Until</label>
+            <input type="date" id="offer-expiry" />
+          </div>
+
+          <button class="btn-primary" id="create-offer-btn">Create Offer</button>
+        </form>
+      </div>
+
+      <!-- ===== Offers Part 3: EXPIRED ===== -->
+      <div class="offers-part" data-offers-part="expired">
+        <h3>Expired Offers</h3>
+        <div id="expired-offers-list" class="offers-grid"></div>
+        <p id="expired-offers-empty" class="empty-message">No expired offers.</p>
+      </div>
+
+      <!-- ===== Offers Part 4: ANALYTICS ===== -->
+      <div class="offers-part" data-offers-part="analytics">
+        <div class="offers-analytics-box">
+          Offer analytics coming soon…
+        </div>
+      </div>
+
     </section>
+
 
     <!-- Users -->
     <section id="users" class="content-section" aria-labelledby="users-title">
