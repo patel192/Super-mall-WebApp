@@ -1,83 +1,177 @@
-// admin-messages.js
-
+// js/admin-messages.js
 import { db } from "../firebase-config.js";
 import {
   collection,
   getDocs,
-  doc,
-  getDoc,
   query,
-  orderBy,
+  where,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-export async function loadMessages() {
-  const container = document.getElementById("messages-container");
-  const emptyMessage = document.getElementById("messages-empty");
+/* ---------------------------------------------------
+   Helper: Switch visible part
+--------------------------------------------------- */
+function setActiveMessagesPart(key) {
+  document.querySelectorAll(".messages-part").forEach((p) =>
+    p.classList.remove("messages-part-active")
+  );
+
+  const active = document.querySelector(
+    `.messages-part[data-messages-part="${key}"]`
+  );
+
+  if (active) active.classList.add("messages-part-active");
+}
+
+/* ---------------------------------------------------
+   EXPORT: MASTER LOADER
+--------------------------------------------------- */
+export async function loadMessages(key = "inbox") {
+  setActiveMessagesPart(key);
+
+  if (key === "inbox") loadInboxMessages();
+  if (key === "tickets") loadSupportTickets();
+  if (key === "unread") loadUnreadMessages();
+  if (key === "spam") loadSpamMessages();
+}
+
+/* ---------------------------------------------------
+   1. INBOX
+--------------------------------------------------- */
+async function loadInboxMessages() {
+  const container = document.getElementById("messages-inbox");
+  const empty = document.getElementById("messages-empty");
+
+  container.innerHTML = "Loading…";
+  empty.style.display = "none";
 
   try {
-    const messagesQuery = query(
-      collection(db, "reviews"),
-      orderBy("createdAt", "desc")
+    const snap = await getDocs(
+      query(collection(db, "messages"), orderBy("timestamp", "desc"))
     );
-    const reviewsSnap = await getDocs(messagesQuery);
 
     container.innerHTML = "";
-    emptyMessage.style.display = "none";
-
-    if (reviewsSnap.empty) {
-      emptyMessage.textContent = "No reviews found.";
-      emptyMessage.style.display = "block";
+    if (snap.empty) {
+      empty.textContent = "Inbox empty.";
+      empty.style.display = "block";
       return;
     }
 
-    for (const docSnap of reviewsSnap.docs) {
-      const review = docSnap.data();
-
-      // Fetch related data
-      const productRef = review.productId ? doc(db, review.productId) : null;
-      const shopRef = review.shopId ? doc(db, review.shopId) : null;
-      const userRef = review.userId ? doc(db, review.userId) : null;
-
-      const productData = productRef ? (await getDoc(productRef)).data() : null;
-      const shopData = shopRef ? (await getDoc(shopRef)).data() : null;
-      const userData = userRef ? (await getDoc(userRef)).data() : null;
-
-      const time = review.createdAt?.toDate
-        ? review.createdAt.toDate().toLocaleString()
-        : "Unknown time";
-
-      const card = document.createElement("div");
-      card.className = "message-card";
-
-      card.innerHTML = `
-        <p><strong>${review.comment || "No Comment"}</strong></p>
-        <p class="meta">⭐ ${review.rating || 0} Rating</p>
-        <p class="meta"><strong>Likes:</strong> ${review.likes || 0}</p>
-        <p class="meta"><strong>Product:</strong> ${
-          productData?.name || "Unknown Product"
-        }</p>
-        <p class="meta"><strong>Shop:</strong> ${
-          shopData?.name || "Unknown Shop"
-        }</p>
-        <p class="meta"><strong>User:</strong> ${
-          userData?.name || "Anonymous User"
-        }</p>
-        <p class="meta">At: ${time}</p>
-        ${
-          review.images?.[0]
-            ? `<img src="${review.images[0]}" alt="Review Image" width="100%" style="border-radius:8px;margin-top:8px;" />`
-            : ""
-        }
-        <span class="tag ${
-          review.verifiedPurchase ? "success" : ""
-        }">${review.verifiedPurchase ? "Verified Purchase" : "Unverified"}</span>
-      `;
-
-      container.appendChild(card);
-    }
+    snap.forEach((doc) => {
+      const m = doc.data();
+      container.innerHTML += buildMessageCard(m, "inbox");
+    });
   } catch (err) {
-    console.error("❌ Error loading reviews:", err);
-    emptyMessage.textContent = "Error loading reviews.";
-    emptyMessage.style.display = "block";
+    console.error("❌ Error loading inbox:", err);
+    container.innerHTML = "Failed to load inbox.";
   }
+}
+
+/* ---------------------------------------------------
+   2. SUPPORT TICKETS
+--------------------------------------------------- */
+async function loadSupportTickets() {
+  const container = document.getElementById("messages-tickets");
+  const empty = document.getElementById("messages-empty");
+
+  container.innerHTML = "Loading…";
+  empty.style.display = "none";
+
+  try {
+    const snap = await getDocs(
+      query(collection(db, "messages"), where("type", "==", "ticket"))
+    );
+
+    container.innerHTML = "";
+    if (snap.empty) {
+      empty.textContent = "No support tickets found.";
+      empty.style.display = "block";
+      return;
+    }
+
+    snap.forEach((doc) => {
+      const m = doc.data();
+      container.innerHTML += buildMessageCard(m, "tickets");
+    });
+  } catch (err) {
+    container.innerHTML = "Error loading tickets.";
+  }
+}
+
+/* ---------------------------------------------------
+   3. UNREAD
+--------------------------------------------------- */
+async function loadUnreadMessages() {
+  const container = document.getElementById("messages-unread");
+  const empty = document.getElementById("messages-empty");
+
+  container.innerHTML = "Loading…";
+  empty.style.display = "none";
+
+  try {
+    const snap = await getDocs(
+      query(collection(db, "messages"), where("read", "==", false))
+    );
+
+    container.innerHTML = "";
+    if (snap.empty) {
+      empty.textContent = "No unread messages.";
+      empty.style.display = "block";
+      return;
+    }
+
+    snap.forEach((doc) => {
+      const m = doc.data();
+      container.innerHTML += buildMessageCard(m, "unread");
+    });
+  } catch (err) {
+    container.innerHTML = "Error loading unread messages.";
+  }
+}
+
+/* ---------------------------------------------------
+   4. SPAM
+--------------------------------------------------- */
+async function loadSpamMessages() {
+  const container = document.getElementById("messages-spam");
+  const empty = document.getElementById("messages-empty");
+
+  container.innerHTML = "Loading…";
+  empty.style.display = "none";
+
+  try {
+    const snap = await getDocs(
+      query(collection(db, "messages"), where("spam", "==", true))
+    );
+
+    container.innerHTML = "";
+    if (snap.empty) {
+      empty.textContent = "No spam messages.";
+      empty.style.display = "block";
+      return;
+    }
+
+    snap.forEach((doc) => {
+      const m = doc.data();
+      container.innerHTML += buildMessageCard(m, "spam");
+    });
+  } catch (err) {
+    container.innerHTML = "Error loading spam.";
+  }
+}
+
+/* ---------------------------------------------------
+   Helper: Build Message Card HTML
+--------------------------------------------------- */
+function buildMessageCard(m, type) {
+  return `
+    <div class="message-card">
+      <div class="message-title">${m.subject || "No subject"}</div>
+      <div class="message-meta">
+        ${m.email || "Unknown"} • ${m.timestamp || ""}
+      </div>
+      <div class="message-body">${m.message || "No content available."}</div>
+      <span class="msg-tag ${type}">${type}</span>
+    </div>
+  `;
 }

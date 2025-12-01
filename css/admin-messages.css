@@ -1,0 +1,116 @@
+/* -----------------------------------------------------------
+   MESSAGES SECTION - Modern Purple Glass Cards
+----------------------------------------------------------- */
+
+.messages-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Message Card */
+.message-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.12);
+  border-left: 5px solid #c084fc;
+  transition: 0.3s ease;
+  animation: fadeUpMsg 0.4s ease both;
+}
+
+.message-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 22px rgba(107, 33, 168, 0.2);
+}
+
+/* Message title */
+.message-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #5b21b6;
+  margin-bottom: 6px;
+}
+
+/* Message meta */
+.message-meta {
+  font-size: 0.85rem;
+  color: #7e22ce;
+  margin-bottom: 10px;
+}
+
+/* Message body */
+.message-body {
+  font-size: 0.9rem;
+  color: #6b21a8;
+  line-height: 1.4;
+}
+
+/* Status tag */
+.msg-tag {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Inbox colors */
+.msg-tag.inbox {
+  background: #ede9fe;
+  color: #4c1d95;
+}
+
+/* Tickets colors */
+.msg-tag.tickets {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+/* Unread */
+.msg-tag.unread {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+/* Spam */
+.msg-tag.spam {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Empty placeholder */
+.placeholder {
+  margin-top: 24px;
+  padding: 18px;
+  background: #faf5ff;
+  color: #6b21a8;
+  border: 1px dashed #e9d5ff;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Part switching */
+.messages-part {
+  display: none;
+}
+
+.messages-part-active {
+  display: block !important;
+}
+
+/* Anim */
+@keyframes fadeUpMsg {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

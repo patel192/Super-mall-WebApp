@@ -10,7 +10,10 @@
   <link rel="stylesheet" href="css/admin-shops.css">
   <link rel="stylesheet" href="css/admin-offers.css">
   <link rel="stylesheet" href="css/admin-users.css">
-  
+  <link rel="stylesheet" href="css/admin-analytics.css">
+  <link rel="stylesheet" href="css/admin-messages.css">
+  <link rel="stylesheet" href="css/admin-myshops.css">
+
   <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
@@ -365,89 +368,160 @@
     <section id="analytics" class="content-section" aria-labelledby="analytics-title">
       <h2 id="analytics-title" class="section-heading">Analytics Overview</h2>
 
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <h3>Monthly Shop Growth</h3>
-          <canvas id="shopsChart"></canvas>
-        </div>
+      <!-- ===== ANALYTICS — PART 1: REVENUE GRAPHS ===== -->
+      <div class="analytics-part analytics-part-active" data-analytics-part="revenue">
+        <h3 class="analytics-subtitle">Revenue Analytics</h3>
 
-        <div class="analytics-card">
-          <h3>Offer Creation Trend</h3>
-          <canvas id="offersChart"></canvas>
-        </div>
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Total Revenue Trend</h3>
+            <canvas id="revenueChart"></canvas>
+          </div>
 
-        <div class="analytics-card">
-          <h3>User Registration Trend</h3>
-          <canvas id="usersChart"></canvas>
+          <div class="analytics-card">
+            <h3>Revenue by Category</h3>
+            <canvas id="revenueCategoryChart"></canvas>
+          </div>
         </div>
       </div>
+
+      <!-- ===== ANALYTICS — PART 2: USER GROWTH ===== -->
+      <div class="analytics-part" data-analytics-part="userGrowth">
+        <h3 class="analytics-subtitle">User Growth Overview</h3>
+
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Monthly User Growth</h3>
+            <canvas id="userGrowthChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>New Users by Source</h3>
+            <canvas id="userSourceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ANALYTICS — PART 3: SHOP GROWTH ===== -->
+      <div class="analytics-part" data-analytics-part="shopGrowth">
+        <h3 class="analytics-subtitle">Shop Growth Analytics</h3>
+
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Shops Growth Trend</h3>
+            <canvas id="shopGrowthChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Category-wise Shops</h3>
+            <canvas id="shopCategoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ANALYTICS — PART 4: ORDER TREND ===== -->
+      <div class="analytics-part" data-analytics-part="orders">
+        <h3 class="analytics-subtitle">Order Analytics</h3>
+
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Orders Trend</h3>
+            <canvas id="ordersTrendChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Top Order Categories</h3>
+            <canvas id="orderCategoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+
     </section>
+
 
 
     <!-- Messages -->
     <section id="messages" class="content-section" aria-labelledby="messages-title">
       <h2 id="messages-title" class="section-heading">Messages</h2>
 
-      <div id="messages-container" class="messages-grid">
-        <!-- Message cards will load here -->
+      <!-- ====== PART 1: INBOX ====== -->
+      <div class="messages-part messages-part-active" data-messages-part="inbox">
+        <div id="messages-inbox" class="messages-grid"></div>
       </div>
 
+      <!-- ====== PART 2: SUPPORT TICKETS ====== -->
+      <div class="messages-part" data-messages-part="tickets">
+        <div id="messages-tickets" class="messages-grid"></div>
+      </div>
+
+      <!-- ====== PART 3: UNREAD MESSAGES ====== -->
+      <div class="messages-part" data-messages-part="unread">
+        <div id="messages-unread" class="messages-grid"></div>
+      </div>
+
+      <!-- ====== PART 4: SPAM ====== -->
+      <div class="messages-part" data-messages-part="spam">
+        <div id="messages-spam" class="messages-grid"></div>
+      </div>
+
+      <!-- Empty message fallback -->
       <p id="messages-empty" class="placeholder">No messages found.</p>
     </section>
+
+
 
     <!-- My-Shop -->
     <section id="myshops" class="content-section" aria-labelledby="my-shop-title">
       <h2 id="my-shop-title" class="section-heading">My Shop</h2>
 
-      <!-- Shop Summary Fields -->
-      <div id="shop-summary" class="shop-summary">
-        <div class="left">
-          <img src="https://via.placeholder.com/150x100?text=Shop+Image" alt="Shop Image" id="shop-image"
-            class="shop-image" />
-          <h3 id="shop-name">Shop Name</h3>
-          <p id="shop-category" class="shop-detail">Category: Fashion</p>
-          <p id="shop-floor" class="shop-detail">Floor: 1st</p>
-          <p id="shop-status" class="shop-detail status-active">Status: Active</p>
-        </div>
-        <div class="right">
-          <button class="btn-primary" id="edit-shop-btn">✏️ Edit Shop</button>
-          <button class="btn-secondary" id="view-sales-btn">📊 View Sales</button>
-          <button class="btn-secondary" id="manage-products-btn">🛍️ Manage Products</button>
+      <!-- MyShop Sub Parts -->
+      <div class="myshop-part myshop-part-active" data-myshop-part="overview">
+
+        <!-- Shop Summary Fields -->
+        <div id="shop-summary" class="shop-summary">
+          <div class="left">
+            <img src="https://via.placeholder.com/150x100?text=Shop+Image" alt="Shop Image" id="shop-image"
+              class="shop-image" />
+
+            <h3 id="shop-name">Shop Name</h3>
+            <p id="shop-category" class="shop-detail">Category: Fashion</p>
+            <p id="shop-floor" class="shop-detail">Floor: 1st</p>
+            <p id="shop-status" class="shop-detail status-active">Status: Active</p>
+          </div>
+
+          <div class="right">
+            <button class="btn-primary" id="edit-shop-btn">✏️ Edit Shop</button>
+            <button class="btn-secondary" id="view-sales-btn">📊 View Sales</button>
+            <button class="btn-secondary" id="manage-products-btn">🛍️ Manage Products</button>
+          </div>
         </div>
       </div>
 
-      <!-- Products Table -->
-      <h3 class="sub-heading">Products</h3>
-      <button class="btn-primary" id="add-product-btn">+ Add Product</button>
+      <!-- PRODUCTS PART -->
+      <div class="myshop-part" data-myshop-part="products">
+        <h3 class="sub-heading">Products</h3>
+        <button class="btn-primary" id="add-product-btn">+ Add Product</button>
 
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Rating</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="products-table-body">
-            <tr>
-              <td>Example Product</td>
-              <td>₹399</td>
-              <td>25</td>
-              <td>⭐ 4.5</td>
-              <td>
-                <button class="btn-secondary">Edit</button>
-                <button class="btn-delete">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Rating</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body"></tbody>
+          </table>
+        </div>
+
+        <p id="no-products-message" class="placeholder">No products added yet.</p>
       </div>
 
-      <p id="no-products-message" class="placeholder">No products added yet.</p>
     </section>
+
 
   </main>
 

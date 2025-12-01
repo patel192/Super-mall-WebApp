@@ -1,0 +1,58 @@
+.myshop-part {
+  display: none;
+}
+
+.myshop-part-active {
+  display: block !important;
+}
+
+.shop-summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: #faf5ff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.15);
+  margin-bottom: 25px;
+}
+
+.shop-summary .left {
+  max-width: 50%;
+}
+
+.shop-image {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.shop-detail {
+  font-size: 0.9rem;
+  color: #5b21b6;
+  margin: 4px 0;
+}
+
+.status-active {
+  color: #16a34a;
+}
+.status-pending {
+  color: #d97706;
+}
+.status-disabled {
+  color: #dc2626;
+}
+
+.sub-heading {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #4c1d95;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}

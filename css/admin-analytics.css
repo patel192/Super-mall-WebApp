@@ -1,0 +1,63 @@
+/* -----------------------------------------------------------
+   ANALYTICS SECTION — Modern Purple Glass Theme
+----------------------------------------------------------- */
+
+.analytics-part {
+  display: none;
+}
+
+.analytics-part-active {
+  display: block !important;
+}
+
+.analytics-subtitle {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+/* Grid */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+/* Cards */
+.analytics-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(107, 33, 168, 0.15);
+  backdrop-filter: blur(6px);
+  transition: 0.3s ease;
+}
+
+.analytics-card:hover {
+  transform: translateY(-6px);
+}
+
+.analytics-card h3 {
+  margin-bottom: 12px;
+  color: #6b21a8;
+  font-size: 1rem;
+}
+
+/* Canvas */
+.analytics-card canvas {
+  width: 100%;
+  height: 260px !important;
+}
+
+/* Placeholder (if needed) */
+.placeholder {
+  margin-top: 20px;
+  padding: 16px;
+  background: #faf5ff;
+  border-radius: 12px;
+  border: 1px dashed #e9d5ff;
+  color: #6b21a8;
+  text-align: center;
+  font-weight: 500;
+}
