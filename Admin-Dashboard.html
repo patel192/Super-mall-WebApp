@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="css/admin-overview.css">
   <link rel="stylesheet" href="css/admin-shops.css">
   <link rel="stylesheet" href="css/admin-offers.css">
+  <link rel="stylesheet" href="css/admin-users.css">
+  
   <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
@@ -255,7 +257,7 @@
 
 
 
-    
+
     <!-- Offers -->
     <section id="offers" class="content-section" aria-labelledby="offers-title">
       <h2 id="offers-title" class="section-heading">Manage Offers</h2>
@@ -314,12 +316,48 @@
     <section id="users" class="content-section" aria-labelledby="users-title">
       <h2 id="users-title" class="section-heading">Manage Users</h2>
 
-      <div id="users-container" class="users-grid">
-        <!-- Users will be dynamically inserted here -->
+      <!-- ===== Users Part 1: ALL USERS ===== -->
+      <div class="users-part users-part-active" data-users-part="all">
+        <div id="users-container" class="users-grid"></div>
+        <p id="users-empty" class="empty-message">Loading users...</p>
       </div>
 
-      <p id="users-empty" class="empty-message">Loading users...</p>
+      <!-- ===== Users Part 2: USER ROLES ===== -->
+      <div class="users-part" data-users-part="roles">
+        <h3 class="users-subtitle">User Roles</h3>
+
+        <table class="roles-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Current Role</th>
+              <th>Assign Role</th>
+            </tr>
+          </thead>
+          <tbody id="roles-table-body">
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== Users Part 3: ACTIVE USERS ===== -->
+      <div class="users-part" data-users-part="active">
+        <h3 class="users-subtitle">Currently Active Users</h3>
+
+        <div id="active-users-list" class="users-grid"></div>
+        <p id="active-users-empty" class="empty-message">No active users found.</p>
+      </div>
+
+      <!-- ===== Users Part 4: VERIFICATION REQUESTS ===== -->
+      <div class="users-part" data-users-part="verification">
+        <h3 class="users-subtitle">Verification Requests</h3>
+
+        <div id="verification-list" class="users-grid"></div>
+        <p id="verification-empty" class="empty-message">No verification requests.</p>
+      </div>
     </section>
+
 
 
 

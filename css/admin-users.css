@@ -1,0 +1,127 @@
+/* -----------------------------------------------------------
+   USERS SECTION — Purple Modern UI
+----------------------------------------------------------- */
+
+.users-part {
+  display: none;
+}
+
+.users-part-active {
+  display: block !important;
+}
+
+/* Grid */
+.users-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* User Cards */
+.user-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
+  display: flex;
+  gap: 14px;
+  transition: 0.3s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-6px);
+}
+
+.user-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-content h3 {
+  margin-bottom: 4px;
+  color: #4c1d95;
+  font-size: 1.1rem;
+}
+
+.meta {
+  font-size: 0.9rem;
+  color: #6b21a8;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-top: 6px;
+}
+
+.badge.role {
+  background: #e9d5ff;
+  color: #6b21a8;
+}
+
+.badge.active {
+  background: #d9f99d;
+  color: #4d7c0f;
+}
+
+/* Table (Roles) */
+.roles-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.12);
+}
+
+.roles-table th,
+.roles-table td {
+  padding: 14px;
+  border-bottom: 1px solid #f3e8ff;
+}
+
+.roles-table th {
+  background: #f5f0ff;
+  color: #4c1d95;
+  font-size: 0.9rem;
+}
+
+.role-select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #d8b4fe;
+}
+
+/* Verification Cards */
+.user-card.verify button {
+  margin-top: 6px;
+}
+
+.btn-primary.small,
+.btn-delete.small {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+/* Empty message */
+.empty-message {
+  margin-top: 20px;
+  background: #faf5ff;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px dashed #e9d5ff;
+  color: #6b21a8;
+  text-align: center;
+  font-weight: 500;
+}
