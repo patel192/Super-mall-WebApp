@@ -65,32 +65,37 @@
             </div>
           </header>
 
-          <div class="kpi-grid">
-            <!-- Shops -->
+          <!-- MAIN KPI GRID (Expanded from 4 to 8 KPIs) -->
+          <div class="kpi-grid kpi-grid-extended">
+
+            <!-- Total Shops -->
             <div class="kpi-card">
               <div class="kpi-label">Total Shops</div>
               <div class="kpi-bottom">
                 <div class="kpi-value" id="total-shops">0</div>
-                <div class="kpi-icon"><img src="assets/icons/shopping-bag.png" alt=""></div>
+                <div class="kpi-icon"><img src="assets/icons/shopping-bag.png"></div>
               </div>
+              <div class="kpi-trend" id="trend-shops">▲ +0%</div>
             </div>
 
-            <!-- Offers -->
+            <!-- Total Offers -->
             <div class="kpi-card">
               <div class="kpi-label">Total Offers</div>
               <div class="kpi-bottom">
                 <div class="kpi-value" id="total-offers">0</div>
-                <div class="kpi-icon"><img src="assets/icons/price-tag.png" alt=""></div>
+                <div class="kpi-icon"><img src="assets/icons/price-tag.png"></div>
               </div>
+              <div class="kpi-trend" id="trend-offers">▲ +0%</div>
             </div>
 
-            <!-- Users -->
+            <!-- Total Users -->
             <div class="kpi-card">
               <div class="kpi-label">Total Users</div>
               <div class="kpi-bottom">
                 <div class="kpi-value" id="total-users">0</div>
-                <div class="kpi-icon"><img src="assets/icons/group.png" alt=""></div>
+                <div class="kpi-icon"><img src="assets/icons/group.png"></div>
               </div>
+              <div class="kpi-trend" id="trend-users">▲ +0%</div>
             </div>
 
             <!-- Revenue -->
@@ -98,110 +103,409 @@
               <div class="kpi-label">Revenue</div>
               <div class="kpi-bottom">
                 <div class="kpi-value" id="total-revenue">₹0</div>
-                <div class="kpi-icon"><img src="assets/icons/save-money.png" alt=""></div>
+                <div class="kpi-icon"><img src="assets/icons/save-money.png"></div>
+              </div>
+              <div class="kpi-trend" id="trend-revenue">▲ +0%</div>
+            </div>
+
+            <!-- Orders Today -->
+            <div class="kpi-card">
+              <div class="kpi-label">Orders Today</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="summary-orders-today">0</div>
+                <div class="kpi-icon"><img src="assets/icons/cart.png"></div>
+              </div>
+              <div class="kpi-trend" id="trend-orders">▲ +0%</div>
+            </div>
+
+            <!-- Active Shops -->
+            <div class="kpi-card">
+              <div class="kpi-label">Active Shops</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="summary-active-shops">0</div>
+                <div class="kpi-icon"><img src="assets/icons/online-shop.png"></div>
+              </div>
+              <div class="kpi-trend" id="trend-active-shops">▲ +0%</div>
+            </div>
+
+            <!-- Categories -->
+            <div class="kpi-card">
+              <div class="kpi-label">Categories</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="summary-categories">0</div>
+                <div class="kpi-icon"><img src="assets/icons/folder.png"></div>
+              </div>
+              <div class="kpi-trend" id="trend-categories">▲ +0%</div>
+            </div>
+
+            <!-- Messages -->
+            <div class="kpi-card">
+              <div class="kpi-label">Unread Messages</div>
+              <div class="kpi-bottom">
+                <div class="kpi-value" id="summary-unread">0</div>
+                <div class="kpi-icon"><img src="assets/icons/mail.png"></div>
+              </div>
+              <div class="kpi-trend" id="trend-unread">▲ +0%</div>
+            </div>
+
+          </div>
+
+          <!-- Quick Highlights -->
+          <div class="quick-highlights">
+            <div class="highlight-card">
+              <h4>New Registrations Today</h4>
+              <p id="hl-new-users">0</p>
+            </div>
+
+            <div class="highlight-card">
+              <h4>New Shops Today</h4>
+              <p id="hl-new-shops">0</p>
+            </div>
+
+            <div class="highlight-card">
+              <h4>Pending Approvals</h4>
+              <p id="hl-pending">0</p>
+            </div>
+
+            <div class="highlight-card">
+              <h4>Unread Messages</h4>
+              <p id="hl-unread-msg">0</p>
+            </div>
+          </div>
+
+          <!-- System Health -->
+          <div class="system-health">
+            <h3>System Health</h3>
+
+            <div class="system-grid">
+              <div class="sys-card">
+                <h4>Database Reads Today</h4>
+                <p id="sys-reads">0</p>
+              </div>
+
+              <div class="sys-card">
+                <h4>Storage Used</h4>
+                <p id="sys-storage">0 MB</p>
+              </div>
+
+              <div class="sys-card">
+                <h4>Error Logs</h4>
+                <p id="sys-errors">0</p>
+              </div>
+
+              <div class="sys-card">
+                <h4>App Status</h4>
+                <p id="sys-status">Online</p>
               </div>
             </div>
           </div>
         </div>
+
       </div>
+
 
       <!-- ====== PART 2: TODAY'S METRICS ====== -->
       <div class="overview-part" data-overview-part="today">
+
         <h2 class="overview-subtitle">Today’s Snapshot</h2>
 
+        <!-- ---------------------------
+       A. Today's KPI Summary
+  ---------------------------- -->
         <div class="today-grid">
+
           <div class="today-card">
-            <span class="today-label">New Users Today</span>
+            <div class="today-card-top">
+              <img src="assets/icons/user-add.png" class="today-icon" />
+              <span class="today-label">New Users Today</span>
+            </div>
             <span class="today-value" id="users-today">0</span>
+            <span class="today-trend up" id="users-today-trend">+8.4% vs yesterday</span>
           </div>
+
           <div class="today-card">
-            <span class="today-label">New Shops Today</span>
+            <div class="today-card-top">
+              <img src="assets/icons/shop.png" class="today-icon" />
+              <span class="today-label">New Shops Today</span>
+            </div>
             <span class="today-value" id="shops-today">0</span>
+            <span class="today-trend up" id="shops-today-trend">+2 new shops approved</span>
           </div>
+
           <div class="today-card">
-            <span class="today-label">Revenue Today</span>
+            <div class="today-card-top">
+              <img src="assets/icons/wallet.png" class="today-icon" />
+              <span class="today-label">Revenue Today</span>
+            </div>
             <span class="today-value" id="revenue-today">₹0</span>
+            <span class="today-trend down" id="revenue-today-trend">-3.1% vs yesterday</span>
           </div>
+
           <div class="today-card">
-            <span class="today-label">Orders Today</span>
+            <div class="today-card-top">
+              <img src="assets/icons/box.png" class="today-icon" />
+              <span class="today-label">Orders Today</span>
+            </div>
             <span class="today-value" id="orders-today">0</span>
+            <span class="today-trend up" id="orders-today-trend">+19 orders since morning</span>
           </div>
+
         </div>
+
+
+        <!-- --------------------------------------
+       B. Today’s Activity Insights
+  --------------------------------------- -->
+        <h3 class="overview-subtitle small">Behavior Highlights</h3>
+
+        <div class="today-insights-grid">
+
+          <div class="insight-card">
+            <span class="insight-label">Peak Active Hour</span>
+            <span class="insight-value" id="peak-hour">—</span>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-label">Returning Users</span>
+            <span class="insight-value" id="returning-users">—</span>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-label">Avg Session Time</span>
+            <span class="insight-value" id="avg-session">—</span>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-label">Conversion Rate</span>
+            <span class="insight-value" id="conversion-rate">—</span>
+          </div>
+
+        </div>
+
+
+        <!-- --------------------------------------
+       C. Micro Analytics (Inline charts)
+  --------------------------------------- -->
+        <h3 class="overview-subtitle small">Micro Analytics</h3>
+
+        <div class="microcharts-row">
+
+          <div class="microchart-card">
+            <span class="microchart-title">24h User Activity</span>
+            <canvas id="miniUsersChart"></canvas>
+          </div>
+
+          <div class="microchart-card">
+            <span class="microchart-title">Revenue Trend</span>
+            <canvas id="miniRevenueChart"></canvas>
+          </div>
+
+          <div class="microchart-card">
+            <span class="microchart-title">Orders Trend</span>
+            <canvas id="miniOrdersChart"></canvas>
+          </div>
+
+        </div>
+
       </div>
 
       <!-- ====== PART 3: PERFORMANCE CHARTS ====== -->
       <div class="overview-part" data-overview-part="charts">
-        <h2 class="overview-subtitle">Performance Charts</h2>
 
-        <div class="chart-row">
-          <div class="chart-card">
-            <h3>Users Trend</h3>
-            <canvas id="chartUsers"></canvas>
+        <div class="charts-header-row">
+          <h2 class="overview-subtitle">Performance Analytics</h2>
+
+          <!-- Filters -->
+          <div class="chart-filters">
+            <button class="filter-btn active" data-range="daily">Daily</button>
+            <button class="filter-btn" data-range="weekly">Weekly</button>
+            <button class="filter-btn" data-range="monthly">Monthly</button>
+          </div>
+        </div>
+
+        <!-- ====== KPI Micro Stats (Pro Dash) ====== -->
+        <div class="mini-kpi-row">
+          <div class="mini-kpi-card">
+            <h4>Peak Traffic</h4>
+            <p class="mini-value" id="peak-traffic">0</p>
+            <span class="mini-label" id="peak-traffic-label">Today</span>
           </div>
 
+          <div class="mini-kpi-card">
+            <h4>Top Category</h4>
+            <p class="mini-value" id="top-category">—</p>
+            <span class="mini-label" id="top-category-label">Last 7 days</span>
+          </div>
+
+          <div class="mini-kpi-card">
+            <h4>Conversion Rate</h4>
+            <p class="mini-value" id="conversion-rate">0%</p>
+            <span class="mini-label" id="conversion-rate-label">vs last period</span>
+          </div>
+        </div>
+
+        <!-- ====== CHARTS GRID ====== -->
+        <div class="chart-row">
+
+          <!-- Users Trend -->
+          <div class="chart-card">
+            <h3>User Growth Trend</h3>
+            <canvas id="chartUsers"></canvas>
+
+            <!-- Comparison footer -->
+            <div class="chart-footer">
+              <span id="users-compare">+0% vs last period</span>
+            </div>
+          </div>
+
+          <!-- Revenue Trend -->
           <div class="chart-card">
             <h3>Revenue Trend</h3>
             <canvas id="chartRevenue"></canvas>
+
+            <div class="chart-footer">
+              <span id="revenue-compare">+0% vs last period</span>
+            </div>
           </div>
 
+          <!-- Shops Growth -->
           <div class="chart-card">
-            <h3>Shops Growth</h3>
+            <h3>Shop Registrations Trend</h3>
             <canvas id="chartShops"></canvas>
+
+            <div class="chart-footer">
+              <span id="shops-compare">+0% vs last period</span>
+            </div>
           </div>
+
         </div>
+
       </div>
+
 
       <!-- ====== PART 4: ACTIVITY LOGS ====== -->
       <div class="overview-part" data-overview-part="activity">
-        <h2 class="overview-subtitle">Recent Activity</h2>
 
+        <!-- SECTION TITLE -->
+        <div class="activity-header">
+          <h2 class="overview-subtitle">Activity & Shop Performance</h2>
+          <div class="activity-filters">
+            <button class="activity-filter active" data-filter="today">Today</button>
+            <button class="activity-filter" data-filter="week">This Week</button>
+            <button class="activity-filter" data-filter="month">This Month</button>
+          </div>
+        </div>
+
+        <!-- TOP METRICS -->
+        <div class="activity-stats-row">
+          <div class="activity-stat-card">
+            <h4>Total Activities</h4>
+            <div class="stat-value" id="activity-total">0</div>
+          </div>
+
+          <div class="activity-stat-card">
+            <h4>New Reviews</h4>
+            <div class="stat-value" id="new-reviews">0</div>
+          </div>
+
+          <div class="activity-stat-card">
+            <h4>New Orders</h4>
+            <div class="stat-value" id="new-orders">0</div>
+          </div>
+
+          <div class="activity-stat-card">
+            <h4>New Shop Signups</h4>
+            <div class="stat-value" id="new-shop-signups">0</div>
+          </div>
+        </div>
+
+        <!-- PANELS -->
         <div class="row-grid">
-          <div class="panel">
+
+          <!-- TOP PERFORMING SHOPS -->
+          <div class="panel panel-glass">
             <div class="panel-header">
               <h3>Top Performing Shops</h3>
               <button class="panel-action">View All →</button>
             </div>
-            <ul id="top-shops" class="panel-list">
-              <li>Loading...</li>
+
+            <ul id="top-shops" class="panel-list enhanced-list">
+              <li class="loading-item">Loading...</li>
             </ul>
           </div>
 
-          <div class="panel">
+          <!-- RECENT ACTIVITY -->
+          <div class="panel panel-glass">
             <div class="panel-header">
               <h3>Recent Activity</h3>
               <button class="panel-action" id="activity-refresh-btn">Refresh</button>
             </div>
-            <ul id="activity-feed" class="panel-list">
-              <li>Loading...</li>
+
+            <ul id="activity-feed" class="panel-list enhanced-list">
+              <li class="loading-item">Loading...</li>
             </ul>
           </div>
+
         </div>
+
       </div>
+
 
       <!-- ====== PART 5: NEW REGISTRATIONS ====== -->
       <div class="overview-part" data-overview-part="registrations">
-        <h2 class="overview-subtitle">New Registrations</h2>
 
+        <!-- Header + Stats -->
+        <div class="registrations-header">
+          <h2 class="overview-subtitle">New Registrations & Alerts</h2>
+
+          <div class="registrations-stats">
+            <div class="reg-stat-card">
+              <h4>New Users Today</h4>
+              <div id="stat-new-users" class="reg-stat-value">0</div>
+            </div>
+
+            <div class="reg-stat-card">
+              <h4>Pending Verifications</h4>
+              <div id="stat-verification" class="reg-stat-value">0</div>
+            </div>
+
+            <div class="reg-stat-card">
+              <h4>New Shops Registered</h4>
+              <div id="stat-new-shops" class="reg-stat-value">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panels -->
         <div class="row-grid">
-          <div class="panel">
+
+          <!-- SYSTEM ALERTS PANEL -->
+          <div class="panel reg-panel panel-glass">
             <div class="panel-header">
               <h3>System Alerts</h3>
+              <button class="panel-action">View All →</button>
             </div>
-            <ul id="alert-feed" class="panel-list">
-              <li>No alerts</li>
+
+            <ul id="alert-feed" class="panel-list reg-list">
+              <li class="loading">Loading...</li>
             </ul>
           </div>
 
-          <div class="panel">
+          <!-- REGISTRATIONS PANEL -->
+          <div class="panel reg-panel panel-glass">
             <div class="panel-header">
               <h3>New Registrations</h3>
             </div>
-            <ul id="new-registrations" class="panel-list">
-              <li>Loading...</li>
+
+            <ul id="new-registrations" class="panel-list reg-list">
+              <li class="loading">Loading...</li>
             </ul>
           </div>
+
         </div>
+
       </div>
+
 
     </section>
 
