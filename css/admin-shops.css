@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------
-   SHOPS SECTION - Modern Purple Glass UI
+   SHOPS SECTION - Professional Purple Admin UI
 ----------------------------------------------------------- */
 
 .section-heading {
@@ -10,7 +10,7 @@
 }
 
 /* ============================================================
-   SHOPS PARTS VISIBILITY CONTROL
+   PARTS: SECTION VISIBILITY
 ============================================================ */
 .shops-part {
   display: none;
@@ -27,12 +27,40 @@
 }
 
 /* ============================================================
-   1. ALL SHOPS LISTING
+   1. ALL SHOPS — CONTROLS (Search, Filters, Sorting)
 ============================================================ */
 
-/* Shop Grid */
+.shops-controls {
+  margin: 10px 0 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.shops-controls input,
+.shops-controls select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d8b4fe;
+  background: #faf5ff;
+  color: #4c1d95;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.2s;
+}
+
+.shops-controls input:focus,
+.shops-controls select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+}
+
+/* ============================================================
+   1. ALL SHOPS — GRID & CARDS
+============================================================ */
+
 .shops-grid {
-  margin-top: 20px;
+  margin-top: 10px;
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -46,19 +74,12 @@
   box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
   transition: 0.35s ease;
   animation: fadeUpShop 0.4s ease both;
+  position: relative;
 }
 
-.shop-card.small {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* Hover Effect */
 .shop-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 10px 22px rgba(107, 33, 168, 0.22);
+  box-shadow: 0 12px 25px rgba(107, 33, 168, 0.22);
 }
 
 /* Shop Image */
@@ -69,7 +90,7 @@
   border-bottom: 3px solid #f3e8ff;
 }
 
-/* Shop Content */
+/* Content */
 .shop-content {
   padding: 16px 18px;
 }
@@ -97,15 +118,14 @@
   text-transform: capitalize;
 }
 
-/* Status Colors */
 .shop-status.active {
   background: #d9f99d;
-  color: #4d7c0f;
+  color: #3f6212;
 }
 
 .shop-status.disabled {
   background: #fee2e2;
-  color: #991b1b;
+  color: #b91c1c;
 }
 
 .shop-status.pending {
@@ -119,9 +139,9 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Empty placeholder */
+/* Empty state */
 .placeholder {
-  margin-top: 24px;
+  margin-top: 22px;
   padding: 18px;
   background: #faf5ff;
   color: #6b21a8;
@@ -131,16 +151,53 @@
   font-weight: 500;
 }
 
+/* ============================================================
+   PAGINATION
+============================================================ */
+
+.shops-pagination {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.shops-pagination button {
+  padding: 10px 18px;
+  background: #7c3aed;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.shops-pagination button:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.shops-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#shops-page {
+  font-weight: 600;
+  color: #4c1d95;
+}
 
 /* ============================================================
-   2. ADD NEW SHOP FORM
+   2. ADD NEW SHOP
 ============================================================ */
+
 #add-shop-form {
   background: #ffffff;
-  padding: 24px;
+  padding: 26px;
   border-radius: 16px;
-  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
   max-width: 520px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
 }
 
 .form-row {
@@ -158,7 +215,7 @@
 
 .form-row input,
 .form-row select {
-  padding: 10px 12px;
+  padding: 11px 13px;
   border-radius: 10px;
   border: 1px solid #d8b4fe;
   font-size: 0.95rem;
@@ -175,16 +232,45 @@
 .btn-primary {
   padding: 10px 18px;
   background: #7c3aed;
-  color: #ffffff;
+  color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  transition: 0.25s ease;
+  transition: 0.2s ease;
 }
 
 .btn-primary:hover {
   background: #6d28d9;
+}
+
+
+.shop-form {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 16px;
+  max-width: 640px;
+  box-shadow: 0 6px 16px rgba(107, 33, 168, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-left: 6px solid #7c3aed;
+}
+
+.shop-form textarea {
+  resize: none;
+  border: 1px solid #d8b4fe;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+  transition: 0.25s;
+}
+
+.shop-form textarea:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
 }
 
 
@@ -205,13 +291,189 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
   font-weight: 600;
   transition: 0.2s;
 }
 
 .approve-btn:hover {
   background: #16a34a;
+}
+/* ============================================================
+   PENDING APPROVALS — SUMMARY
+============================================================ */
+
+.pending-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-box {
+  padding: 18px;
+  border-radius: 16px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
+}
+
+.summary-box h4 {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.summary-box span {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.summary-box.purple {
+  background: #7c3aed;
+}
+
+.summary-box.blue {
+  background: #2563eb;
+}
+
+.summary-box.orange {
+  background: #ea580c;
+}
+
+
+/* ============================================================
+   FILTER BAR
+============================================================ */
+
+.pending-filter-bar {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.pending-filter-bar select {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #d8b4fe;
+  background: #fff;
+  color: #4c1d95;
+  font-weight: 600;
+  min-width: 160px;
+  cursor: pointer;
+}
+
+.refresh-btn {
+  padding: 10px 18px;
+  background: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+
+.refresh-btn:hover {
+  background: #6d28d9;
+}
+
+
+/* ============================================================
+   PENDING SHOP CARD — LISTING
+============================================================ */
+
+.pending-grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.pending-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
+  transition: 0.3s ease;
+  border-left: 5px solid #f59e0b;
+  position: relative;
+}
+
+.pending-card:hover {
+  transform: translateY(-6px);
+}
+
+.pending-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.pending-meta {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #6b21a8;
+}
+
+.pending-meta strong {
+  color: #4c1d95;
+}
+
+/* Request timestamp */
+.pending-time {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #7c3aed;
+}
+
+/* Action Buttons */
+.pending-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-approve {
+  padding: 8px 14px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-approve:hover {
+  background: #16a34a;
+}
+
+.btn-reject {
+  padding: 8px 14px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-reject:hover {
+  background: #b91c1c;
+}
+
+.btn-view {
+  padding: 8px 14px;
+  background: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-view:hover {
+  background: #6d28d9;
 }
 
 
@@ -227,11 +489,11 @@
 }
 
 .category-card {
-  background: #ffffff;
+  background: white;
   border-radius: 16px;
   padding: 18px;
-  box-shadow: 0 5px 12px rgba(107, 33, 168, 0.15);
   text-align: center;
+  box-shadow: 0 5px 12px rgba(107, 33, 168, 0.15);
 }
 
 .category-card h3 {
@@ -243,10 +505,150 @@
   margin-top: 6px;
   color: #6b21a8;
 }
+/* ============================================================
+   CATEGORY CONTROLS
+============================================================ */
+
+.category-controls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.category-controls input {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #d8b4fe;
+  background: white;
+  color: #4c1d95;
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+}
+
+.category-controls input:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+}
+
+.category-controls select {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #d8b4fe;
+  background: white;
+  color: #4c1d95;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.category-controls .btn-primary {
+  padding: 10px 18px;
+}
 
 
 /* ============================================================
-   5. SHOPS ANALYTICS PLACEHOLDER
+   CATEGORY GRID
+============================================================ */
+
+.categories-grid {
+  display: grid;
+  gap: 20px;
+  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+
+/* ============================================================
+   CATEGORY CARD (Premium UI)
+============================================================ */
+
+.category-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 5px 14px rgba(107, 33, 168, 0.15);
+  transition: 0.25s ease;
+  border-left: 5px solid #7c3aed;
+  position: relative;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(107, 33, 168, 0.22);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.category-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.category-icon {
+  font-size: 1.6rem;
+  color: #7c3aed;
+}
+
+/* Stats */
+.category-stats {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #6b21a8;
+  font-size: 0.9rem;
+}
+
+.category-stats strong {
+  color: #4c1d95;
+}
+
+/* Actions */
+.category-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-edit {
+  background: #2563eb;
+  padding: 8px 14px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #1d4ed8;
+}
+
+.btn-delete {
+  background: #dc2626;
+  padding: 8px 14px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: #b91c1c;
+}
+
+
+/* ============================================================
+   5. SHOPS ANALYTICS
 ============================================================ */
 
 .shops-analytics-box {
@@ -254,7 +656,82 @@
   padding: 26px;
   border-radius: 16px;
   text-align: center;
-  font-size: 1rem;
-  box-shadow: 0 5px 12px rgba(107, 33, 168, 0.13);
+  font-size: 1.1rem;
+  box-shadow: 0 5px 12px rgba(107, 33, 168, 0.15);
   color: #6b21a8;
+}
+
+/* ============================================================
+   SHOPS ANALYTICS SECTION
+============================================================ */
+
+.shop-analytics-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.kpi-box {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 14px rgba(107, 33, 168, 0.15);
+  border-left: 5px solid #7c3aed;
+  transition: 0.25s ease;
+}
+
+.kpi-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(107, 33, 168, 0.22);
+}
+
+.kpi-box h4 {
+  font-size: 0.95rem;
+  color: #6b21a8;
+  margin-bottom: 6px;
+}
+
+.kpi-box span {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+/* ============================================================
+   ANALYTICS CARDS
+============================================================ */
+
+.shop-analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.analytics-card {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 6px 16px rgba(107, 33, 168, 0.18);
+  transition: 0.25s ease;
+}
+
+.analytics-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 26px rgba(107, 33, 168, 0.22);
+}
+
+.analytics-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4c1d95;
+  margin-bottom: 12px;
+}
+
+/* Canvas Fix */
+.analytics-card canvas {
+  width: 100% !important;
+  height: 260px !important;
 }

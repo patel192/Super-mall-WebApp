@@ -514,50 +514,273 @@
 
       <h2 id="shops-title" class="section-heading">Manage Shops</h2>
 
-      <!-- ====== PART 1: ALL SHOPS ====== -->
+      <!-- ====== PART 1: ALL SHOPS (EXPANDED) ====== -->
       <div class="shops-part shops-part-active" data-shops-part="all">
+
+        <!-- 🔍 Controls -->
+        <div class="shops-controls">
+          <input type="text" id="shop-search" placeholder="Search shops...">
+
+          <select id="filter-category">
+            <option value="">All Categories</option>
+          </select>
+
+          <select id="filter-floor">
+            <option value="">All Floors</option>
+          </select>
+
+          <select id="filter-status">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="disabled">Disabled</option>
+          </select>
+
+          <select id="sort-shops">
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+            <option value="floor">Floor</option>
+            <option value="category">Category</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
+
+        <!-- 📦 Shop Cards Grid -->
         <div id="shops-container" class="shops-grid"></div>
+
+        <!-- Empty Message -->
         <p id="shops-empty" class="placeholder">Loading shops...</p>
+
+        <!-- Pagination -->
+        <div class="shops-pagination">
+          <button id="shops-prev" disabled>◀ Previous</button>
+          <span id="shops-page">Page 1</span>
+          <button id="shops-next">Next ▶</button>
+        </div>
+
       </div>
+
+
 
       <!-- ====== PART 2: ADD SHOP ====== -->
       <div class="shops-part" data-shops-part="add">
         <h3 class="sub-heading">Add New Shop</h3>
 
         <form id="add-shop-form" class="shop-form">
-          <label>Shop Name</label>
-          <input type="text" id="shop-name-input" placeholder="Enter shop name">
 
-          <label>Category</label>
-          <input type="text" id="shop-category-input" placeholder="Category">
+          <!-- Row 1 -->
+          <div class="form-row">
+            <label>Shop Name *</label>
+            <input type="text" id="shop-name-input" placeholder="Enter shop name">
+          </div>
 
-          <label>Floor</label>
-          <input type="text" id="shop-floor-input" placeholder="Floor No">
+          <!-- Row 2 -->
+          <div class="form-row">
+            <label>Category *</label>
+            <select id="shop-category-input">
+              <option value="">Select Category</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Grocery">Grocery</option>
+              <option value="Lifestyle">Lifestyle</option>
+              <option value="Sports">Sports</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Food Court">Food Court</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
+          <!-- Row 3 -->
+          <div class="form-row">
+            <label>Floor *</label>
+            <select id="shop-floor-input">
+              <option value="">Select Floor</option>
+              <option value="Lower Ground">Lower Ground</option>
+              <option value="Ground Floor">Ground Floor</option>
+              <option value="1st Floor">1st Floor</option>
+              <option value="2nd Floor">2nd Floor</option>
+              <option value="3rd Floor">3rd Floor</option>
+            </select>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="form-row">
+            <label>Owner Name *</label>
+            <input type="text" id="shop-owner-input" placeholder="Enter owner full name">
+          </div>
+
+          <!-- Row 5 -->
+          <div class="form-row">
+            <label>Contact Number</label>
+            <input type="text" id="shop-contact-input" placeholder="Owner contact number">
+          </div>
+
+          <!-- Row 6 -->
+          <div class="form-row">
+            <label>Shop Status</label>
+            <select id="shop-status-input">
+              <option value="active">Active</option>
+              <option value="pending">Pending</option>
+              <option value="disabled">Disabled</option>
+            </select>
+          </div>
+
+          <!-- Row 7 -->
+          <div class="form-row">
+            <label>Opening Time</label>
+            <input type="time" id="shop-open-input">
+          </div>
+
+          <div class="form-row">
+            <label>Closing Time</label>
+            <input type="time" id="shop-close-input">
+          </div>
+
+          <!-- Row 8 -->
+          <div class="form-row">
+            <label>Shop Logo URL</label>
+            <input type="text" id="shop-logo-input" placeholder="https://example.com/logo.png">
+          </div>
+
+          <div class="form-row">
+            <label>Banner Image URL</label>
+            <input type="text" id="shop-banner-input" placeholder="https://example.com/banner.jpg">
+          </div>
+
+          <!-- Row 9 -->
+          <div class="form-row">
+            <label>Description</label>
+            <textarea id="shop-description-input" placeholder="Tell something about the shop…" rows="4"></textarea>
+          </div>
+
+          <!-- Submit -->
           <button type="submit" class="btn-primary">Add Shop</button>
         </form>
       </div>
 
+
       <!-- ====== PART 3: PENDING APPROVALS ====== -->
       <div class="shops-part" data-shops-part="pending">
-        <h3 class="sub-heading">Pending Approvals</h3>
-        <div id="pending-shops-list" class="shops-grid">
+
+        <h3 class="sub-heading">Pending Shop Approvals</h3>
+
+        <!-- Summary Bar -->
+        <div class="pending-summary">
+          <div class="summary-box purple">
+            <h4>Total Pending</h4>
+            <span id="pending-count">0</span>
+          </div>
+          <div class="summary-box blue">
+            <h4>New Requests Today</h4>
+            <span id="pending-today">0</span>
+          </div>
+          <div class="summary-box orange">
+            <h4>High Priority</h4>
+            <span id="pending-priority">0</span>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="pending-filter-bar">
+          <select id="pending-sort">
+            <option value="latest">Sort: Latest First</option>
+            <option value="oldest">Sort: Oldest First</option>
+            <option value="floor">Sort: Floor Number</option>
+            <option value="category">Sort: Category</option>
+          </select>
+
+          <select id="pending-category-filter">
+            <option value="">Category: All</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Food">Food</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Lifestyle">Lifestyle</option>
+          </select>
+
+          <button class="refresh-btn" id="pending-refresh">Refresh</button>
+        </div>
+
+        <!-- Pending Shops List -->
+        <div id="pending-shops-list" class="pending-grid">
           <p class="placeholder">Loading pending shops...</p>
         </div>
+
       </div>
 
       <!-- ====== PART 4: SHOP CATEGORIES ====== -->
       <div class="shops-part" data-shops-part="categories">
+
         <h3 class="sub-heading">Shop Categories</h3>
+
+        <!-- Category Controls -->
+        <div class="category-controls">
+          <input type="text" id="category-search" placeholder="Search category...">
+
+          <select id="category-sort">
+            <option value="az">Sort: A → Z</option>
+            <option value="za">Sort: Z → A</option>
+            <option value="count">Sort: Shop Count</option>
+            <option value="popularity">Sort: Popularity Score</option>
+          </select>
+
+          <button id="add-category-btn" class="btn-primary">+ Add Category</button>
+        </div>
+
+        <!-- Category Grid -->
         <div id="categories-list" class="categories-grid">
           <p class="placeholder">Loading categories...</p>
         </div>
+
       </div>
 
       <!-- ====== PART 5: SHOPS ANALYTICS ====== -->
       <div class="shops-part" data-shops-part="analytics">
+
         <h3 class="sub-heading">Shops Analytics</h3>
-        <canvas id="shops-analytics-chart"></canvas>
+
+        <!-- KPI BOXES -->
+        <div class="shop-analytics-kpis">
+          <div class="kpi-box">
+            <h4>Total Shops</h4>
+            <span id="analytics-total-shops">0</span>
+          </div>
+          <div class="kpi-box">
+            <h4>Active Shops</h4>
+            <span id="analytics-active-shops">0</span>
+          </div>
+          <div class="kpi-box">
+            <h4>Pending Approval</h4>
+            <span id="analytics-pending-shops">0</span>
+          </div>
+          <div class="kpi-box">
+            <h4>Avg Rating</h4>
+            <span id="analytics-avg-rating">0.0 ★</span>
+          </div>
+        </div>
+
+        <!-- ANALYTICS GRID -->
+        <div class="shop-analytics-grid">
+
+          <!-- Category Distribution -->
+          <div class="analytics-card">
+            <h4>Category Distribution</h4>
+            <canvas id="chartShopsCategory"></canvas>
+          </div>
+
+          <!-- Shop Growth Trend -->
+          <div class="analytics-card">
+            <h4>Shops Growth Trend</h4>
+            <canvas id="chartShopsGrowth"></canvas>
+          </div>
+
+          <!-- Performance Comparison -->
+          <div class="analytics-card">
+            <h4>Top Categories Performance</h4>
+            <canvas id="chartShopsPerformance"></canvas>
+          </div>
+
+        </div>
+
       </div>
 
     </section>
@@ -571,50 +794,234 @@
 
       <!-- ===== Offers Part 1: ALL OFFERS ===== -->
       <div class="offers-part offers-part-active" data-offers-part="all">
+
+        <h3 class="sub-heading">All Active Offers</h3>
+
+        <!-- Filters Row (Optional, real-world style) -->
+        <div class="offers-filter-row">
+          <select id="filter-category">
+            <option value="">All Categories</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Food">Food</option>
+            <option value="Lifestyle">Lifestyle</option>
+          </select>
+
+          <select id="sort-offers">
+            <option value="latest">Latest First</option>
+            <option value="discount">Highest Discount</option>
+            <option value="expiry">Expiry Soon</option>
+          </select>
+
+          <input type="text" id="search-offers" placeholder="Search offers...">
+        </div>
+
+        <!-- Offers Grid -->
         <div id="offers-container" class="offers-grid"></div>
-        <p id="offers-empty" class="empty-message">Loading offers...</p>
+
+        <p id="offers-empty" class="empty-message">No offers available.</p>
       </div>
+
 
       <!-- ===== Offers Part 2: CREATE OFFER ===== -->
       <div class="offers-part" data-offers-part="create">
+
+        <h3 class="sub-heading">Create a New Offer</h3>
+
         <form id="create-offer-form" class="offer-form">
-          <div class="form-row">
-            <label>Offer Title</label>
-            <input type="text" id="offer-title" placeholder="50% OFF Winter Sale" />
+
+          <!-- ROW 1: Title + Category -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Offer Title</label>
+              <input type="text" id="offer-title" placeholder="50% OFF Winter Sale" />
+            </div>
+
+            <div class="form-row">
+              <label>Category</label>
+              <select id="offer-category">
+                <option value="">Select Category</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Food">Food</option>
+                <option value="Beauty">Beauty</option>
+                <option value="Sports">Sports</option>
+              </select>
+            </div>
           </div>
 
+          <!-- ROW 2: Description -->
           <div class="form-row">
             <label>Description</label>
-            <input type="text" id="offer-description" placeholder="Details about the offer..." />
+            <textarea id="offer-description" rows="3" placeholder="Details about the offer..."></textarea>
           </div>
 
+          <!-- ROW 3: Discount + Expiry Date -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Discount (%)</label>
+              <input type="number" id="offer-discount" placeholder="30" />
+            </div>
+
+            <div class="form-row">
+              <label>Valid Until</label>
+              <input type="date" id="offer-expiry" />
+            </div>
+          </div>
+
+          <!-- ROW 4: Shop Select + Status -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Applicable Shop</label>
+              <select id="offer-shop">
+                <option value="">Select Shop</option>
+                <!-- Dynamically loaded shops will go here -->
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label>Status</label>
+              <select id="offer-status">
+                <option value="active">Active</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ROW 5: Offer Code -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label>Offer Code</label>
+              <input type="text" id="offer-code" placeholder="WINTER50" />
+            </div>
+
+            <div class="form-row code-btn-wrap">
+              <button type="button" class="btn-secondary" id="generate-code-btn">Generate Code</button>
+            </div>
+          </div>
+
+          <!-- ROW 6: Image Upload -->
           <div class="form-row">
-            <label>Discount (%)</label>
-            <input type="number" id="offer-discount" placeholder="30" />
+            <label>Offer Banner</label>
+            <input type="file" id="offer-image" accept="image/*" />
+
+            <div class="image-preview" id="offer-image-preview">
+              <p>No image selected</p>
+            </div>
           </div>
 
-          <div class="form-row">
-            <label>Valid Until</label>
-            <input type="date" id="offer-expiry" />
-          </div>
+          <!-- Submit -->
+          <button class="btn-primary" id="create-offer-btn">
+            Create Offer
+          </button>
 
-          <button class="btn-primary" id="create-offer-btn">Create Offer</button>
         </form>
       </div>
 
+
       <!-- ===== Offers Part 3: EXPIRED ===== -->
       <div class="offers-part" data-offers-part="expired">
-        <h3>Expired Offers</h3>
+
+        <h3 class="sub-heading">Expired Offers</h3>
+
+        <!-- Filters Row -->
+        <div class="expired-filters">
+          <select id="expired-filter-category" class="filter-select">
+            <option value="">All Categories</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Food">Food</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Sports">Sports</option>
+          </select>
+
+          <select id="expired-filter-sort" class="filter-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        <!-- Grid of expired offers -->
         <div id="expired-offers-list" class="offers-grid"></div>
-        <p id="expired-offers-empty" class="empty-message">No expired offers.</p>
+
+        <!-- Empty message -->
+        <p id="expired-offers-empty" class="empty-message">No expired offers found.</p>
+
       </div>
+
 
       <!-- ===== Offers Part 4: ANALYTICS ===== -->
       <div class="offers-part" data-offers-part="analytics">
-        <div class="offers-analytics-box">
-          Offer analytics coming soon…
+
+        <h3 class="sub-heading">Offers Analytics Dashboard</h3>
+
+        <!-- KPI Summary -->
+        <div class="offers-kpi-row">
+          <div class="offers-kpi-card">
+            <p class="kpi-label">Total Offers</p>
+            <h2 id="kpi-total-offers">0</h2>
+          </div>
+
+          <div class="offers-kpi-card">
+            <p class="kpi-label">Active Offers</p>
+            <h2 id="kpi-active-offers">0</h2>
+          </div>
+
+          <div class="offers-kpi-card">
+            <p class="kpi-label">Expired Offers</p>
+            <h2 id="kpi-expired-offers">0</h2>
+          </div>
+
+          <div class="offers-kpi-card">
+            <p class="kpi-label">Avg. Discount</p>
+            <h2 id="kpi-average-discount">0%</h2>
+          </div>
         </div>
+
+        <!-- Charts Grid -->
+        <div class="offers-analytics-grid">
+
+          <div class="analytics-card">
+            <h3>Offers Created Per Month</h3>
+            <canvas id="offersCreatedChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Discount Distribution</h3>
+            <canvas id="discountChart"></canvas>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Category-wise Offers</h3>
+            <canvas id="offersByCategoryChart"></canvas>
+          </div>
+
+        </div>
+
+        <!-- Performance Table -->
+        <div class="analytics-card full-width">
+          <h3>Top Performing Offers</h3>
+
+          <table class="analytics-table">
+            <thead>
+              <tr>
+                <th>Offer Title</th>
+                <th>Category</th>
+                <th>Discount</th>
+                <th>Views</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody id="offers-performance-body">
+              <tr>
+                <td colspan="5" class="placeholder">Loading performance data…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
+
 
     </section>
 
@@ -625,44 +1032,108 @@
 
       <!-- ===== Users Part 1: ALL USERS ===== -->
       <div class="users-part users-part-active" data-users-part="all">
+
+        <!-- Search + Filters -->
+        <div class="users-header">
+          <input type="text" id="user-search" placeholder="Search users by name, email, or role…"
+            class="user-search-input" />
+
+          <select id="user-sort" class="user-sort">
+            <option value="latest">Sort: Latest Added</option>
+            <option value="name">Sort: Name A–Z</option>
+            <option value="role">Sort: Role</option>
+            <option value="status">Sort: Status</option>
+          </select>
+        </div>
+
+        <!-- Users List -->
         <div id="users-container" class="users-grid"></div>
+
+        <!-- Empty state -->
         <p id="users-empty" class="empty-message">Loading users...</p>
+
       </div>
+
 
       <!-- ===== Users Part 2: USER ROLES ===== -->
       <div class="users-part" data-users-part="roles">
+
+        <div class="roles-header">
+          <input type="text" id="role-search" class="role-search-input"
+            placeholder="Search users by name, email, or role…" />
+
+          <select id="role-filter" class="role-filter">
+            <option value="all">Filter: All Roles</option>
+            <option value="admin">Admins</option>
+            <option value="manager">Managers</option>
+            <option value="seller">Sellers</option>
+            <option value="customer">Customers</option>
+          </select>
+        </div>
+
         <h3 class="users-subtitle">User Roles</h3>
 
-        <table class="roles-table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Email</th>
-              <th>Current Role</th>
-              <th>Assign Role</th>
-            </tr>
-          </thead>
-          <tbody id="roles-table-body">
-            <!-- Dynamic rows -->
-          </tbody>
-        </table>
+        <div class="roles-table-wrapper">
+          <table class="roles-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Current Role</th>
+                <th>Assign Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="roles-table-body">
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <p id="roles-empty" class="empty-message">Loading user roles...</p>
       </div>
+
 
       <!-- ===== Users Part 3: ACTIVE USERS ===== -->
       <div class="users-part" data-users-part="active">
-        <h3 class="users-subtitle">Currently Active Users</h3>
 
-        <div id="active-users-list" class="users-grid"></div>
+        <div class="active-users-header">
+          <h3 class="users-subtitle">Currently Active Users</h3>
+
+          <select id="active-sort" class="active-sort">
+            <option value="recent">Sort: Recently Active</option>
+            <option value="name">Sort: Name (A–Z)</option>
+            <option value="duration">Sort: Active Duration</option>
+          </select>
+        </div>
+
+        <div id="active-users-list" class="active-users-grid">
+          <!-- Dynamic Active User Cards -->
+        </div>
+
         <p id="active-users-empty" class="empty-message">No active users found.</p>
       </div>
 
+
       <!-- ===== Users Part 4: VERIFICATION REQUESTS ===== -->
       <div class="users-part" data-users-part="verification">
-        <h3 class="users-subtitle">Verification Requests</h3>
 
-        <div id="verification-list" class="users-grid"></div>
+        <div class="verification-header">
+          <h3 class="users-subtitle">Verification Requests</h3>
+
+          <select id="verification-sort" class="verification-sort">
+            <option value="recent">Sort: Most Recent</option>
+            <option value="name">Sort: Name (A–Z)</option>
+          </select>
+        </div>
+
+        <div id="verification-list" class="verification-grid">
+          <!-- Dynamic verification cards will appear here -->
+        </div>
+
         <p id="verification-empty" class="empty-message">No verification requests.</p>
       </div>
+
     </section>
 
 
@@ -674,71 +1145,248 @@
 
       <!-- ===== ANALYTICS — PART 1: REVENUE GRAPHS ===== -->
       <div class="analytics-part analytics-part-active" data-analytics-part="revenue">
+
         <h3 class="analytics-subtitle">Revenue Analytics</h3>
 
+        <!-- ===== Revenue Summary (Mini KPIs) ===== -->
+        <div class="revenue-kpi-row">
+          <div class="revenue-kpi">
+            <span class="kpi-label">Total Revenue</span>
+            <span class="kpi-value" id="rev-total">₹0</span>
+          </div>
+
+          <div class="revenue-kpi">
+            <span class="kpi-label">Avg. Daily Revenue</span>
+            <span class="kpi-value" id="rev-daily">₹0</span>
+          </div>
+
+          <div class="revenue-kpi">
+            <span class="kpi-label">Highest Month</span>
+            <span class="kpi-value" id="rev-high">—</span>
+          </div>
+        </div>
+
+        <!-- ===== Chart Section ===== -->
         <div class="analytics-grid">
-          <div class="analytics-card">
-            <h3>Total Revenue Trend</h3>
+          <div class="analytics-card big">
+            <div class="analytics-card-header">
+              <h3>Total Revenue Trend</h3>
+              <select class="chart-range" id="revenue-range">
+                <option value="12">Last 12 Months</option>
+                <option value="6">Last 6 Months</option>
+                <option value="3">Last 3 Months</option>
+              </select>
+            </div>
             <canvas id="revenueChart"></canvas>
           </div>
 
           <div class="analytics-card">
             <h3>Revenue by Category</h3>
             <canvas id="revenueCategoryChart"></canvas>
+
+            <div class="category-legend" id="rev-category-legend">
+              <!-- Filled dynamically in JS -->
+            </div>
           </div>
         </div>
+
+        <!-- ===== Breakdown Section ===== -->
+        <div class="revenue-breakdown">
+          <h3 class="breakdown-title">Category Breakdown</h3>
+
+          <ul id="revenue-breakdown-list" class="breakdown-list">
+            <li>Loading revenue data...</li>
+          </ul>
+        </div>
+
       </div>
+
 
       <!-- ===== ANALYTICS — PART 2: USER GROWTH ===== -->
       <div class="analytics-part" data-analytics-part="userGrowth">
+
         <h3 class="analytics-subtitle">User Growth Overview</h3>
 
+        <!-- ===== User Growth KPI Row ===== -->
+        <div class="user-kpi-row">
+          <div class="user-kpi">
+            <span class="kpi-label">New Users (This Month)</span>
+            <span class="kpi-value" id="user-month">0</span>
+          </div>
+
+          <div class="user-kpi">
+            <span class="kpi-label">This Week</span>
+            <span class="kpi-value" id="user-week">0</span>
+          </div>
+
+          <div class="user-kpi">
+            <span class="kpi-label">Today</span>
+            <span class="kpi-value" id="user-today">0</span>
+          </div>
+        </div>
+
+        <!-- ===== Growth Charts ===== -->
         <div class="analytics-grid">
-          <div class="analytics-card">
-            <h3>Monthly User Growth</h3>
+          <!-- Monthly Growth Chart -->
+          <div class="analytics-card big">
+            <div class="analytics-card-header">
+              <h3>Monthly User Growth</h3>
+              <select class="chart-range" id="user-growth-range">
+                <option value="12">Last 12 Months</option>
+                <option value="6">Last 6 Months</option>
+                <option value="3">Last 3 Months</option>
+              </select>
+            </div>
             <canvas id="userGrowthChart"></canvas>
           </div>
 
+          <!-- New Users by Source -->
           <div class="analytics-card">
             <h3>New Users by Source</h3>
             <canvas id="userSourceChart"></canvas>
+
+            <div id="user-source-legend" class="source-legend">
+              <!-- JS will fill pills -->
+            </div>
           </div>
         </div>
+
+        <!-- ===== Breakdown Table ===== -->
+        <div class="growth-breakdown">
+          <h3 class="breakdown-title">User Growth Breakdown</h3>
+
+          <ul id="user-growth-breakdown" class="breakdown-list">
+            <li>Loading growth data...</li>
+          </ul>
+        </div>
+
       </div>
+
 
       <!-- ===== ANALYTICS — PART 3: SHOP GROWTH ===== -->
       <div class="analytics-part" data-analytics-part="shopGrowth">
+
         <h3 class="analytics-subtitle">Shop Growth Analytics</h3>
 
+        <!-- ===== KPI Row ===== -->
+        <div class="shop-kpi-row">
+          <div class="shop-kpi">
+            <span class="kpi-label">New Shops (This Month)</span>
+            <span class="kpi-value" id="shops-month">0</span>
+          </div>
+
+          <div class="shop-kpi">
+            <span class="kpi-label">This Week</span>
+            <span class="kpi-value" id="shops-week">0</span>
+          </div>
+
+          <div class="shop-kpi">
+            <span class="kpi-label">Today</span>
+            <span class="kpi-value" id="shops-today-analytics">0</span>
+          </div>
+        </div>
+
+        <!-- ===== Charts Grid ===== -->
         <div class="analytics-grid">
-          <div class="analytics-card">
-            <h3>Shops Growth Trend</h3>
+
+          <!-- Shops Growth Trend -->
+          <div class="analytics-card big">
+            <div class="analytics-card-header">
+              <h3>Shops Growth Trend</h3>
+              <select class="chart-range" id="shop-growth-range">
+                <option value="12">Last 12 Months</option>
+                <option value="6">Last 6 Months</option>
+                <option value="3">Last 3 Months</option>
+              </select>
+            </div>
             <canvas id="shopGrowthChart"></canvas>
           </div>
 
+          <!-- Category-wise Shops -->
           <div class="analytics-card">
             <h3>Category-wise Shops</h3>
             <canvas id="shopCategoryChart"></canvas>
+
+            <div id="shop-category-legend" class="source-legend">
+              <!-- Filled dynamically -->
+            </div>
           </div>
+
         </div>
+
+        <!-- ===== Breakdown ===== -->
+        <div class="growth-breakdown">
+          <h3 class="breakdown-title">Shop Growth Breakdown</h3>
+
+          <ul id="shop-growth-breakdown" class="breakdown-list">
+            <li>Loading breakdown...</li>
+          </ul>
+        </div>
+
       </div>
+
 
       <!-- ===== ANALYTICS — PART 4: ORDER TREND ===== -->
       <div class="analytics-part" data-analytics-part="orders">
+
         <h3 class="analytics-subtitle">Order Analytics</h3>
 
+        <!-- ===== KPI ROW ===== -->
+        <div class="order-kpi-row">
+          <div class="order-kpi">
+            <span class="kpi-label">Orders Today</span>
+            <span class="kpi-value" id="orders-today-analytics">0</span>
+          </div>
+
+          <div class="order-kpi">
+            <span class="kpi-label">Last 7 Days</span>
+            <span class="kpi-value" id="orders-week">0</span>
+          </div>
+
+          <div class="order-kpi">
+            <span class="kpi-label">This Month</span>
+            <span class="kpi-value" id="orders-month">0</span>
+          </div>
+        </div>
+
+        <!-- ===== CHARTS ===== -->
         <div class="analytics-grid">
-          <div class="analytics-card">
-            <h3>Orders Trend</h3>
+
+          <!-- Orders Trend -->
+          <div class="analytics-card big">
+            <div class="analytics-card-header">
+              <h3>Orders Trend</h3>
+              <select id="order-range-select" class="chart-range">
+                <option value="12">Last 12 Months</option>
+                <option value="6">Last 6 Months</option>
+                <option value="3">Last 3 Months</option>
+              </select>
+            </div>
             <canvas id="ordersTrendChart"></canvas>
           </div>
 
+          <!-- Order Category Split -->
           <div class="analytics-card">
             <h3>Top Order Categories</h3>
             <canvas id="orderCategoryChart"></canvas>
+
+            <!-- Dynamic legend pills -->
+            <div id="order-category-legend" class="source-legend"></div>
           </div>
+
         </div>
+
+        <!-- ===== BREAKDOWN ===== -->
+        <div class="order-breakdown">
+          <h3 class="breakdown-title">Order Funnel Breakdown</h3>
+
+          <ul id="orders-breakdown-list" class="breakdown-list">
+            <li>Loading breakdown...</li>
+          </ul>
+        </div>
+
       </div>
+
 
     </section>
 
