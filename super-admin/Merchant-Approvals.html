@@ -1,0 +1,58 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body data-required-role="super_admin" class="bg-muted text-slate-700 min-h-screen">
+
+  <!-- 🔒 AUTH GUARD -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar (loaded dynamically) -->
+    <div id="sidebar"></div>
+
+    <!-- Main -->
+    <div class="flex-1">
+
+      <!-- Navbar (loaded dynamically) -->
+      <div id="navbar"></div>
+
+      <!-- Content -->
+      <main class="px-8 py-8">
+
+        <div class="bg-white border rounded-2xl overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-slate-500">
+              <tr>
+                <th class="text-left px-6 py-4">Name</th>
+                <th class="text-left px-6 py-4">Email</th>
+                <th class="text-left px-6 py-4">Phone</th>
+                <th class="text-left px-6 py-4">Requested On</th>
+                <th class="text-right px-6 py-4">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="merchantTable">
+              <tr>
+                <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+                  Loading merchant requests…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Layout Loader -->
+  <script type="module" src="/js/layout/loadSuperAdminLayout.js"></script>
+
+  <!-- Page Logic -->
+  <script type="module" src="/js/super-admin/merchant-approvals.js"></script>
+
+</body>
