@@ -5,136 +5,244 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SuperMall · Authentication</title>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="css/auth.css" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ["Poppins", "sans-serif"],
+          },
+          colors: {
+            primary: "#2563EB",
+          }
+        }
+      }
+    }
+  </script>
 </head>
 
-<body>
-  <div class="auth-wrapper" id="authWrapper">
+<body class="font-poppins bg-slate-100 min-h-screen flex items-center justify-center px-4">
 
-    <!-- ================= LEFT VISUAL ================= -->
-    <div class="auth-visual">
-      <div class="visual-slider">
-        <img src="assets/2788686.jpg" alt="Signup Illustration" class="signup-img">
-        <img src="assets/login-image.avif" alt="Login Illustration" class="login-img">
-      </div>
+  <!-- ================= CONTAINER ================= -->
+  <div class="w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden grid md:grid-cols-2">
 
-      <div class="step-dots" id="dotsContainer">
-        <span class="dot active" id="dot1" data-step="0"></span>
-        <span class="dot" id="dot2" data-step="1"></span>
-        <span class="dot" id="dot3" data-step="2"></span>
+    <!-- ================= IMAGE SIDE ================= -->
+    <div class="relative hidden md:block">
+      <img
+        id="signupImage"
+        src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae"
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+        alt="Signup">
+
+      <img
+        id="loginImage"
+        src="https://images.unsplash.com/photo-1556742031-c6961e8560b0"
+        class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500"
+        alt="Login">
+
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70"></div>
+
+      <div class="relative z-10 p-10 text-white h-full flex flex-col justify-between">
+        <div>
+          <h2 class="text-3xl font-bold">SuperMall</h2>
+          <p class="mt-2 text-sm text-slate-200 leading-relaxed">
+            Discover shops, compare products, and unlock exclusive offers.
+          </p>
+        </div>
+
+        <p class="text-sm text-slate-300">
+          Secure authentication powered by Firebase
+        </p>
       </div>
     </div>
 
-    <!-- ================= RIGHT FORM ================= -->
-    <div class="auth-form-container">
+    <!-- ================= FORM SIDE ================= -->
+    <div class="p-8 md:p-10 flex flex-col justify-center">
 
-      <h2 id="authTitle" class="authTitle">Create Your Account</h2>
-
-      <p class="sub">
-        Already have an account?
-        <a href="#" id="toggleAuth">Login</a>
-      </p>
+      <!-- Header -->
+      <div class="mb-6">
+        <h2 id="authTitle" class="text-2xl font-semibold text-slate-900">
+          Create your account
+        </h2>
+        <p class="mt-2 text-sm text-slate-500">
+          <span id="authHint">Already have an account?</span>
+          <a href="#" id="toggleAuth" class="text-primary font-medium ml-1">
+            Login
+          </a>
+        </p>
+      </div>
 
       <!-- ================= SIGNUP ================= -->
-      <div id="signupContainer">
+      <div id="signupContainer" class="space-y-5 transition-opacity duration-300">
 
         <!-- STEP 1 -->
-        <div class="form-step active-step" id="step1">
-          <input type="text" id="fullName" placeholder="Full Name" required>
-          <input type="email" id="email" placeholder="Email Address" required>
+        <div id="step1" class="space-y-4">
+          <input id="fullName" placeholder="Full name"
+            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
 
-          <div class="input-row">
-            <input type="password" id="password" placeholder="Password" required>
-            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+          <input id="email" type="email" placeholder="Email address"
+            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input id="password" type="password" placeholder="Password"
+              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+
+            <input id="confirmPassword" type="password" placeholder="Confirm password"
+              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
           </div>
 
-          <div class="btn-row">
-            <button type="button" class="btn-primary" id="next1">Next</button>
-          </div>
+          <button id="next1"
+            class="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
+            Next
+          </button>
         </div>
 
         <!-- STEP 2 -->
-        <div class="form-step" id="step2">
-          <input type="text" id="phone" placeholder="Phone Number" required>
+        <div id="step2" class="hidden space-y-4">
+          <input id="phone" placeholder="Phone number"
+            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
 
-          <div class="input-row">
-            <input type="text" id="city" placeholder="City" required>
-            <input type="text" id="state" placeholder="State" required>
-            <input type="text" id="pincode" placeholder="Pincode" required>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <input id="city" placeholder="City"
+              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            <input id="state" placeholder="State"
+              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            <input id="pincode" placeholder="Pincode"
+              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
           </div>
 
-          <input type="text" id="street" placeholder="Street / Address" required>
+          <input id="street" placeholder="Street address"
+            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
 
-          <div class="btn-row">
-            <button type="button" class="btn-secondary" id="back1">Back</button>
-            <button type="button" class="btn-primary" id="next2">Next</button>
+          <div class="grid grid-cols-2 gap-4">
+            <button id="back1"
+              class="py-3 rounded-xl border text-slate-600 hover:bg-slate-100 transition">
+              Back
+            </button>
+            <button id="next2"
+              class="py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
+              Next
+            </button>
           </div>
         </div>
 
         <!-- STEP 3 -->
-        <div class="form-step" id="step3">
-          <select id="role" required>
-            <option value="" disabled selected>Select your role</option>
+        <div id="step3" class="hidden space-y-4">
+          <select id="role"
+            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            <option value="" disabled selected>Select role</option>
             <option value="user">Customer</option>
-            <option value="admin">Shop Owner (Merchant)</option>
+            <option value="admin">Shop Owner</option>
           </select>
 
-          <label class="checkbox">
-            <input type="checkbox" id="terms" required>
-            <p>I agree to SuperMall terms & conditions</p>
+          <label class="flex items-center gap-2 text-sm text-slate-600">
+            <input id="terms" type="checkbox" class="accent-blue-600">
+            I agree to terms & conditions
           </label>
 
-          <div class="btn-row">
-            <button type="button" class="btn-secondary" id="back2">Back</button>
-            <button type="button" class="btn-primary" id="finish">Create Account</button>
+          <div class="grid grid-cols-2 gap-4">
+            <button id="back2"
+              class="py-3 rounded-xl border text-slate-600 hover:bg-slate-100 transition">
+              Back
+            </button>
+            <button id="finish"
+              class="py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
+              Create account
+            </button>
           </div>
         </div>
 
-        <!-- GOOGLE SIGNUP -->
-        <div class="googleBtn-container">
-          <button type="button" class="google-btn" id="googleBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 262" aria-hidden="true">
-              <path fill="#4285F4"
-                d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l38.755 30.291c24.659-22.774 38.875-56.282 38.875-96.027">
-              </path>
-              <path fill="#34A853"
-                d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-40.825 32.782C35.393 231.798 79.49 261.1 130.55 261.1">
-              </path>
-              <path fill="#FBBC05"
-                d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82s1.595-17.697 4.206-25.82L15.26 71.312C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782">
-              </path>
-              <path fill="#EB4335"
-                d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251">
-              </path>
-            </svg>
-            Continue with Google
-          </button>
-        </div>
+        <!-- Google Signup -->
+        <button id="googleBtn"
+          class="w-full flex items-center justify-center gap-3 py-3 border rounded-xl hover:bg-slate-50 transition">
+          <i class="fa-brands fa-google"></i>
+          Continue with Google
+        </button>
       </div>
 
       <!-- ================= LOGIN ================= -->
-      <div id="loginContainer" class="hidden">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
+      <div id="loginContainer" class="hidden space-y-4 opacity-0 transition-opacity duration-300">
+        <input id="loginEmail" type="email" placeholder="Email"
+          class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
 
-        <button type="button" class="login-btn" id="loginBtn">Login</button>
+        <input id="loginPassword" type="password" placeholder="Password"
+          class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
 
-        <div class="googleBtn-container">
-          <button type="button" class="google-btn" id="googleLoginBtn">
-            Continue with Google
-          </button>
-        </div>
+        <button id="loginBtn"
+          class="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
+          Login
+        </button>
+
+        <button id="googleLoginBtn"
+          class="w-full flex items-center justify-center gap-3 py-3 border rounded-xl hover:bg-slate-50 transition">
+          <i class="fa-brands fa-google"></i>
+          Continue with Google
+        </button>
       </div>
 
     </div>
   </div>
 
-  <!-- ================= SCRIPTS ================= -->
+  <!-- ================= TOGGLE LOGIC ================= -->
+  <script>
+    const toggleAuth = document.getElementById("toggleAuth");
+    const signup = document.getElementById("signupContainer");
+    const login = document.getElementById("loginContainer");
+    const title = document.getElementById("authTitle");
+    const hint = document.getElementById("authHint");
+    const signupImg = document.getElementById("signupImage");
+    const loginImg = document.getElementById("loginImage");
+
+    let isLogin = false;
+
+    toggleAuth.addEventListener("click", (e) => {
+      e.preventDefault();
+      isLogin = !isLogin;
+
+      if (isLogin) {
+        signup.classList.add("opacity-0");
+        setTimeout(() => {
+          signup.classList.add("hidden");
+          login.classList.remove("hidden");
+          setTimeout(() => login.classList.remove("opacity-0"), 50);
+        }, 250);
+
+        signupImg.classList.add("opacity-0");
+        loginImg.classList.remove("opacity-0");
+
+        title.textContent = "Welcome back";
+        hint.textContent = "Don’t have an account?";
+        toggleAuth.textContent = "Signup";
+      } else {
+        login.classList.add("opacity-0");
+        setTimeout(() => {
+          login.classList.add("hidden");
+          signup.classList.remove("hidden");
+          setTimeout(() => signup.classList.remove("opacity-0"), 50);
+        }, 250);
+
+        loginImg.classList.add("opacity-0");
+        signupImg.classList.remove("opacity-0");
+
+        title.textContent = "Create your account";
+        hint.textContent = "Already have an account?";
+        toggleAuth.textContent = "Login";
+      }
+    });
+  </script>
+
+  <!-- Firebase Logic -->
   <script type="module" src="/js/auth/signup.js"></script>
   <script type="module" src="/js/auth/login.js"></script>
+
 </body>
 </html>

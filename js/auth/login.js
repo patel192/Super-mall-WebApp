@@ -45,11 +45,11 @@ async function logEvent(type, message, uid = null) {
 function redirectByRole(role) {
   switch (role) {
     case ROLES.ADMIN:
-      window.location.href = "/html/admin/Admin-Dashboard.html";
+      window.location.href = "/admin/Admin-Dashboard.html";
       break;
 
     case ROLES.USER:
-      window.location.href = "/html/user/User-Dashboard.html";
+      window.location.href = "/user/User-Dashboard.html";
       break;
 
     default:
