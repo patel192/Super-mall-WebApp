@@ -1,4 +1,4 @@
-Hello admin<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,8 +9,10 @@ Hello admin<!DOCTYPE html>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
 
   <script>
     tailwind.config = {
@@ -35,37 +37,73 @@ Hello admin<!DOCTYPE html>
   <script type="module" src="/js/auth/authGuard.js"></script>
 
   <!-- 🔄 PAGE LOADER -->
-  <div id="pageLoader"
-       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+  <div
+    id="pageLoader"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-white">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
-      <span class="text-sm text-slate-600">Loading dashboard…</span>
+      <span class="text-sm text-slate-600">
+        Loading dashboard…
+      </span>
     </div>
   </div>
 
   <div class="flex min-h-screen">
 
-    <!-- Sidebar mount -->
+    <!-- Sidebar -->
     <div id="sidebarMount"></div>
 
     <!-- Main -->
     <div class="flex-1 lg:ml-72">
 
-      <!-- Navbar mount -->
+      <!-- Navbar -->
       <div id="navbarMount"></div>
 
-      <!-- Page Content -->
-      <main class="px-6 lg:px-8 py-8">
+      <!-- Content -->
+      <main class="px-6 lg:px-8 py-8 space-y-6">
+
+        <h1
+          id="shopName"
+          class="text-xl font-semibold text-dark">
+          —
+        </h1>
+
         <p class="text-sm text-slate-500">
           Welcome to your merchant dashboard.
         </p>
-      </main>
 
+        <!-- KPIs -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl border p-4">
+            <p class="text-xs text-slate-500">Offers</p>
+            <h2 id="kpiOffers" class="text-xl font-semibold">—</h2>
+          </div>
+
+          <div class="bg-white rounded-xl border p-4">
+            <p class="text-xs text-slate-500">Views</p>
+            <h2 id="kpiViews" class="text-xl font-semibold">—</h2>
+          </div>
+
+          <div class="bg-white rounded-xl border p-4">
+            <p class="text-xs text-slate-500">Status</p>
+            <h2 id="kpiStatus" class="text-xl font-semibold">—</h2>
+          </div>
+
+          <div class="bg-white rounded-xl border p-4">
+            <p class="text-xs text-slate-500">Created</p>
+            <h2 id="kpiCreated" class="text-xl font-semibold">—</h2>
+          </div>
+        </section>
+
+      </main>
     </div>
   </div>
 
-  <!-- Layout Logic -->
+  <!-- Layout -->
   <script type="module" src="/js/layout/loadAdminLayout.js"></script>
+
+  <!-- Dashboard Logic -->
+  <script type="module" src="/js/admin/Admin-Dashboard.js"></script>
 
 </body>
 </html>
