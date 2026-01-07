@@ -1,90 +1,126 @@
-/* ========================================
-   NORMAL LOGIN LOGIC (EMAIL + PASSWORD)
-======================================== */
-import { db, auth } from "../firebase-config.js";
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+// ================= FIREBASE IMPORTS =================
+import { db, auth, provider } from "../firebase-config.js";
+
 import {
-  getDoc,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
   doc,
+  getDoc,
   setDoc,
+  serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { provider } from "../firebase-config.js";
-import { signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-// DOM Access
+
+// ================= ROLE CONSTANTS =================
+// admin = Merchant
+// user  = Customer
+const ROLES = Object.freeze({
+  ADMIN: "admin",
+  USER: "user",
+});
+
+// ================= DOM REFERENCES =================
 const loginBtn = document.getElementById("loginBtn");
 const googleLoginBtn = document.getElementById("googleLoginBtn");
+const loginEmail = document.getElementById("loginEmail");
+const loginPassword = document.getElementById("loginPassword");
 
-// google login
-googleLoginBtn.addEventListener("click", async () => {
+// ================= LOGGER =================
+async function logEvent(type, message, uid = null) {
   try {
-    const result = await signInWithPopup(auth, provider);
-    console.log(result);
-    const user = result.user;
-    console.log(user);
-    const userRef = doc(db, "users", user.uid);
-    console.log(userRef);
-    const userSnap = await getDoc(userRef);
-    console.log(userSnap);
+    await setDoc(doc(db, "logs", crypto.randomUUID()), {
+      type,
+      message,
+      uid,
+      timestamp: serverTimestamp(),
+    });
+  } catch (err) {
+    console.error("Logging failed:", err);
+  }
+}
+
+// ================= ROLE REDIRECT =================
+function redirectByRole(role) {
+  switch (role) {
+    case ROLES.ADMIN:
+      window.location.href = "/html/admin/Admin-Dashboard.html";
+      break;
+
+    case ROLES.USER:
+      window.location.href = "/html/user/User-Dashboard.html";
+      break;
+
+    default:
+      window.location.href = "/index.html";
+  }
+}
+
+// ================= EMAIL / PASSWORD LOGIN =================
+loginBtn.addEventListener("click", async () => {
+  try {
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+
+    if (!email || !password) {
+      throw new Error("Please enter email and password");
+    }
+
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = cred.user.uid;
+
+    const userSnap = await getDoc(doc(db, "users", uid));
 
     if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        uid: user.uid,
-        fullName: user.displayName || "Unknown User",
-        email: user.email,
-        provider: "google",
-        role: "customer", // default role
-        photoURL: user.photoURL || "",
-        createdAt: new Date().toISOString(),
-      });
+      throw new Error("User profile not found");
     }
 
-    alert("Logged in with google");
+    const userData = userSnap.data();
 
-    const data = (await getDoc(userRef)).data();
-
-    if (data.role === "shopOwner") {
-      window.location.href = "Admin-Dashboard.html";
-    } else {
-      window.location.href = "User-Dashboard.html";
+    if (![ROLES.ADMIN, ROLES.USER].includes(userData.role)) {
+      throw new Error("Invalid user role");
     }
+
+    await logEvent("LOGIN", "Email login successful", uid);
+    redirectByRole(userData.role);
   } catch (err) {
-    console.error("Google Login error:", err);
-    alert("Google login failed: " + err.message);
+    await logEvent("ERROR", err.message);
+    alert(err.message || "Login failed");
   }
 });
 
-// normal Login
-loginBtn.addEventListener("click", async () => {
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-
-  if (!email || !password) {
-    alert("Please enter email and password");
-    return;
-  }
+// ================= GOOGLE LOGIN =================
+googleLoginBtn.addEventListener("click", async () => {
   try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCred.user.uid;
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    const userRef = doc(db, "users", user.uid);
 
-    //  fething user role
-    const userDoc = await getDoc(doc(db, "users", uid));
-    if (!userDoc.exists()) {
-      alert("User data not found!");
-      return;
+    const snap = await getDoc(userRef);
+
+    // First-time Google login → create USER (customer)
+    if (!snap.exists()) {
+      await setDoc(userRef, {
+        email: user.email,
+        fullName: user.displayName || "Unknown User",
+        role: ROLES.USER, // Google users are always customers
+        provider: "google",
+        createdAt: serverTimestamp(),
+      });
     }
 
-    const userData = userDoc.data();
-    alert("Login Successful! Welcome");
+    const finalSnap = await getDoc(userRef);
+    const role = finalSnap.data().role;
 
-    if (userData.role === "shopOwner") {
-      window.location.href = "Admin-Dashboard.html";
-    } else if (userData.role === "customer") {
-      window.location.href = "User-Dashboard.html";
-    } else {
-      window.location.href = "index.html";
+    if (![ROLES.ADMIN, ROLES.USER].includes(role)) {
+      throw new Error("Invalid user role");
     }
+
+    await logEvent("GOOGLE_LOGIN", "Google login successful", user.uid);
+    redirectByRole(role);
   } catch (err) {
-    console.error("Login Error:", err);
-    alert("Invalid email and password");
+    await logEvent("ERROR", err.message);
+    alert("Google login failed");
   }
 });

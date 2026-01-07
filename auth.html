@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SuperMall Signup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>SuperMall · Authentication</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="css/auth.css" />
 </head>
 
 <body>
-
   <div class="auth-wrapper" id="authWrapper">
 
-    <!-- Left visual section -->
+    <!-- ================= LEFT VISUAL ================= -->
     <div class="auth-visual">
       <div class="visual-slider">
-        <img src="assets/2788686.jpg" class="signup-img">
-        <img src="assets/login-image.avif" class="login-img">
+        <img src="assets/2788686.jpg" alt="Signup Illustration" class="signup-img">
+        <img src="assets/login-image.avif" alt="Login Illustration" class="login-img">
       </div>
 
       <div class="step-dots" id="dotsContainer">
@@ -27,78 +29,83 @@
       </div>
     </div>
 
-
-
-
-    <!-- Right form side -->
+    <!-- ================= RIGHT FORM ================= -->
     <div class="auth-form-container">
 
       <h2 id="authTitle" class="authTitle">Create Your Account</h2>
+
       <p class="sub">
         Already have an account?
         <a href="#" id="toggleAuth">Login</a>
       </p>
 
-      <!-- SIGNUP STEPS -->
+      <!-- ================= SIGNUP ================= -->
       <div id="signupContainer">
 
         <!-- STEP 1 -->
         <div class="form-step active-step" id="step1">
-          <input type="text" id="fullName" placeholder="Full Name">
-          <input type="email" id="email" placeholder="Email Address">
+          <input type="text" id="fullName" placeholder="Full Name" required>
+          <input type="email" id="email" placeholder="Email Address" required>
+
           <div class="input-row">
-            <input type="password" id="password" placeholder="Password">
-            <input type="password" id="confirmPassword" placeholder="Confirm Password">
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
           </div>
+
           <div class="btn-row">
-            <button class="btn-primary" id="next1">Next</button>
+            <button type="button" class="btn-primary" id="next1">Next</button>
           </div>
         </div>
 
         <!-- STEP 2 -->
         <div class="form-step" id="step2">
-          <input type="text" id="phone" placeholder="Phone Number">
+          <input type="text" id="phone" placeholder="Phone Number" required>
+
           <div class="input-row">
-            <input type="text" id="city" placeholder="City">
-            <input type="text" id="state" placeholder="State">
-            <input type="text" id="pincode" placeholder="Pincode">
+            <input type="text" id="city" placeholder="City" required>
+            <input type="text" id="state" placeholder="State" required>
+            <input type="text" id="pincode" placeholder="Pincode" required>
           </div>
-          <input type="text" id="street" placeholder="Street / Address">
+
+          <input type="text" id="street" placeholder="Street / Address" required>
+
           <div class="btn-row">
-            <button class="btn-secondary" id="back1">Back</button>
-            <button class="btn-primary" id="next2">Next</button>
+            <button type="button" class="btn-secondary" id="back1">Back</button>
+            <button type="button" class="btn-primary" id="next2">Next</button>
           </div>
         </div>
 
         <!-- STEP 3 -->
         <div class="form-step" id="step3">
-          <select id="role">
+          <select id="role" required>
             <option value="" disabled selected>Select your role</option>
-            <option value="customer">Customer</option>
-            <option value="shopOwner">Shop Owner</option>
+            <option value="user">Customer</option>
+            <option value="admin">Shop Owner (Merchant)</option>
           </select>
 
           <label class="checkbox">
-            <input type="checkbox" id="terms">
+            <input type="checkbox" id="terms" required>
             <p>I agree to SuperMall terms & conditions</p>
           </label>
 
           <div class="btn-row">
-            <button class="btn-secondary" id="back2">Back</button>
-            <button class="btn-primary" id="finish">Create Account</button>
+            <button type="button" class="btn-secondary" id="back2">Back</button>
+            <button type="button" class="btn-primary" id="finish">Create Account</button>
           </div>
         </div>
+
+        <!-- GOOGLE SIGNUP -->
         <div class="googleBtn-container">
-          <button class="google-btn" id="googleBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262">
+          <button type="button" class="google-btn" id="googleBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 262" aria-hidden="true">
               <path fill="#4285F4"
-                d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027">
+                d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l38.755 30.291c24.659-22.774 38.875-56.282 38.875-96.027">
               </path>
               <path fill="#34A853"
-                d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1">
+                d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-40.825 32.782C35.393 231.798 79.49 261.1 130.55 261.1">
               </path>
               <path fill="#FBBC05"
-                d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782">
+                d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82s1.595-17.697 4.206-25.82L15.26 71.312C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782">
               </path>
               <path fill="#EB4335"
                 d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251">
@@ -109,36 +116,25 @@
         </div>
       </div>
 
-      <!-- LOGIN FORM -->
+      <!-- ================= LOGIN ================= -->
       <div id="loginContainer" class="hidden">
-        <input type="email" placeholder="Email" id="loginEmail">
-        <input type="password" placeholder="Password" id="loginPassword">
-        <button class="login-btn" id="loginBtn">Login</button>
-        <!-- Google Login Button -->
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+
+        <button type="button" class="login-btn" id="loginBtn">Login</button>
+
         <div class="googleBtn-container">
-          <button class="google-btn" id="googleLoginBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262">
-              <path fill="#4285F4"
-                d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027">
-              </path>
-              <path fill="#34A853"
-                d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1">
-              </path>
-              <path fill="#FBBC05"
-                d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782">
-              </path>
-              <path fill="#EB4335"
-                d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251">
-              </path>
-            </svg>
+          <button type="button" class="google-btn" id="googleLoginBtn">
             Continue with Google
           </button>
         </div>
       </div>
+
     </div>
   </div>
+
+  <!-- ================= SCRIPTS ================= -->
   <script type="module" src="/js/auth/signup.js"></script>
   <script type="module" src="/js/auth/login.js"></script>
 </body>
-
 </html>

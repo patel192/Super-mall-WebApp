@@ -1,4 +1,4 @@
-// ---------- FIREBASE IMPORTS ----------
+// ================= FIREBASE IMPORTS =================
 import { db, auth, provider } from "../firebase-config.js";
 
 import {
@@ -9,22 +9,36 @@ import {
 import {
   doc,
   setDoc,
+  serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ======================================================
-// SIGNUP STEPS LOGIC
-// ======================================================
-const steps = [
-  document.getElementById("step1"),
-  document.getElementById("step2"),
-  document.getElementById("step3"),
-];
+// ================= ROLE CONSTANTS =================
+// admin = Merchant
+// user  = Customer
+const ROLES = Object.freeze({
+  ADMIN: "admin",
+  USER: "user",
+});
 
-const dots = [
-  document.getElementById("dot1"),
-  document.getElementById("dot2"),
-  document.getElementById("dot3"),
-];
+// ================= LOGGER =================
+async function logEvent(type, message, uid = null) {
+  try {
+    await setDoc(doc(db, "logs", crypto.randomUUID()), {
+      type,
+      message,
+      uid,
+      timestamp: serverTimestamp(),
+    });
+  } catch (err) {
+    console.error("Logging failed:", err);
+  }
+}
+
+// ================= STEP LOGIC =================
+const steps = ["step1", "step2", "step3"].map((id) =>
+  document.getElementById(id)
+);
+const dots = ["dot1", "dot2", "dot3"].map((id) => document.getElementById(id));
 
 function showStep(index) {
   steps.forEach((s) => s.classList.remove("active-step"));
@@ -38,127 +52,130 @@ document.getElementById("next2").onclick = () => showStep(2);
 document.getElementById("back1").onclick = () => showStep(0);
 document.getElementById("back2").onclick = () => showStep(1);
 
-dots.forEach((dot) => {
-  dot.addEventListener("click", () => showStep(parseInt(dot.dataset.step)));
-});
+// ================= DOM REFERENCES =================
+const fullNameInput = document.getElementById("fullName");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
 
-// ======================================================
-// EMAIL/PASSWORD SIGNUP
-// ======================================================
+const phoneInput = document.getElementById("phone");
+const cityInput = document.getElementById("city");
+const stateInput = document.getElementById("state");
+const pincodeInput = document.getElementById("pincode");
+const streetInput = document.getElementById("street");
 
-const finishBtn = document.getElementById("finish");
+const roleSelect = document.getElementById("role");
+const termsCheckbox = document.getElementById("terms");
 
-finishBtn.addEventListener("click", async () => {
-  // Step 1
-  const fullName = document.getElementById("fullName").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const confirmPassword = document
-    .getElementById("confirmPassword")
-    .value.trim();
-
-  // Step 2
-  const phoneNumber = document.getElementById("phone").value.trim();
-  const city = document.getElementById("city").value.trim();
-  const state = document.getElementById("state").value.trim();
-  const pincode = document.getElementById("pincode").value.trim();
-  const streetAddress = document.getElementById("street").value.trim();
-
-  // Step 3
-  const role = document.getElementById("role").value.trim();
-  const terms = document.getElementById("terms").checked;
-
-  // Validations
-  if (!fullName || !email || !password || !confirmPassword)
-    return alert("Fill all personal details.");
-
-  if (password.length < 6)
-    return alert("Password must be minimum 6 characters.");
-
-  if (password !== confirmPassword) return alert("Passwords do not match.");
-
-  if (!phoneNumber || !city || !state || !pincode || !streetAddress)
-    return alert("Fill all address details.");
-
-  if (!role) return alert("Select your role.");
-
-  if (!terms) return alert("You must agree to terms & conditions.");
-
+// ================= EMAIL SIGNUP =================
+document.getElementById("finish").addEventListener("click", async () => {
   try {
+    // -------- Step 1 --------
+    const fullName = fullNameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    if (!fullName || !email || !password || !confirmPassword) {
+      throw new Error("Please fill all personal details");
+    }
+
+    if (password.length < 6) {
+      throw new Error("Password must be at least 6 characters");
+    }
+
+    if (password !== confirmPassword) {
+      throw new Error("Passwords do not match");
+    }
+
+    // -------- Step 2 --------
+    const phone = phoneInput.value.trim();
+    const city = cityInput.value.trim();
+    const state = stateInput.value.trim();
+    const pincode = pincodeInput.value.trim();
+    const street = streetInput.value.trim();
+
+    if (!phone || !city || !state || !pincode || !street) {
+      throw new Error("Please fill all address details");
+    }
+
+    // -------- Step 3 --------
+    const selectedRole = roleSelect.value;
+
+    if (![ROLES.ADMIN, ROLES.USER].includes(selectedRole)) {
+      throw new Error("Invalid role selected");
+    }
+
+    if (!termsCheckbox.checked) {
+      throw new Error("You must accept terms & conditions");
+    }
+
+    // -------- Firebase Auth --------
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const uid = cred.user.uid;
 
-    const userData = {
+    // -------- Firestore User --------
+    await setDoc(doc(db, "users", uid), {
       fullName,
       email,
-      phoneNumber,
-      role,
+      role: selectedRole, // admin | user
+      phone,
       address: {
         city,
         state,
         pincode,
-        streetAddress,
+        street,
       },
-      createdAt: new Date().toISOString(),
       provider: "email",
-    };
+      createdAt: serverTimestamp(),
+    });
 
-    await setDoc(doc(db, "users", uid), userData);
+    await logEvent("SIGNUP", "Email signup successful", uid);
 
     alert("Account created successfully!");
     switchToLogin();
   } catch (err) {
-    alert("Signup Error: " + err.message);
+    await logEvent("ERROR", err.message);
+    alert(err.message);
   }
 });
 
-// ======================================================
-// GOOGLE SIGNUP 
-// ======================================================
+// ================= GOOGLE SIGNUP =================
+document.getElementById("googleBtn").addEventListener("click", async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
-const googleBtn = document.querySelectorAll("#googleBtn");
+    // Google users are ALWAYS customers by default
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        fullName: user.displayName || "Unknown User",
+        email: user.email,
+        provider: "google",
+        role: ROLES.USER,
+        createdAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
 
-googleBtn.forEach((btn) => {
-  btn.addEventListener("click", async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+    await logEvent("GOOGLE_SIGNUP", "Google signup successful", user.uid);
 
-      await setDoc(
-        doc(db, "users", user.uid),
-        {
-          uid: user.uid,
-          fullName: user.displayName || "Unknown User",
-          email: user.email,
-          photoURL: user.photoURL || "",
-          provider: "google",
-          role: "customer",
-          createdAt: new Date().toISOString(),
-        },
-        { merge: true }
-      );
-
-      alert("Google Signup successful!");
-      switchToLogin();
-    } catch (err) {
-      alert("Google Signup Error: " + err.message);
-    }
-  });
+    alert("Google signup successful!");
+    switchToLogin();
+  } catch (err) {
+    await logEvent("ERROR", err.message);
+    alert("Google signup failed");
+  }
 });
-
-// ======================================================
-// SIGNUP <-> LOGIN MODE SWITCH
-// ======================================================
-
+// ================= AUTH TOGGLE LOGIC =================
 const wrapper = document.getElementById("authWrapper");
 const toggleAuth = document.getElementById("toggleAuth");
-const sub = document.querySelector(".sub");
 const signupContainer = document.getElementById("signupContainer");
 const loginContainer = document.getElementById("loginContainer");
 const authTitle = document.getElementById("authTitle");
-const body = document.body;
 
-
+// switch to LOGIN view
 function switchToLogin() {
   wrapper.classList.add("login-mode");
   signupContainer.classList.add("hidden");
@@ -166,32 +183,27 @@ function switchToLogin() {
 
   authTitle.textContent = "Welcome Back!";
   toggleAuth.textContent = "Signup";
-  sub.style.marginLeft = "40px";
-
-  // FIXED
-  body.style.background = "linear-gradient(170deg, #ffffff, #141c4c)";
 }
 
+// switch to SIGNUP view
 function switchToSignup() {
   wrapper.classList.remove("login-mode");
   signupContainer.classList.remove("hidden");
   loginContainer.classList.add("hidden");
 
-  authTitle.textContent = "Create Your Account!";
+  authTitle.textContent = "Create Your Account";
   toggleAuth.textContent = "Login";
-  body.style.background = "linear-gradient(170deg, #ffffff, #671ae3)";
 }
 
+// toggle click
 toggleAuth.addEventListener("click", (e) => {
   e.preventDefault();
-  const isLogin = wrapper.classList.contains("login-mode");
-  isLogin ? switchToSignup() : switchToLogin();
+
+  const isLoginMode = wrapper.classList.contains("login-mode");
+  isLoginMode ? switchToSignup() : switchToLogin();
 });
 
-// ======================================================
-// AUTO SWITCH IF URL CONTAINS ?mode=login
-// ======================================================
-
+// optional: URL support (?mode=login)
 const params = new URLSearchParams(window.location.search);
 if (params.get("mode") === "login") {
   switchToLogin();
