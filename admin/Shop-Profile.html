@@ -29,7 +29,7 @@
 
 <body data-required-role="admin" class="bg-muted text-slate-700 min-h-screen">
 
-  <!-- 🔒 AUTH GUARD -->
+  <!-- 🔒 AUTH -->
   <script type="module" src="/js/auth/authGuard.js"></script>
 
   <!-- Loader -->
@@ -37,7 +37,7 @@
        class="fixed inset-0 z-50 flex items-center justify-center bg-white">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
-      <span class="text-sm text-slate-600">Loading shop profile…</span>
+      <span class="text-sm">Loading shop profile…</span>
     </div>
   </div>
 
@@ -53,52 +53,69 @@
       <div id="navbarMount"></div>
 
       <!-- Content -->
-      <main class="px-6 lg:px-8 py-8 max-w-4xl">
+      <main class="px-6 lg:px-10 py-8 max-w-4xl">
 
-        <h1 class="text-xl font-semibold text-dark mb-6">
-          Shop Profile
-        </h1>
+        <div class="mb-8">
+          <h1 class="text-2xl font-semibold text-dark">
+            Shop Profile
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">
+            Complete your shop details to activate your merchant dashboard
+          </p>
+        </div>
 
-        <form id="shopForm" class="space-y-6 bg-white border rounded-2xl p-6">
+        <form id="shopForm"
+              class="bg-white border rounded-2xl p-6 space-y-6">
 
+          <!-- Shop Name -->
           <div>
             <label class="text-sm font-medium">Shop Name</label>
             <input id="shopName"
               class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
                      focus:ring-2 focus:ring-primary"
-              placeholder="Enter shop name" />
+              placeholder="e.g. Fashion Fiesta" />
           </div>
 
+          <!-- Category -->
           <div>
             <label class="text-sm font-medium">Category</label>
-            <input id="category"
+            <select id="shopCategory"
               class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
-                     focus:ring-2 focus:ring-primary"
-              placeholder="Fashion, Electronics, Food, etc." />
+                     focus:ring-2 focus:ring-primary">
+              <option value="">Select category</option>
+              <option>Fashion</option>
+              <option>Electronics</option>
+              <option>Food & Beverages</option>
+              <option>Groceries</option>
+              <option>Services</option>
+            </select>
           </div>
 
-          <div>
-            <label class="text-sm font-medium">Floor</label>
-            <input id="floor"
-              class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
-                     focus:ring-2 focus:ring-primary"
-              placeholder="Ground Floor / 1st Floor" />
+          <!-- Location -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input id="city" placeholder="City"
+              class="px-4 py-3 border rounded-xl outline-none focus:ring-primary focus:ring-2"/>
+            <input id="state" placeholder="State"
+              class="px-4 py-3 border rounded-xl outline-none focus:ring-primary focus:ring-2"/>
+            <input id="pincode" placeholder="Pincode"
+              class="px-4 py-3 border rounded-xl outline-none focus:ring-primary focus:ring-2"/>
           </div>
 
+          <!-- Description -->
           <div>
             <label class="text-sm font-medium">Description</label>
-            <textarea id="description"
+            <textarea id="shopDescription" rows="4"
               class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
                      focus:ring-2 focus:ring-primary"
-              rows="4"
-              placeholder="Short description about your shop"></textarea>
+              placeholder="Tell customers about your shop"></textarea>
           </div>
 
-          <div class="flex justify-end gap-3">
+          <!-- Actions -->
+          <div class="flex justify-end gap-3 pt-4">
             <button type="submit"
-              class="px-6 py-3 rounded-xl bg-primary text-white font-medium
-                     hover:bg-blue-700 transition">
-              Save Profile
+              class="px-6 py-3 rounded-xl bg-primary text-white
+                     font-medium hover:bg-blue-700 transition">
+              Save & Continue
             </button>
           </div>
 
@@ -111,7 +128,7 @@
   <!-- Layout -->
   <script type="module" src="/js/layout/loadAdminLayout.js"></script>
 
-  <!-- Logic -->
+  <!-- Page Logic -->
   <script type="module" src="/js/admin/shop-profile.js"></script>
 
 </body>
