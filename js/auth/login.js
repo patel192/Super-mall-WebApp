@@ -11,16 +11,18 @@ import {
   getDoc,
   setDoc,
   serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= ROLE CONSTANTS =================
-// admin = Merchant
-// user  = Customer
 const ROLES = Object.freeze({
-  USER: "user", // Customer
+  USER: "user",                 // Customer
   MERCHANT_PENDING: "merchant_pending",
-  ADMIN: "admin", // Shop owner
-  SUPER_ADMIN: "super_admin", // Platform owner
+  ADMIN: "admin",               // Shop owner
+  SUPER_ADMIN: "super_admin",   // Platform owner
 });
 
 // ================= DOM REFERENCES =================
@@ -43,14 +45,41 @@ async function logEvent(type, message, uid = null) {
   }
 }
 
+// ================= ADMIN SHOP FETCH =================
+async function fetchAdminShop(uid) {
+  const q = query(
+    collection(db, "shops"),
+    where("ownerId", "==", uid)
+  );
+
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    throw new Error("Shop not found for this admin account");
+  }
+
+  const shopDoc = snap.docs[0];
+
+  // Cache shop context for dashboard usage
+  sessionStorage.setItem(
+    "adminShop",
+    JSON.stringify({
+      shopId: shopDoc.id,
+      ...shopDoc.data(),
+    })
+  );
+}
+
 // ================= ROLE REDIRECT =================
-function redirectByRole(role) {
+async function redirectByRole(role, uid) {
   switch (role) {
     case ROLES.SUPER_ADMIN:
       window.location.href = "/super-admin/Dashboard.html";
       break;
 
     case ROLES.ADMIN:
+      // 🔐 Fetch shop ONLY for admin
+      await fetchAdminShop(uid);
       window.location.href = "/admin/Admin-Dashboard.html";
       break;
 
@@ -79,26 +108,19 @@ loginBtn.addEventListener("click", async () => {
     const uid = cred.user.uid;
 
     const userSnap = await getDoc(doc(db, "users", uid));
-
     if (!userSnap.exists()) {
       throw new Error("User profile not found");
     }
 
-    const userData = userSnap.data();
+    const { role } = userSnap.data();
 
-    if (
-      ![
-        ROLES.USER,
-        ROLES.MERCHANT_PENDING,
-        ROLES.ADMIN,
-        ROLES.SUPER_ADMIN,
-      ].includes(userData.role)
-    ) {
+    if (!Object.values(ROLES).includes(role)) {
       throw new Error("Invalid user role");
     }
 
     await logEvent("LOGIN", "Email login successful", uid);
-    redirectByRole(userData.role);
+    await redirectByRole(role, uid);
+
   } catch (err) {
     await logEvent("ERROR", err.message);
     alert(err.message || "Login failed");
@@ -114,12 +136,12 @@ googleLoginBtn.addEventListener("click", async () => {
 
     const snap = await getDoc(userRef);
 
-    // First-time Google login → create USER (customer)
+    // First-time Google login → create USER
     if (!snap.exists()) {
       await setDoc(userRef, {
         email: user.email,
         fullName: user.displayName || "Unknown User",
-        role: ROLES.USER, // Google users are always customers
+        role: ROLES.USER,
         provider: "google",
         createdAt: serverTimestamp(),
       });
@@ -128,19 +150,13 @@ googleLoginBtn.addEventListener("click", async () => {
     const finalSnap = await getDoc(userRef);
     const role = finalSnap.data().role;
 
-    if (
-      ![
-        ROLES.USER,
-        ROLES.MERCHANT_PENDING,
-        ROLES.ADMIN,
-        ROLES.SUPER_ADMIN,
-      ].includes(role)
-    ) {
+    if (!Object.values(ROLES).includes(role)) {
       throw new Error("Invalid user role");
     }
 
     await logEvent("GOOGLE_LOGIN", "Google login successful", user.uid);
-    redirectByRole(role);
+    await redirectByRole(role, user.uid);
+
   } catch (err) {
     await logEvent("ERROR", err.message);
     alert("Google login failed");

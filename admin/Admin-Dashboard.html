@@ -1,0 +1,71 @@
+Hello admin<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard · SuperMall</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body
+  data-required-role="admin"
+  class="bg-muted text-slate-700 min-h-screen">
+
+  <!-- 🔒 AUTH GUARD -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
+
+  <!-- 🔄 PAGE LOADER -->
+  <div id="pageLoader"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <div class="flex items-center gap-3">
+      <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+      <span class="text-sm text-slate-600">Loading dashboard…</span>
+    </div>
+  </div>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar mount -->
+    <div id="sidebarMount"></div>
+
+    <!-- Main -->
+    <div class="flex-1 lg:ml-72">
+
+      <!-- Navbar mount -->
+      <div id="navbarMount"></div>
+
+      <!-- Page Content -->
+      <main class="px-6 lg:px-8 py-8">
+        <p class="text-sm text-slate-500">
+          Welcome to your merchant dashboard.
+        </p>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Layout Logic -->
+  <script type="module" src="/js/layout/loadAdminLayout.js"></script>
+
+</body>
+</html>
