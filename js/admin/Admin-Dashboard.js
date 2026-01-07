@@ -19,6 +19,15 @@ const kpiViews = document.getElementById("kpiViews");
 const kpiStatus = document.getElementById("kpiStatus");
 const kpiCreated = document.getElementById("kpiCreated");
 
+// ================= HELPERS =================
+function isProfileComplete(shop) {
+  return Boolean(
+    shop.name &&
+    shop.category &&
+    shop.location
+  );
+}
+
 // ================= INIT =================
 onAuthStateChanged(auth, async (user) => {
   try {
@@ -35,19 +44,26 @@ onAuthStateChanged(auth, async (user) => {
 
     const snap = await getDocs(q);
 
+    // ❌ No shop → force profile creation
     if (snap.empty) {
-      alert("No shop found for this admin account.");
+      window.location.href = "/admin/admin-profile.html";
       return;
     }
 
     const shopDoc = snap.docs[0];
     const shop = shopDoc.data();
 
-    // Inject UI
+    // 🔴 Profile incomplete → redirect
+    if (!isProfileComplete(shop)) {
+      window.location.href = "/admin/Shop-Profile.html";
+      return;
+    }
+
+    // ✅ Profile complete → load dashboard UI
     shopNameEl.textContent = shop.name || "My Shop";
 
-    kpiOffers.textContent = "0";
-    kpiViews.textContent = "0";
+    kpiOffers.textContent = shop.offerCount ?? "0";
+    kpiViews.textContent = shop.views ?? "0";
     kpiStatus.textContent = shop.status || "active";
 
     kpiCreated.textContent =

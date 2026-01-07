@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Profile · SuperMall</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body data-required-role="admin" class="bg-muted text-slate-700 min-h-screen">
+
+  <!-- 🔒 AUTH GUARD -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
+
+  <!-- Loader -->
+  <div id="pageLoader"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <div class="flex items-center gap-3">
+      <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+      <span class="text-sm text-slate-600">Loading shop profile…</span>
+    </div>
+  </div>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <div id="sidebarMount"></div>
+
+    <!-- Main -->
+    <div class="flex-1 lg:ml-72">
+
+      <!-- Navbar -->
+      <div id="navbarMount"></div>
+
+      <!-- Content -->
+      <main class="px-6 lg:px-8 py-8 max-w-4xl">
+
+        <h1 class="text-xl font-semibold text-dark mb-6">
+          Shop Profile
+        </h1>
+
+        <form id="shopForm" class="space-y-6 bg-white border rounded-2xl p-6">
+
+          <div>
+            <label class="text-sm font-medium">Shop Name</label>
+            <input id="shopName"
+              class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
+                     focus:ring-2 focus:ring-primary"
+              placeholder="Enter shop name" />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">Category</label>
+            <input id="category"
+              class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
+                     focus:ring-2 focus:ring-primary"
+              placeholder="Fashion, Electronics, Food, etc." />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">Floor</label>
+            <input id="floor"
+              class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
+                     focus:ring-2 focus:ring-primary"
+              placeholder="Ground Floor / 1st Floor" />
+          </div>
+
+          <div>
+            <label class="text-sm font-medium">Description</label>
+            <textarea id="description"
+              class="mt-1 w-full px-4 py-3 border rounded-xl outline-none
+                     focus:ring-2 focus:ring-primary"
+              rows="4"
+              placeholder="Short description about your shop"></textarea>
+          </div>
+
+          <div class="flex justify-end gap-3">
+            <button type="submit"
+              class="px-6 py-3 rounded-xl bg-primary text-white font-medium
+                     hover:bg-blue-700 transition">
+              Save Profile
+            </button>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <script type="module" src="/js/layout/loadAdminLayout.js"></script>
+
+  <!-- Logic -->
+  <script type="module" src="/js/admin/shop-profile.js"></script>
+
+</body>
+</html>
