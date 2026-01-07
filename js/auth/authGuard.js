@@ -1,67 +1,73 @@
 // ================= FIREBASE IMPORTS =================
 import { auth, db } from "../firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  doc,
-  getDoc,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= ROLE CONSTANTS =================
-// admin = Merchant
-// user  = Customer
 const ROLES = Object.freeze({
-  ADMIN: "admin",
-  USER: "user",
+  USER: "user",                     // Customer
+  MERCHANT_PENDING: "merchant_pending",
+  ADMIN: "admin",                   // Shop owner
+  SUPER_ADMIN: "super_admin",       // Platform owner
 });
 
 // ================= CONFIG =================
-// Define which role is allowed on this page
-// Example usage:
-//   data-required-role="admin"
-//   data-required-role="user"
 const requiredRole = document.body.dataset.requiredRole;
 
-// ================= GUARD LOGIC =================
+// ================= REDIRECT HELPERS =================
+function redirectByRole(role) {
+  switch (role) {
+    case ROLES.SUPER_ADMIN:
+      window.location.href = "/html/super-admin/Dashboard.html";
+      break;
+
+    case ROLES.ADMIN:
+      window.location.href = "/html/admin/Admin-Dashboard.html";
+      break;
+
+    case ROLES.USER:
+    case ROLES.MERCHANT_PENDING:
+      window.location.href = "/html/user/User-Dashboard.html";
+      break;
+
+    default:
+      window.location.href = "/signup-login.html?mode=login";
+  }
+}
+
+// ================= AUTH GUARD =================
 onAuthStateChanged(auth, async (user) => {
   try {
-    // 1️⃣ Not logged in → redirect to auth
+    // 1️⃣ Not logged in
     if (!user) {
       window.location.href = "/signup-login.html?mode=login";
       return;
     }
 
-    // 2️⃣ Fetch user profile
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
+    // 2️⃣ Fetch profile
+    const snap = await getDoc(doc(db, "users", user.uid));
 
-    if (!userSnap.exists()) {
-      console.error("User profile missing");
-      await auth.signOut();
+    if (!snap.exists()) {
+      await signOut(auth);
       window.location.href = "/signup-login.html?mode=login";
       return;
     }
 
-    const { role } = userSnap.data();
+    const { role } = snap.data();
 
     // 3️⃣ Validate role
-    if (![ROLES.ADMIN, ROLES.USER].includes(role)) {
+    const validRoles = Object.values(ROLES);
+    if (!validRoles.includes(role)) {
       console.error("Invalid role:", role);
-      await auth.signOut();
+      await signOut(auth);
       window.location.href = "/signup-login.html?mode=login";
       return;
     }
 
-    // 4️⃣ Check page permission
+    // 4️⃣ Page-level access control
     if (requiredRole && role !== requiredRole) {
-      console.warn(`Access denied. Required: ${requiredRole}, Found: ${role}`);
-
-      // Redirect to correct dashboard
-      if (role === ROLES.ADMIN) {
-        window.location.href = "/html/admin/Admin-Dashboard.html";
-      } else {
-        window.location.href = "/html/user/User-Dashboard.html";
-      }
-
+      console.warn(`Access denied → required: ${requiredRole}, found: ${role}`);
+      redirectByRole(role);
       return;
     }
 
@@ -69,7 +75,7 @@ onAuthStateChanged(auth, async (user) => {
     console.log("AuthGuard passed:", role);
   } catch (err) {
     console.error("AuthGuard error:", err);
-    await auth.signOut();
-    window.location.href = "/signup-login.html?mode=login";
+    await signOut(auth);
+    window.location.href = "/auth.html?mode=login";
   }
 });

@@ -17,8 +17,10 @@ import {
 // admin = Merchant
 // user  = Customer
 const ROLES = Object.freeze({
-  ADMIN: "admin",
-  USER: "user",
+  USER: "user", // Customer
+  MERCHANT_PENDING: "merchant_pending",
+  ADMIN: "admin", // Shop owner
+  SUPER_ADMIN: "super_admin", // Platform owner
 });
 
 // ================= DOM REFERENCES =================
@@ -44,16 +46,22 @@ async function logEvent(type, message, uid = null) {
 // ================= ROLE REDIRECT =================
 function redirectByRole(role) {
   switch (role) {
+    case ROLES.SUPER_ADMIN:
+      window.location.href = "/super-admin/Dashboard.html";
+      break;
+
     case ROLES.ADMIN:
       window.location.href = "/admin/Admin-Dashboard.html";
       break;
 
     case ROLES.USER:
+    case ROLES.MERCHANT_PENDING:
       window.location.href = "/user/User-Dashboard.html";
       break;
 
     default:
-      window.location.href = "/index.html";
+      console.warn("Unknown role:", role);
+      window.location.href = "/auth.html";
   }
 }
 
@@ -78,7 +86,14 @@ loginBtn.addEventListener("click", async () => {
 
     const userData = userSnap.data();
 
-    if (![ROLES.ADMIN, ROLES.USER].includes(userData.role)) {
+    if (
+      ![
+        ROLES.USER,
+        ROLES.MERCHANT_PENDING,
+        ROLES.ADMIN,
+        ROLES.SUPER_ADMIN,
+      ].includes(userData.role)
+    ) {
       throw new Error("Invalid user role");
     }
 
@@ -113,7 +128,14 @@ googleLoginBtn.addEventListener("click", async () => {
     const finalSnap = await getDoc(userRef);
     const role = finalSnap.data().role;
 
-    if (![ROLES.ADMIN, ROLES.USER].includes(role)) {
+    if (
+      ![
+        ROLES.USER,
+        ROLES.MERCHANT_PENDING,
+        ROLES.ADMIN,
+        ROLES.SUPER_ADMIN,
+      ].includes(role)
+    ) {
       throw new Error("Invalid user role");
     }
 

@@ -139,27 +139,39 @@
 
       <!-- Topbar -->
       <header class="sticky top-0 z-30 bg-white border-b">
-        <div class="flex items-center justify-between px-8 py-4">
+        <div class="flex items-center justify-between px-6 lg:px-8 py-4 gap-4">
 
-          <!-- Mobile menu -->
-          <button id="menuBtn" class="lg:hidden text-xl text-slate-600">
-            <i class="fa-solid fa-bars"></i>
-          </button>
+          <!-- Left: Mobile menu + Title -->
+          <div class="flex items-center gap-4">
+            <!-- Mobile menu -->
+            <button id="menuBtn" class="lg:hidden text-xl text-slate-600">
+              <i class="fa-solid fa-bars"></i>
+            </button>
 
-          <!-- Page title -->
-          <h1 class="text-lg font-semibold text-slate-900">
-            Dashboard
-          </h1>
+            <!-- Page title -->
+            <h1 class="text-lg font-semibold text-slate-900">
+              Dashboard
+            </h1>
+          </div>
 
-          <!-- Search -->
+          <!-- Center: Search -->
           <div class="hidden md:flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-xl">
             <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
             <input type="text" placeholder="Search shops, offers, products"
               class="bg-transparent outline-none text-sm w-64" />
           </div>
 
+          <!-- Right: Merchant CTA -->
+          <div class="flex items-center gap-3">
+            <button id="merchantBtn" class="hidden px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium
+               hover:bg-blue-700 transition whitespace-nowrap">
+              Register as Merchant
+            </button>
+          </div>
+
         </div>
       </header>
+
 
 
       <!-- Content -->
@@ -204,14 +216,48 @@
   </div>
 
   <!-- JS -->
-  <script>
+  <script type="module">
+    import { auth, db } from "/js/firebase-config.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
     const menuBtn = document.getElementById("menuBtn");
     const sidebar = document.getElementById("sidebar");
+    const merchantBtn = document.getElementById("merchantBtn");
 
+    // Sidebar toggle
     menuBtn.addEventListener("click", () => {
       sidebar.classList.toggle("-translate-x-full");
     });
+
+    // 🔐 Role-based Merchant Button Logic
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+
+      try {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) return;
+
+        const role = userSnap.data().role;
+
+        // ✅ Show button only for normal users
+        if (role === "user") {
+          merchantBtn.classList.remove("hidden");
+        }
+
+        // Redirect to merchant registration
+        merchantBtn.addEventListener("click", () => {
+          window.location.href = "/user/merchant-register.html";
+        });
+
+      } catch (err) {
+        console.error("Failed to load user role:", err);
+      }
+    });
   </script>
+
 
   <!-- Tailwind Utilities -->
   <style>

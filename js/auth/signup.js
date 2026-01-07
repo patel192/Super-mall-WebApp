@@ -1,141 +1,105 @@
 // ================= FIREBASE IMPORTS =================
 import { db, auth, provider } from "../firebase-config.js";
-
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
 import {
   doc,
   setDoc,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ================= ROLE CONSTANTS =================
-// admin = Merchant
-// user  = Customer
+// ================= ROLES =================
 const ROLES = Object.freeze({
-  ADMIN: "admin",
   USER: "user",
+  ADMIN: "admin",
 });
 
-// ================= LOGGER =================
-async function logEvent(type, message, uid = null) {
-  try {
-    await setDoc(doc(db, "logs", crypto.randomUUID()), {
-      type,
-      message,
-      uid,
-      timestamp: serverTimestamp(),
-    });
-  } catch (err) {
-    console.error("Logging failed:", err);
-  }
+// ================= DOM =================
+const step1 = document.getElementById("step1");
+const step2 = document.getElementById("step2");
+const step3 = document.getElementById("step3");
+
+// buttons
+document.getElementById("next1").onclick = () => goToStep(2);
+document.getElementById("next2").onclick = () => goToStep(3);
+document.getElementById("back1").onclick = () => goToStep(1);
+document.getElementById("back2").onclick = () => goToStep(2);
+
+// ================= STEP CONTROL =================
+function goToStep(step) {
+  [step1, step2, step3].forEach((s) => s.classList.add("hidden"));
+
+  if (step === 1) step1.classList.remove("hidden");
+  if (step === 2) step2.classList.remove("hidden");
+  if (step === 3) step3.classList.remove("hidden");
 }
 
-// ================= STEP LOGIC =================
-const steps = ["step1", "step2", "step3"].map((id) =>
-  document.getElementById(id)
-);
-const dots = ["dot1", "dot2", "dot3"].map((id) => document.getElementById(id));
+// ================= FORM INPUTS =================
+const fullName = document.getElementById("fullName");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
 
-function showStep(index) {
-  steps.forEach((s) => s.classList.remove("active-step"));
-  dots.forEach((d) => d.classList.remove("active"));
-  steps[index].classList.add("active-step");
-  dots[index].classList.add("active");
-}
+const phone = document.getElementById("phone");
+const city = document.getElementById("city");
+const state = document.getElementById("state");
+const pincode = document.getElementById("pincode");
+const street = document.getElementById("street");
 
-document.getElementById("next1").onclick = () => showStep(1);
-document.getElementById("next2").onclick = () => showStep(2);
-document.getElementById("back1").onclick = () => showStep(0);
-document.getElementById("back2").onclick = () => showStep(1);
-
-// ================= DOM REFERENCES =================
-const fullNameInput = document.getElementById("fullName");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const confirmPasswordInput = document.getElementById("confirmPassword");
-
-const phoneInput = document.getElementById("phone");
-const cityInput = document.getElementById("city");
-const stateInput = document.getElementById("state");
-const pincodeInput = document.getElementById("pincode");
-const streetInput = document.getElementById("street");
-
-const roleSelect = document.getElementById("role");
-const termsCheckbox = document.getElementById("terms");
+const role = document.getElementById("role");
+const terms = document.getElementById("terms");
 
 // ================= EMAIL SIGNUP =================
 document.getElementById("finish").addEventListener("click", async () => {
   try {
-    // -------- Step 1 --------
-    const fullName = fullNameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const confirmPassword = confirmPasswordInput.value;
-
-    if (!fullName || !email || !password || !confirmPassword) {
-      throw new Error("Please fill all personal details");
+    // Step 1 validation
+    if (!fullName.value || !email.value || password.value.length < 6) {
+      throw new Error("Invalid personal details");
     }
-
-    if (password.length < 6) {
-      throw new Error("Password must be at least 6 characters");
-    }
-
-    if (password !== confirmPassword) {
+    if (password.value !== confirmPassword.value) {
       throw new Error("Passwords do not match");
     }
 
-    // -------- Step 2 --------
-    const phone = phoneInput.value.trim();
-    const city = cityInput.value.trim();
-    const state = stateInput.value.trim();
-    const pincode = pincodeInput.value.trim();
-    const street = streetInput.value.trim();
-
-    if (!phone || !city || !state || !pincode || !street) {
-      throw new Error("Please fill all address details");
+    // Step 2 validation
+    if (!phone.value || !city.value || !state.value || !pincode.value || !street.value) {
+      throw new Error("Invalid address details");
     }
 
-    // -------- Step 3 --------
-    const selectedRole = roleSelect.value;
-
-    if (![ROLES.ADMIN, ROLES.USER].includes(selectedRole)) {
-      throw new Error("Invalid role selected");
+    // Step 3 validation
+    if (![ROLES.USER, ROLES.ADMIN].includes(role.value)) {
+      throw new Error("Invalid role selection");
+    }
+    if (!terms.checked) {
+      throw new Error("Accept terms & conditions");
     }
 
-    if (!termsCheckbox.checked) {
-      throw new Error("You must accept terms & conditions");
-    }
+    const cred = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
 
-    // -------- Firebase Auth --------
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    const uid = cred.user.uid;
-
-    // -------- Firestore User --------
-    await setDoc(doc(db, "users", uid), {
-      fullName,
-      email,
-      role: selectedRole, // admin | user
-      phone,
+    await setDoc(doc(db, "users", cred.user.uid), {
+      fullName: fullName.value,
+      email: email.value,
+      role: role.value,
+      phone: phone.value,
       address: {
-        city,
-        state,
-        pincode,
-        street,
+        city: city.value,
+        state: state.value,
+        pincode: pincode.value,
+        street: street.value,
       },
       provider: "email",
       createdAt: serverTimestamp(),
     });
 
-    await logEvent("SIGNUP", "Email signup successful", uid);
+    alert("Account created successfully");
+    window.location.href = "/auth.html?mode=login";
 
-    alert("Account created successfully!");
-    switchToLogin();
   } catch (err) {
-    await logEvent("ERROR", err.message);
     alert(err.message);
   }
 });
@@ -144,67 +108,21 @@ document.getElementById("finish").addEventListener("click", async () => {
 document.getElementById("googleBtn").addEventListener("click", async () => {
   try {
     const result = await signInWithPopup(auth, provider);
-    const user = result.user;
 
-    // Google users are ALWAYS customers by default
     await setDoc(
-      doc(db, "users", user.uid),
+      doc(db, "users", result.user.uid),
       {
-        fullName: user.displayName || "Unknown User",
-        email: user.email,
-        provider: "google",
+        fullName: result.user.displayName,
+        email: result.user.email,
         role: ROLES.USER,
+        provider: "google",
         createdAt: serverTimestamp(),
       },
       { merge: true }
     );
 
-    await logEvent("GOOGLE_SIGNUP", "Google signup successful", user.uid);
-
-    alert("Google signup successful!");
-    switchToLogin();
-  } catch (err) {
-    await logEvent("ERROR", err.message);
+    window.location.href = "/auth.html?mode=login";
+  } catch {
     alert("Google signup failed");
   }
 });
-// ================= AUTH TOGGLE LOGIC =================
-const wrapper = document.getElementById("authWrapper");
-const toggleAuth = document.getElementById("toggleAuth");
-const signupContainer = document.getElementById("signupContainer");
-const loginContainer = document.getElementById("loginContainer");
-const authTitle = document.getElementById("authTitle");
-
-// switch to LOGIN view
-function switchToLogin() {
-  wrapper.classList.add("login-mode");
-  signupContainer.classList.add("hidden");
-  loginContainer.classList.remove("hidden");
-
-  authTitle.textContent = "Welcome Back!";
-  toggleAuth.textContent = "Signup";
-}
-
-// switch to SIGNUP view
-function switchToSignup() {
-  wrapper.classList.remove("login-mode");
-  signupContainer.classList.remove("hidden");
-  loginContainer.classList.add("hidden");
-
-  authTitle.textContent = "Create Your Account";
-  toggleAuth.textContent = "Login";
-}
-
-// toggle click
-toggleAuth.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  const isLoginMode = wrapper.classList.contains("login-mode");
-  isLoginMode ? switchToSignup() : switchToLogin();
-});
-
-// optional: URL support (?mode=login)
-const params = new URLSearchParams(window.location.search);
-if (params.get("mode") === "login") {
-  switchToLogin();
-}
