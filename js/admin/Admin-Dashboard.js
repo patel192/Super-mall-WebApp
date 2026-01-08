@@ -17,6 +17,12 @@ const kpiProducts = document.getElementById("kpiProducts");
 const kpiOffers = document.getElementById("kpiOffers");
 const kpiStatus = document.getElementById("kpiStatus");
 const kpiCreated = document.getElementById("kpiCreated");
+const kpiTotalOffers = document.getElementById("kpiTotalOffers");
+const kpiLiveOffers = document.getElementById("kpiLiveOffers");
+const kpiOfferViews = document.getElementById("kpiOfferViews");
+const kpiOfferClicks = document.getElementById("kpiOfferClicks");
+const kpiOfferCTR = document.getElementById("kpiOfferCTR");
+const topOffersTable = document.getElementById("topOffersTable");
 
 // ================= HELPERS =================
 function isProfileComplete(shop) {
@@ -37,17 +43,14 @@ async function loadOffersAnalytics(ownerId) {
 
   const now = Date.now();
 
-  snap.forEach(docSnap => {
+  snap.forEach((docSnap) => {
     const o = docSnap.data();
     totalOffers++;
 
     const start = o.startDate?.toMillis?.() ?? 0;
     const end = o.endDate?.toMillis?.() ?? 0;
 
-    const isActive =
-      o.status !== "disabled" &&
-      now >= start &&
-      now <= end;
+    const isActive = o.status !== "disabled" && now >= start && now <= end;
 
     if (isActive) activeOffers++;
 
@@ -64,7 +67,7 @@ async function loadOffersAnalytics(ownerId) {
         title: o.title,
         views,
         clicks,
-        ctr
+        ctr,
       };
     }
   });
@@ -76,9 +79,7 @@ async function loadOffersAnalytics(ownerId) {
   document.getElementById("dashOfferClicks").textContent = totalClicks;
 
   const avgCTR =
-    totalViews > 0
-      ? ((totalClicks / totalViews) * 100).toFixed(2) + "%"
-      : "0%";
+    totalViews > 0 ? ((totalClicks / totalViews) * 100).toFixed(2) + "%" : "0%";
 
   document.getElementById("dashOfferCTR").textContent = avgCTR;
 
@@ -102,6 +103,139 @@ async function loadOffersAnalytics(ownerId) {
       </span>
     </span>
   `;
+}
+async function loadOfferPerformance(ownerId) {
+  const snap = await getDocs(
+    query(collection(db, "offers"), where("ownerId", "==", ownerId))
+  );
+
+  let totalOffers = 0;
+  let liveOffers = 0;
+  let totalViews = 0;
+  let totalClicks = 0;
+
+  const now = Date.now();
+
+  snap.forEach((docSnap) => {
+    const o = docSnap.data();
+    totalOffers++;
+
+    const start = o.startDate?.toMillis();
+    const end = o.endDate?.toMillis();
+
+    const isLive =
+      o.status !== "disabled" && start && end && now >= start && now <= end;
+
+    if (isLive) liveOffers++;
+
+    totalViews += o.views || 0;
+    totalClicks += o.clicks || 0;
+  });
+
+  const ctr =
+    totalViews > 0 ? ((totalClicks / totalViews) * 100).toFixed(1) + "%" : "0%";
+
+  // Inject UI
+  kpiTotalOffers.textContent = totalOffers;
+  kpiLiveOffers.textContent = liveOffers;
+  kpiOfferViews.textContent = totalViews;
+  kpiOfferClicks.textContent = totalClicks;
+  kpiOfferCTR.textContent = ctr;
+}
+async function loadTopPerformingOffers(ownerId) {
+  const snap = await getDocs(
+    query(collection(db, "offers"), where("ownerId", "==", ownerId))
+  );
+
+  if (snap.empty) {
+    topOffersTable.innerHTML = `
+      <tr>
+        <td colspan="5"
+            class="px-6 py-10 text-center text-slate-400">
+          No offers found
+        </td>
+      </tr>`;
+    return;
+  }
+
+  const now = Date.now();
+
+  const offers = snap.docs.map((docSnap) => {
+    const o = docSnap.data();
+    const views = o.views || 0;
+    const clicks = o.clicks || 0;
+
+    const ctr = views > 0 ? (clicks / views) * 100 : 0;
+
+    let status = "expired";
+    const start = o.startDate?.toMillis();
+    const end = o.endDate?.toMillis();
+
+    if (o.status === "disabled") {
+      status = "disabled";
+    } else if (now < start) {
+      status = "scheduled";
+    } else if (now >= start && now <= end) {
+      status = "active";
+    }
+
+    return {
+      title: o.title,
+      views,
+      clicks,
+      ctr,
+      status,
+    };
+  });
+
+  // Sort: Clicks DESC → CTR DESC
+  offers.sort((a, b) => {
+    if (b.clicks !== a.clicks) {
+      return b.clicks - a.clicks;
+    }
+    return b.ctr - a.ctr;
+  });
+
+  const topOffers = offers.slice(0, 5);
+
+  topOffersTable.innerHTML = "";
+
+  topOffers.forEach((o) => {
+    topOffersTable.innerHTML += `
+      <tr class="border-t">
+        <td class="px-6 py-4 font-medium text-slate-900">
+          ${o.title}
+        </td>
+
+        <td class="px-6 py-4">
+          ${o.views}
+        </td>
+
+        <td class="px-6 py-4">
+          ${o.clicks}
+        </td>
+
+        <td class="px-6 py-4">
+          ${o.ctr.toFixed(1)}%
+        </td>
+
+        <td class="px-6 py-4">
+          <span class="px-2 py-1 rounded-full text-xs
+            ${
+              o.status === "active"
+                ? "bg-green-100 text-green-700"
+                : o.status === "scheduled"
+                ? "bg-amber-100 text-amber-700"
+                : o.status === "disabled"
+                ? "bg-red-100 text-red-700"
+                : "bg-slate-200 text-slate-600"
+            }">
+            ${o.status}
+          </span>
+        </td>
+      </tr>
+    `;
+  });
 }
 
 // ================= INIT =================
@@ -179,6 +313,8 @@ onAuthStateChanged(auth, async (user) => {
       kpiStatus.classList.add("text-red-600");
     }
     await loadOffersAnalytics(user.uid);
+    await loadOfferPerformance(user.uid);
+    loadTopPerformingOffers(user.uid);
   } catch (err) {
     console.error("Admin dashboard error:", err);
     alert("Failed to load dashboard");
