@@ -1,7 +1,6 @@
 // ================= FIREBASE =================
 import { auth, db } from "../firebase-config.js";
 import { uploadImageToCloudinary } from "../utils/cloudinary.js";
-
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
@@ -15,12 +14,14 @@ import {
   serverTimestamp,
   Timestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 import { startOfferStatusUpdater } from "../utils/offerStatusUpdater.js";
+
 // ================= DOM =================
 const loader = document.getElementById("pageLoader");
 const offersTable = document.getElementById("offersTable");
-
 const modal = document.getElementById("offerModal");
+
 const openModalBtn = document.getElementById("openModal");
 const closeModalBtn = document.getElementById("closeModal");
 
@@ -44,8 +45,10 @@ let editingOfferData = null;
 // ================= AUTH =================
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
+
   currentUser = user;
   startOfferStatusUpdater();
+
   await loadProducts();
   await loadOffers();
 
@@ -70,7 +73,6 @@ function closeModal() {
 thumbInput.onchange = () => {
   const file = thumbInput.files[0];
   if (!file) return;
-
   thumbPreview.src = URL.createObjectURL(file);
   thumbPreview.classList.remove("hidden");
 };
@@ -83,26 +85,18 @@ async function loadProducts() {
     query(collection(db, "products"), where("ownerId", "==", currentUser.uid))
   );
 
-  if (snap.empty) {
-    productGrid.innerHTML = `
-      <p class="text-sm text-slate-400">
-        No products found. Create a product first.
-      </p>`;
-    return;
-  }
-
   snap.forEach((docSnap) => {
     const p = docSnap.data();
 
     const card = document.createElement("div");
     card.className =
-      "border rounded-xl p-4 flex gap-4 cursor-pointer hover:shadow transition";
+      "border rounded-xl p-4 flex gap-4 cursor-pointer hover:shadow";
 
     card.innerHTML = `
       <img src="${p.imageUrl || "https://via.placeholder.com/80"}"
            class="w-20 h-20 rounded-xl object-cover border"/>
       <div>
-        <p class="font-medium text-slate-900">${p.name}</p>
+        <p class="font-medium">${p.name}</p>
         <p class="text-sm text-slate-500">₹${p.price}</p>
       </div>
     `;
@@ -132,8 +126,7 @@ async function loadOffers() {
   if (snap.empty) {
     offersTable.innerHTML = `
       <tr>
-        <td colspan="5"
-            class="px-6 py-10 text-center text-slate-400">
+        <td colspan="5" class="px-6 py-10 text-center text-slate-400">
           No offers created
         </td>
       </tr>`;
@@ -147,17 +140,17 @@ async function loadOffers() {
     const start = o.startDate.toMillis();
     const end = o.endDate.toMillis();
 
-    let status;
+    let status = o.status;
 
-    // 🔒 MANUAL OVERRIDE HAS HIGHEST PRIORITY
-    if (o.status === "disabled") {
+    // HARD OVERRIDES
+    if (status === "disabled") {
       status = "disabled";
-    } else if (now < start) {
-      status = "scheduled";
-    } else if (now > end) {
-      status = "expired";
+    } else if (status === "paused") {
+      status = "paused";
     } else {
-      status = "active";
+      if (now < start) status = "scheduled";
+      else if (now > end) status = "expired";
+      else status = "active";
     }
 
     const row = document.createElement("tr");
@@ -167,7 +160,7 @@ async function loadOffers() {
       <td class="px-6 py-4 flex items-center gap-3">
         <img src="${o.thumbnailUrl}"
              class="w-12 h-12 rounded-xl object-cover border"/>
-        <span class="font-medium">${o.title}</span>
+        ${o.title}
       </td>
 
       <td class="px-6 py-4">
@@ -179,29 +172,30 @@ async function loadOffers() {
       </td>
 
       <td class="px-6 py-4 text-sm text-slate-500">
-        ${o.startDate.toDate().toLocaleDateString()}
+        ${o.startDate.toDate().toLocaleString()}
         →
-        ${o.endDate.toDate().toLocaleDateString()}
+        ${o.endDate.toDate().toLocaleString()}
       </td>
 
       <td class="px-6 py-4">
         <span class="px-2 py-1 rounded-full text-xs
-         ${
-           status === "active"
-             ? "bg-green-100 text-green-700"
-             : status === "scheduled"
-             ? "bg-amber-100 text-amber-700"
-             : status === "expired"
-             ? "bg-slate-200 text-slate-600"
-             : "bg-red-100 text-red-700" // disabled
-         }
-">
+          ${
+            status === "active"
+              ? "bg-green-100 text-green-700"
+              : status === "scheduled"
+              ? "bg-amber-100 text-amber-700"
+              : status === "expired"
+              ? "bg-slate-200 text-slate-600"
+              : status === "paused"
+              ? "bg-amber-100 text-amber-700"
+              : "bg-red-100 text-red-700"
+          }">
           ${status}
         </span>
       </td>
 
-      <td class="px-6 py-4 text-right">
-       <td class="px-6 py-4 text-right space-x-3">
+      <td class="px-6 py-4 text-right space-x-3">
+
   <button
     data-edit="${docSnap.id}"
     class="edit text-blue-600 text-sm font-medium">
@@ -211,61 +205,45 @@ async function loadOffers() {
   ${
     status === "active" || status === "scheduled"
       ? `<button
+          data-pause="${docSnap.id}"
+          class="pause text-amber-600 text-sm font-medium">
+          Pause
+        </button>`
+      : ""
+  }
+
+  ${
+    status === "paused"
+      ? `<button
+          data-resume="${docSnap.id}"
+          class="resume text-green-600 text-sm font-medium">
+          Resume
+        </button>`
+      : ""
+  }
+
+  ${
+    status !== "disabled" && status !== "expired"
+      ? `<button
           data-disable="${docSnap.id}"
           class="disable text-red-600 text-sm font-medium">
           Disable
         </button>`
       : ""
   }
+
 </td>
 
-      </td>
     `;
 
     offersTable.appendChild(row);
   });
 
-  attachOfferActions();
-}
-async function openEditOffer(offerId) {
-  const snap = await getDocs(
-    query(collection(db, "offers"), where("__name__", "==", offerId))
-  );
-
-  if (snap.empty) return;
-
-  const offer = snap.docs[0].data();
-
-  editingOfferId = offerId;
-  editingOfferData = offer;
-
-  // Fill form
-  titleInput.value = offer.title;
-  typeInput.value = offer.discountType;
-  valueInput.value = offer.discountValue;
-
-  startInput.value = offer.startDate.toDate().toISOString().slice(0, 16);
-
-  endInput.value = offer.endDate.toDate().toISOString().slice(0, 16);
-
-  thumbPreview.src = offer.thumbnailUrl;
-  thumbPreview.classList.remove("hidden");
-
-  // Disable product selection (BUSINESS RULE)
-  selectedProductId = offer.productId;
-  selectedProductInput.value = offer.productId;
-
-  document.querySelectorAll("#productGrid > div").forEach((c) => {
-    c.classList.add("opacity-50", "pointer-events-none");
-  });
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
+  attachActions();
 }
 
-// ================= DISABLE =================
-function attachOfferActions() {
-  // DISABLE
+// ================= ACTIONS =================
+function attachActions() {
   document.querySelectorAll("[data-disable]").forEach((btn) => {
     btn.onclick = async () => {
       await updateDoc(doc(db, "offers", btn.dataset.disable), {
@@ -276,23 +254,85 @@ function attachOfferActions() {
     };
   });
 
-  // EDIT
   document.querySelectorAll("[data-edit]").forEach((btn) => {
-    btn.onclick = () => {
-      const offerId = btn.dataset.edit;
-      openEditOffer(offerId);
+    btn.onclick = () => openEditOffer(btn.dataset.edit);
+  });
+  // PAUSE
+  document.querySelectorAll("[data-pause]").forEach((btn) => {
+    btn.onclick = async () => {
+      await updateDoc(doc(db, "offers", btn.dataset.pause), {
+        status: "paused",
+        updatedAt: serverTimestamp(),
+      });
+      loadOffers();
+    };
+  });
+
+  // RESUME
+  document.querySelectorAll("[data-resume]").forEach((btn) => {
+    btn.onclick = async () => {
+      const snap = await getDocs(
+        query(
+          collection(db, "offers"),
+          where("__name__", "==", btn.dataset.resume)
+        )
+      );
+
+      if (snap.empty) return;
+
+      const offer = snap.docs[0].data();
+      const now = Date.now();
+
+      let newStatus = "scheduled";
+      if (
+        now >= offer.startDate.toMillis() &&
+        now <= offer.endDate.toMillis()
+      ) {
+        newStatus = "active";
+      }
+
+      await updateDoc(doc(db, "offers", btn.dataset.resume), {
+        status: newStatus,
+        updatedAt: serverTimestamp(),
+      });
+
+      loadOffers();
     };
   });
 }
 
-// ================= CREATE OFFER =================
+// ================= EDIT =================
+async function openEditOffer(id) {
+  const snap = await getDocs(
+    query(collection(db, "offers"), where("__name__", "==", id))
+  );
+
+  if (snap.empty) return;
+
+  const o = snap.docs[0].data();
+
+  editingOfferId = id;
+  editingOfferData = o;
+
+  titleInput.value = o.title;
+  typeInput.value = o.discountType;
+  valueInput.value = o.discountValue;
+  startInput.value = o.startDate.toDate().toISOString().slice(0, 16);
+  endInput.value = o.endDate.toDate().toISOString().slice(0, 16);
+
+  thumbPreview.src = o.thumbnailUrl;
+  thumbPreview.classList.remove("hidden");
+
+  selectedProductId = o.productId;
+  selectedProductInput.value = o.productId;
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+}
+
+// ================= SUBMIT =================
 form.onsubmit = async (e) => {
   e.preventDefault();
-
-  if (!selectedProductId) {
-    alert("Please select a product");
-    return;
-  }
 
   const startDate = new Date(startInput.value);
   const endDate = new Date(endInput.value);
@@ -303,7 +343,6 @@ form.onsubmit = async (e) => {
   }
 
   let thumbnailUrl = editingOfferData?.thumbnailUrl;
-
   if (thumbInput.files[0]) {
     thumbnailUrl = await uploadImageToCloudinary(thumbInput.files[0]);
   }
@@ -319,15 +358,15 @@ form.onsubmit = async (e) => {
   };
 
   if (editingOfferId) {
-    // UPDATE
     await updateDoc(doc(db, "offers", editingOfferId), payload);
   } else {
-    // CREATE
     await addDoc(collection(db, "offers"), {
       ...payload,
       ownerId: currentUser.uid,
       productId: selectedProductId,
       status: "scheduled",
+      views: 0,
+      clicks: 0,
       createdAt: serverTimestamp(),
     });
   }
@@ -340,6 +379,9 @@ form.onsubmit = async (e) => {
 function resetForm() {
   form.reset();
   selectedProductId = null;
+  editingOfferId = null;
+  editingOfferData = null;
   thumbPreview.classList.add("hidden");
 }
+
 setInterval(loadOffers, 60_000);
