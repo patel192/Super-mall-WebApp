@@ -42,7 +42,7 @@ let currentUser = null;
 let selectedProductId = null;
 let editingOfferId = null;
 let editingOfferData = null;
-let trendRendered = false;
+
 // HELPERS
 function drawSparkline(canvas, data) {
   const ctx = canvas.getContext("2d");
@@ -267,29 +267,30 @@ async function loadOffers() {
   attachOfferActions();
 }
 async function renderOfferTrends() {
-  if(trendRendered) return;
-  trendRendered = true;
   const canvases = document.querySelectorAll(".offer-trend");
 
   for (const canvas of canvases) {
     const offerId = canvas.dataset.offerId;
 
-    // Fetch last 7 days stats
     const statsSnap = await getDocs(
       query(collection(db, "offer_stats"), where("offerId", "==", offerId))
     );
 
-    // Map → last 7 days
     const dailyViews = Array(7).fill(0);
+    const today = new Date();
 
     statsSnap.forEach((doc) => {
       const d = doc.data();
-      const dayIndex = Math.max(
-        0,
-        6 - Math.floor((Date.now() - d.date.toMillis()) / 86400000)
+      const statDate = new Date(d.date);
+
+      const diffDays = Math.floor(
+        (today.setHours(0, 0, 0, 0) - statDate.setHours(0, 0, 0, 0)) / 86400000
       );
-      if (dayIndex >= 0 && dayIndex < 7) {
-        dailyViews[dayIndex] += d.views || 0;
+
+      const index = 6 - diffDays;
+
+      if (index >= 0 && index < 7) {
+        dailyViews[index] += d.views || 0;
       }
     });
 
