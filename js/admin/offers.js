@@ -126,32 +126,38 @@ async function loadOffers() {
   if (snap.empty) {
     offersTable.innerHTML = `
       <tr>
-        <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+        <td colspan="8"
+            class="px-6 py-10 text-center text-slate-400">
           No offers created
         </td>
       </tr>`;
     return;
   }
 
+  const now = Date.now();
+
   snap.forEach((docSnap) => {
     const o = docSnap.data();
 
-    const now = Date.now();
+    const views = o.views || 0;
+    const clicks = o.clicks || 0;
+    const ctr = views > 0 ? ((clicks / views) * 100).toFixed(2) : "0.00";
+
     const start = o.startDate.toMillis();
     const end = o.endDate.toMillis();
 
-    let status = o.status;
+    let status;
+    if (o.status === "disabled") status = "disabled";
+    else if (now < start) status = "scheduled";
+    else if (now > end) status = "expired";
+    else status = "active";
 
-    // HARD OVERRIDES
-    if (status === "disabled") {
-      status = "disabled";
-    } else if (status === "paused") {
-      status = "paused";
-    } else {
-      if (now < start) status = "scheduled";
-      else if (now > end) status = "expired";
-      else status = "active";
-    }
+    const ctrColor =
+      ctr >= 5
+        ? "text-green-600"
+        : ctr >= 2
+        ? "text-amber-600"
+        : "text-red-600";
 
     const row = document.createElement("tr");
     row.className = "border-t";
@@ -160,7 +166,7 @@ async function loadOffers() {
       <td class="px-6 py-4 flex items-center gap-3">
         <img src="${o.thumbnailUrl}"
              class="w-12 h-12 rounded-xl object-cover border"/>
-        ${o.title}
+        <span class="font-medium">${o.title}</span>
       </td>
 
       <td class="px-6 py-4">
@@ -172,9 +178,16 @@ async function loadOffers() {
       </td>
 
       <td class="px-6 py-4 text-sm text-slate-500">
-        ${o.startDate.toDate().toLocaleString()}
+        ${o.startDate.toDate().toLocaleDateString()}
         →
-        ${o.endDate.toDate().toLocaleString()}
+        ${o.endDate.toDate().toLocaleDateString()}
+      </td>
+
+      <td class="px-6 py-4">${views}</td>
+      <td class="px-6 py-4">${clicks}</td>
+
+      <td class="px-6 py-4 font-medium ${ctrColor}">
+        ${ctr}%
       </td>
 
       <td class="px-6 py-4">
@@ -186,8 +199,6 @@ async function loadOffers() {
               ? "bg-amber-100 text-amber-700"
               : status === "expired"
               ? "bg-slate-200 text-slate-600"
-              : status === "paused"
-              ? "bg-amber-100 text-amber-700"
               : "bg-red-100 text-red-700"
           }">
           ${status}
@@ -195,51 +206,28 @@ async function loadOffers() {
       </td>
 
       <td class="px-6 py-4 text-right space-x-3">
+        <button
+          data-edit="${docSnap.id}"
+          class="text-blue-600 text-sm font-medium">
+          Edit
+        </button>
 
-  <button
-    data-edit="${docSnap.id}"
-    class="edit text-blue-600 text-sm font-medium">
-    Edit
-  </button>
-
-  ${
-    status === "active" || status === "scheduled"
-      ? `<button
-          data-pause="${docSnap.id}"
-          class="pause text-amber-600 text-sm font-medium">
-          Pause
-        </button>`
-      : ""
-  }
-
-  ${
-    status === "paused"
-      ? `<button
-          data-resume="${docSnap.id}"
-          class="resume text-green-600 text-sm font-medium">
-          Resume
-        </button>`
-      : ""
-  }
-
-  ${
-    status !== "disabled" && status !== "expired"
-      ? `<button
-          data-disable="${docSnap.id}"
-          class="disable text-red-600 text-sm font-medium">
-          Disable
-        </button>`
-      : ""
-  }
-
-</td>
-
+        ${
+          status === "active" || status === "scheduled"
+            ? `<button
+                data-disable="${docSnap.id}"
+                class="text-red-600 text-sm font-medium">
+                Disable
+              </button>`
+            : ""
+        }
+      </td>
     `;
 
     offersTable.appendChild(row);
   });
 
-  attachActions();
+  attachOfferActions();
 }
 
 // ================= ACTIONS =================
