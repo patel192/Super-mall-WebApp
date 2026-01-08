@@ -1,4 +1,3 @@
-// ================= FIREBASE =================
 import { auth, db } from "../firebase-config.js";
 import { onAuthStateChanged } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -14,9 +13,12 @@ import {
 } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ================= DOM =================
+import { uploadImageToCloudinary } from "../utils/cloudinary.js";
+
+// DOM
 const loader = document.getElementById("pageLoader");
 const form = document.getElementById("shopForm");
+const saveBtn = document.getElementById("saveBtn");
 
 const nameInput = document.getElementById("shopName");
 const categoryInput = document.getElementById("shopCategory");
@@ -25,9 +27,23 @@ const stateInput = document.getElementById("state");
 const pincodeInput = document.getElementById("pincode");
 const descInput = document.getElementById("shopDescription");
 
-let shopDocRef = null;
+const logoInput = document.getElementById("logoInput");
+const logoPreview = document.getElementById("logoPreview");
 
-// ================= INIT =================
+let shopDocRef = null;
+let logoUrl = "";
+
+// IMAGE PREVIEW
+logoInput.addEventListener("change", () => {
+  const file = logoInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => logoPreview.src = reader.result;
+  reader.readAsDataURL(file);
+});
+
+// LOAD EXISTING SHOP
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
 
@@ -39,8 +55,9 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDocs(q);
 
   if (!snap.empty) {
-    shopDocRef = snap.docs[0].ref;
-    const shop = snap.docs[0].data();
+    const docSnap = snap.docs[0];
+    shopDocRef = docSnap.ref;
+    const shop = docSnap.data();
 
     nameInput.value = shop.name || "";
     categoryInput.value = shop.category || "";
@@ -48,34 +65,49 @@ onAuthStateChanged(auth, async (user) => {
     stateInput.value = shop.location?.state || "";
     pincodeInput.value = shop.location?.pincode || "";
     descInput.value = shop.description || "";
+
+    if (shop.logoUrl) {
+      logoUrl = shop.logoUrl;
+      logoPreview.src = shop.logoUrl;
+    }
   }
 
   loader.classList.add("hidden");
 });
 
-// ================= SUBMIT =================
+// SUBMIT
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const payload = {
-    name: nameInput.value.trim(),
-    category: categoryInput.value,
-    description: descInput.value.trim(),
-    location: {
-      city: cityInput.value.trim(),
-      state: stateInput.value.trim(),
-      pincode: pincodeInput.value.trim(),
-    },
-    status: "active",
-    updatedAt: serverTimestamp(),
-  };
-
-  if (!payload.name || !payload.category || !payload.location.city) {
-    alert("Please complete all required fields");
-    return;
-  }
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Saving...";
 
   try {
+    if (logoInput.files[0]) {
+      logoUrl = await uploadImageToCloudinary(logoInput.files[0], "shops");
+    }
+
+    const payload = {
+      name: nameInput.value.trim(),
+      category: categoryInput.value,
+      description: descInput.value.trim(),
+      logoUrl,
+      location: {
+        city: cityInput.value.trim(),
+        state: stateInput.value.trim(),
+        pincode: pincodeInput.value.trim(),
+      },
+      status: "active",
+      updatedAt: serverTimestamp(),
+    };
+
+    if (!payload.name || !payload.category || !payload.location.city) {
+      alert("Please complete all required fields");
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Save & Continue";
+      return;
+    }
+
     if (shopDocRef) {
       await updateDoc(shopDocRef, payload);
     } else {
@@ -87,8 +119,11 @@ form.addEventListener("submit", async (e) => {
     }
 
     window.location.href = "/admin/Admin-Dashboard.html";
+
   } catch (err) {
     console.error(err);
     alert("Failed to save shop profile");
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save & Continue";
   }
 });

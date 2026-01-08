@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,10 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <script>
     tailwind.config = {
@@ -29,17 +27,13 @@
   </script>
 </head>
 
-<body
-  data-required-role="admin"
-  class="bg-muted text-slate-700 min-h-screen">
+<body data-required-role="admin" class="bg-muted text-slate-700 min-h-screen">
 
   <!-- 🔒 AUTH GUARD -->
   <script type="module" src="/js/auth/authGuard.js"></script>
 
   <!-- 🔄 PAGE LOADER -->
-  <div
-    id="pageLoader"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+  <div id="pageLoader" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
       <span class="text-sm text-slate-600">
@@ -62,9 +56,7 @@
       <!-- Content -->
       <main class="px-6 lg:px-8 py-8 space-y-6">
 
-        <h1
-          id="shopName"
-          class="text-xl font-semibold text-dark">
+        <h1 id="shopName" class="text-xl font-semibold text-dark">
           —
         </h1>
 
@@ -72,27 +64,331 @@
           Welcome to your merchant dashboard.
         </p>
 
-        <!-- KPIs -->
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="bg-white rounded-xl border p-4">
-            <p class="text-xs text-slate-500">Offers</p>
-            <h2 id="kpiOffers" class="text-xl font-semibold">—</h2>
+        <!-- SMART KPI CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+          <!-- PRODUCTS -->
+          <a href="/admin/Products.html" class="group bg-white border rounded-2xl p-5
+            hover:shadow-md transition cursor-pointer">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Products</p>
+                <h2 id="kpiProducts" class="text-2xl font-semibold text-dark mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-box"></i>
+              </div>
+            </div>
+
+            <p id="kpiProductsHint" class="mt-3 text-xs text-slate-500">
+              Add products to start selling
+            </p>
+          </a>
+
+          <!-- OFFERS -->
+          <a href="/admin/Offers.html" class="group bg-white border rounded-2xl p-5
+            hover:shadow-md transition cursor-pointer">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Active Offers</p>
+                <h2 id="kpiOffers" class="text-2xl font-semibold text-dark mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div class="w-10 h-10 rounded-xl bg-green-100 text-green-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-tags"></i>
+              </div>
+            </div>
+
+            <p id="kpiOffersHint" class="mt-3 text-xs text-slate-500">
+              No active offers
+            </p>
+          </a>
+
+          <!-- SHOP STATUS -->
+          <div class="bg-white border rounded-2xl p-5">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Shop Status</p>
+                <h2 id="kpiStatus" class="text-xl font-semibold mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div id="kpiStatusIcon" class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-500">
+              Visibility & access state
+            </p>
           </div>
 
-          <div class="bg-white rounded-xl border p-4">
-            <p class="text-xs text-slate-500">Views</p>
-            <h2 id="kpiViews" class="text-xl font-semibold">—</h2>
+          <!-- SHOP AGE -->
+          <div class="bg-white border rounded-2xl p-5">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Shop Since</p>
+                <h2 id="kpiCreated" class="text-lg font-semibold text-dark mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-500">
+              Account creation date
+            </p>
           </div>
 
-          <div class="bg-white rounded-xl border p-4">
-            <p class="text-xs text-slate-500">Status</p>
-            <h2 id="kpiStatus" class="text-xl font-semibold">—</h2>
+        </section>
+        <!-- QUICK ACTIONS -->
+        <section class="bg-white border rounded-2xl p-5">
+
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+            <!-- Left -->
+            <div>
+              <h2 class="text-sm font-semibold text-dark">
+                Quick Actions
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">
+                Manage your shop faster
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-3">
+
+              <a href="/admin/Products.html" class="inline-flex items-center gap-2 px-4 py-2.5
+                rounded-xl bg-blue-600 text-white text-sm font-medium
+                hover:bg-blue-700 transition">
+                <i class="fa-solid fa-plus"></i>
+                Add Product
+              </a>
+
+              <a href="/admin/Offers.html" class="inline-flex items-center gap-2 px-4 py-2.5
+                rounded-xl bg-green-600 text-white text-sm font-medium
+                hover:bg-green-700 transition">
+                <i class="fa-solid fa-tag"></i>
+                Create Offer
+              </a>
+
+              <a href="/admin/Shop-Profile.html" class="inline-flex items-center gap-2 px-4 py-2.5
+                rounded-xl border text-slate-700 text-sm font-medium
+                hover:bg-slate-100 transition">
+                <i class="fa-solid fa-store"></i>
+                Edit Shop Profile
+              </a>
+
+            </div>
           </div>
 
-          <div class="bg-white rounded-xl border p-4">
-            <p class="text-xs text-slate-500">Created</p>
-            <h2 id="kpiCreated" class="text-xl font-semibold">—</h2>
+        </section>
+
+        <!-- MERCHANT HEALTH -->
+        <section class="bg-white border rounded-2xl p-5 space-y-4">
+
+          <!-- Header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-semibold text-dark">
+                Merchant Health
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">
+                Issues affecting your shop visibility and performance
+              </p>
+            </div>
+
+            <span class="text-xs text-slate-400">
+              Auto-updated
+            </span>
           </div>
+
+          <!-- Health Items -->
+          <div class="space-y-3">
+
+            <!-- Missing Images -->
+            <div class="flex items-center justify-between gap-4
+             border rounded-xl p-4 bg-amber-50 border-amber-200">
+
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700
+                 flex items-center justify-center">
+                  <i class="fa-solid fa-image"></i>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-amber-900">
+                    Products missing images
+                  </p>
+                  <p class="text-xs text-amber-700">
+                    Products without images get significantly fewer views
+                  </p>
+                </div>
+              </div>
+
+              <a href="/admin/Products.html" class="text-xs font-medium text-amber-800 hover:underline">
+                Fix now
+              </a>
+            </div>
+
+            <!-- No Active Offers -->
+            <div class="flex items-center justify-between gap-4
+             border rounded-xl p-4 bg-red-50 border-red-200">
+
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-red-100 text-red-700
+                 flex items-center justify-center">
+                  <i class="fa-solid fa-tag"></i>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-red-900">
+                    No active offers
+                  </p>
+                  <p class="text-xs text-red-700">
+                    Shops with offers get higher customer engagement
+                  </p>
+                </div>
+              </div>
+
+              <a href="/admin/Offers.html" class="text-xs font-medium text-red-800 hover:underline">
+                Create offer
+              </a>
+            </div>
+
+            <!-- Profile Completeness -->
+            <div class="flex items-center justify-between gap-4
+             border rounded-xl p-4 bg-slate-50 border-slate-200">
+
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-slate-200 text-slate-700
+                 flex items-center justify-center">
+                  <i class="fa-solid fa-store"></i>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-slate-900">
+                    Shop profile incomplete
+                  </p>
+                  <p class="text-xs text-slate-500">
+                    Complete profiles appear higher in search results
+                  </p>
+                </div>
+              </div>
+
+              <a href="/admin/Shop-Profile.html" class="text-xs font-medium text-slate-700 hover:underline">
+                Complete profile
+              </a>
+            </div>
+
+          </div>
+
+        </section>
+        <!-- RECENT ACTIVITY -->
+        <section class="bg-white border rounded-2xl p-5 space-y-4">
+
+          <!-- Header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-semibold text-dark">
+                Recent Activity
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">
+                Latest changes in your shop
+              </p>
+            </div>
+
+            <a href="#" class="text-xs font-medium text-primary hover:underline">
+              View all
+            </a>
+          </div>
+
+          <!-- Activity List -->
+          <div class="divide-y">
+
+            <!-- Activity Item -->
+            <div class="flex items-start gap-4 py-4">
+              <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-700
+               flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-box"></i>
+              </div>
+
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">
+                  Product added
+                </p>
+                <p class="text-xs text-slate-500 mt-1">
+                  “Men’s Denim Jacket” was added to your shop
+                </p>
+              </div>
+
+              <span class="text-xs text-slate-400 whitespace-nowrap">
+                2h ago
+              </span>
+            </div>
+
+            <!-- Activity Item -->
+            <div class="flex items-start gap-4 py-4">
+              <div class="w-9 h-9 rounded-lg bg-green-100 text-green-700
+               flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-tag"></i>
+              </div>
+
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">
+                  Offer created
+                </p>
+                <p class="text-xs text-slate-500 mt-1">
+                  “Flat 20% OFF” applied to Electronics
+                </p>
+              </div>
+
+              <span class="text-xs text-slate-400 whitespace-nowrap">
+                Yesterday
+              </span>
+            </div>
+
+            <!-- Activity Item -->
+            <div class="flex items-start gap-4 py-4">
+              <div class="w-9 h-9 rounded-lg bg-slate-200 text-slate-700
+               flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-pen"></i>
+              </div>
+
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">
+                  Shop profile updated
+                </p>
+                <p class="text-xs text-slate-500 mt-1">
+                  Location and description were updated
+                </p>
+              </div>
+
+              <span class="text-xs text-slate-400 whitespace-nowrap">
+                3 days ago
+              </span>
+            </div>
+
+          </div>
+
         </section>
 
       </main>
@@ -106,4 +402,5 @@
   <script type="module" src="/js/admin/Admin-Dashboard.js"></script>
 
 </body>
+
 </html>
