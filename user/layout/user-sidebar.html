@@ -1,0 +1,118 @@
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-white border-r
+         transform -translate-x-full lg:translate-x-0
+         transition-all duration-300">
+
+  <!-- Brand -->
+  <div class="px-6 py-6 border-b">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-primary text-white
+                  flex items-center justify-center">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-900">SuperMall</p>
+        <p class="text-xs text-slate-400">Shopping Platform</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="px-5 py-8 text-sm space-y-10">
+
+    <!-- MAIN -->
+    <div class="space-y-4">
+      <p class="text-xs font-semibold text-slate-400 tracking-wider">
+        MAIN
+      </p>
+
+      <div class="flex flex-col space-y-2">
+        <a href="/user/User-Dashboard.html" data-link="User-Dashboard.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-grid-2"></i>
+          Dashboard
+        </a>
+
+        <a href="/user/Offers.html" data-link="Offers.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-tags"></i>
+          Offers
+        </a>
+
+        <a href="/user/Compare.html" data-link="Compare.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-scale-balanced"></i>
+          Compare
+        </a>
+      </div>
+    </div>
+
+    <!-- DISCOVER -->
+    <div class="space-y-4">
+      <p class="text-xs font-semibold text-slate-400 tracking-wider">
+        DISCOVER
+      </p>
+
+      <div class="flex flex-col space-y-2">
+        <a href="/user/Shops.html" data-link="Shops.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-store"></i>
+          Shops
+        </a>
+
+        <a href="/user/Categories.html" data-link="Categories.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-layer-group"></i>
+          Categories
+        </a>
+
+        <a href="/user/Floors.html" data-link="Floors.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-building"></i>
+          Floors
+        </a>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="space-y-4">
+      <p class="text-xs font-semibold text-slate-400 tracking-wider">
+        ACCOUNT
+      </p>
+
+      <div class="flex flex-col space-y-2">
+        <a href="/user/Profile.html" data-link="Profile.html" class="sidebar-link w-full flex items-center gap-4 px-4 py-3 rounded-xl
+       text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-user"></i>
+          Profile
+        </a>
+
+        <button id="logoutBtn" class="w-full flex items-center gap-4 px-4 py-3 rounded-xl
+               text-red-600 hover:bg-red-50 transition">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+
+  </nav>
+
+</aside>
+<script>
+  const currentPage = window.location.pathname.split("/").pop();
+
+  document.querySelectorAll(".sidebar-link").forEach(link => {
+    const target = link.dataset.link;
+
+    if (target === currentPage) {
+      link.classList.add(
+        "bg-primary",
+        "text-white",
+        "font-medium"
+      );
+
+      // Optional: icon color boost
+      const icon = link.querySelector("i");
+      if (icon) icon.classList.add("text-white");
+    }
+  });
+</script>

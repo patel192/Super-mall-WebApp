@@ -37,7 +37,7 @@ function initLayout() {
   // Logout
   document.getElementById("logoutBtn")?.addEventListener("click", async () => {
     await signOut(auth);
-    window.location.href = "/signup-login.html?mode=login";
+    window.location.href = "/auth.html?mode=login";
   });
 
   // Hide loader

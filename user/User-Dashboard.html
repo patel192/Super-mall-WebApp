@@ -9,7 +9,7 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <script>
@@ -18,7 +18,6 @@
         extend: {
           colors: {
             primary: "#2563EB",
-            surface: "#FFFFFF",
             muted: "#F1F5F9",
             dark: "#0F172A"
           }
@@ -35,179 +34,131 @@
 
   <div class="flex min-h-screen">
 
-    <!-- ================= SIDEBAR ================= -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-white border-r
-         transform -translate-x-full lg:translate-x-0 transition-all duration-300">
+    <!-- Sidebar -->
+    <div id="sidebarMount"></div>
 
-      <!-- Brand -->
-      <div class="px-6 py-6 border-b">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center">
-            <i class="fa-solid fa-cart-shopping"></i>
-          </div>
-          <div>
-            <p class="font-semibold text-slate-900">SuperMall</p>
-            <p class="text-xs text-slate-400">Shopping Platform</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Navigation -->
-      <nav class="px-5 py-8 text-sm space-y-10">
-
-        <!-- MAIN -->
-        <div class="space-y-4">
-          <p class="text-xs font-semibold text-slate-400 tracking-wider">
-            MAIN
-          </p>
-
-          <div class="space-y-2">
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                 bg-blue-600 text-white font-medium">
-              <i class="fa-solid fa-grid-2"></i>
-              Dashboard
-            </a>
-
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                 text-slate-600 hover:bg-slate-100 transition">
-              <i class="fa-solid fa-tags"></i>
-              Offers
-            </a>
-
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                 text-slate-600 hover:bg-slate-100 transition">
-              <i class="fa-solid fa-scale-balanced"></i>
-              Compare
-            </a>
-          </div>
-        </div>
-
-        <!-- DISCOVER -->
-        <div class="space-y-4">
-          <p class="text-xs font-semibold text-slate-400 tracking-wider">
-            DISCOVER
-          </p>
-
-          <div class="space-y-2">
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                  text-slate-600 hover:bg-slate-100 transition">
-              <i class="fa-solid fa-store"></i>
-              Shops
-            </a>
-
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                  text-slate-600 hover:bg-slate-100 transition">
-              <i class="fa-solid fa-layer-group"></i>
-              Categories
-            </a>
-
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                  text-slate-600 hover:bg-slate-100 transition">
-              <i class="fa-solid fa-building"></i>
-              Floors
-            </a>
-          </div>
-        </div>
-
-        <!-- ACCOUNT -->
-        <div class="space-y-4">
-          <p class="text-xs font-semibold text-slate-400 tracking-wider">
-            ACCOUNT
-          </p>
-
-          <div class="space-y-2">
-            <a class="flex items-center gap-4 px-4 py-3 rounded-xl
-                  text-slate-600 hover:bg-slate-100 transition">
-              <i class="fa-solid fa-user"></i>
-              Profile
-            </a>
-
-            <button id="logoutBtn" class="w-full flex items-center gap-4 px-4 py-3 rounded-xl
-                 text-red-600 hover:bg-red-50 transition">
-              <i class="fa-solid fa-right-from-bracket"></i>
-              Logout
-            </button>
-          </div>
-        </div>
-
-      </nav>
-    </aside>
-
-
-    <!-- ================= MAIN ================= -->
+    <!-- Main -->
     <div class="flex-1 lg:ml-72">
 
-      <!-- Topbar -->
-      <header class="sticky top-0 z-30 bg-white border-b">
-        <div class="flex items-center justify-between px-6 lg:px-8 py-4 gap-4">
+      <!-- Navbar -->
+      <div id="navbarMount"></div>
 
-          <!-- Left: Mobile menu + Title -->
-          <div class="flex items-center gap-4">
-            <!-- Mobile menu -->
-            <button id="menuBtn" class="lg:hidden text-xl text-slate-600">
-              <i class="fa-solid fa-bars"></i>
-            </button>
+      <!-- CONTENT -->
+      <main class="px-6 lg:px-8 py-8 space-y-10">
 
-            <!-- Page title -->
-            <h1 class="text-lg font-semibold text-slate-900">
-              Dashboard
-            </h1>
-          </div>
-
-          <!-- Center: Search -->
-          <div class="hidden md:flex items-center gap-3 bg-slate-100 px-4 py-2 rounded-xl">
-            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
-            <input type="text" placeholder="Search shops, offers, products"
-              class="bg-transparent outline-none text-sm w-64" />
-          </div>
-
-          <!-- Right: Merchant CTA -->
-          <div class="flex items-center gap-3">
-            <button id="merchantBtn" class="hidden px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium
-               hover:bg-blue-700 transition whitespace-nowrap">
-              Register as Merchant
-            </button>
-          </div>
-
-        </div>
-      </header>
-
-
-
-      <!-- Content -->
-      <main class="px-8 py-8 space-y-10">
-
-        <!-- KPIs -->
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div class="kpi-card">
-            <p>Shops</p>
-            <h2>120+</h2>
-          </div>
-          <div class="kpi-card">
-            <p>Live Offers</p>
-            <h2>45</h2>
-          </div>
-          <div class="kpi-card">
-            <p>Categories</p>
-            <h2>18</h2>
-          </div>
-          <div class="kpi-card">
-            <p>Floors</p>
-            <h2>5</h2>
-          </div>
+        <!-- ================= HERO ================= -->
+        <section class="bg-white border rounded-2xl p-6 flex flex-col gap-2">
+          <h1 class="text-xl font-semibold text-dark">
+            Welcome back 👋
+          </h1>
+          <p class="text-sm text-slate-500">
+            Discover trending offers and shops around you.
+          </p>
         </section>
 
-        <!-- Offers -->
-        <section>
-          <div class="flex justify-between items-center mb-5">
-            <h2 class="section-title">Trending Offers</h2>
-            <span class="text-sm text-primary cursor-pointer">View all</span>
+        <!-- ================= KPIs ================= -->
+        <!-- KPIs -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+          <!-- Live Offers -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/user/Offers.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Live Offers</p>
+              <i class="fa-solid fa-tags text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiLiveOffers" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="content-card">Flat 50% · Fashion Fiesta</div>
-            <div class="content-card">Buy 1 Get 1 · Food Corner</div>
-            <div class="content-card">Up to 30% · Tech World</div>
+          <!-- Shops -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/user/Shops.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Shops</p>
+              <i class="fa-solid fa-store text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiShops" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+          <!-- Categories -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/user/Categories.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Categories</p>
+              <i class="fa-solid fa-layer-group text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiCategories" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+          <!-- Floors (optional) -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/user/Floors.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Floors</p>
+              <i class="fa-solid fa-building text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiFloors" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+        </section>
+
+
+
+        <!-- TRENDING OFFERS -->
+        <section class="space-y-4">
+
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Trending Offers
+            </h2>
+
+            <a href="/user/Offers.html" class="text-sm text-primary font-medium hover:underline">
+              View all
+            </a>
+          </div>
+
+          <div id="trendingOffersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Skeleton -->
+            <div class="bg-white border rounded-2xl p-5 animate-pulse">
+              <div class="h-40 bg-slate-200 rounded-xl mb-4"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= DISCOVER SHOPS ================= -->
+        <section class="space-y-4">
+
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-dark">
+              Popular Shops
+            </h2>
+            <a href="/user/Shops.html" class="text-sm text-primary font-medium">
+              Browse all
+            </a>
+          </div>
+
+          <div id="shopsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-slate-400 text-sm">
+                Loading shops…
+              </p>
+            </div>
+
           </div>
         </section>
 
@@ -215,84 +166,11 @@
     </div>
   </div>
 
-  <!-- JS -->
-  <script type="module">
-    import { auth, db } from "/js/firebase-config.js";
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <!-- Layout Loader -->
+  <script type="module" src="/js/layout/loadUserLayout.js"></script>
 
-    const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.getElementById("sidebar");
-    const merchantBtn = document.getElementById("merchantBtn");
-
-    // Sidebar toggle
-    menuBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("-translate-x-full");
-    });
-
-    // 🔐 Role-based Merchant Button Logic
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return;
-
-      try {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) return;
-
-        const role = userSnap.data().role;
-
-        // ✅ Show button only for normal users
-        if (role === "user") {
-          merchantBtn.classList.remove("hidden");
-        }
-
-        // Redirect to merchant registration
-        merchantBtn.addEventListener("click", () => {
-          window.location.href = "/user/merchant-register.html";
-        });
-
-      } catch (err) {
-        console.error("Failed to load user role:", err);
-      }
-    });
-  </script>
-
-
-  <!-- Tailwind Utilities -->
-  <style>
-    .nav-section {
-      @apply text-xs text-slate-400 font-semibold px-3 mb-3;
-    }
-
-    .nav-group {
-      @apply space-y-1;
-    }
-
-    .nav-item {
-      @apply flex items-center gap-4 px-4 py-3 rounded-xl text-slate-600 hover:bg-muted transition;
-    }
-
-    .active {
-      @apply bg-primary text-white;
-    }
-
-    .kpi-card {
-      @apply bg-surface rounded-2xl p-5 border;
-    }
-
-    .kpi-card h2 {
-      @apply text-2xl font-bold text-dark;
-    }
-
-    .section-title {
-      @apply text-lg font-semibold text-dark;
-    }
-
-    .content-card {
-      @apply bg-surface rounded-2xl p-5 border hover:shadow-md transition;
-    }
-  </style>
+  <!-- Page Logic -->
+  <script type="module" src="/js/user/User-Dashboard.js"></script>
 
 </body>
 
