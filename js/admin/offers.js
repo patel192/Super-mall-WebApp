@@ -38,6 +38,8 @@ const thumbPreview = document.getElementById("thumbPreview");
 
 let currentUser = null;
 let selectedProductId = null;
+let editingOfferId = null;
+let editingOfferData = null;
 
 // ================= AUTH =================
 onAuthStateChanged(auth, async (user) => {
@@ -199,32 +201,86 @@ async function loadOffers() {
       </td>
 
       <td class="px-6 py-4 text-right">
-        ${
-          status === "active" || status === "scheduled"
-            ? `<button data-id="${docSnap.id}"
-              class="disable text-red-600 text-sm">
-              Disable
-            </button>`
-            : ""
-        }
+       <td class="px-6 py-4 text-right space-x-3">
+  <button
+    data-edit="${docSnap.id}"
+    class="edit text-blue-600 text-sm font-medium">
+    Edit
+  </button>
+
+  ${
+    status === "active" || status === "scheduled"
+      ? `<button
+          data-disable="${docSnap.id}"
+          class="disable text-red-600 text-sm font-medium">
+          Disable
+        </button>`
+      : ""
+  }
+</td>
+
       </td>
     `;
 
     offersTable.appendChild(row);
   });
 
-  attachDisableActions();
+  attachOfferActions();
+}
+async function openEditOffer(offerId) {
+  const snap = await getDocs(
+    query(collection(db, "offers"), where("__name__", "==", offerId))
+  );
+
+  if (snap.empty) return;
+
+  const offer = snap.docs[0].data();
+
+  editingOfferId = offerId;
+  editingOfferData = offer;
+
+  // Fill form
+  titleInput.value = offer.title;
+  typeInput.value = offer.discountType;
+  valueInput.value = offer.discountValue;
+
+  startInput.value = offer.startDate.toDate().toISOString().slice(0, 16);
+
+  endInput.value = offer.endDate.toDate().toISOString().slice(0, 16);
+
+  thumbPreview.src = offer.thumbnailUrl;
+  thumbPreview.classList.remove("hidden");
+
+  // Disable product selection (BUSINESS RULE)
+  selectedProductId = offer.productId;
+  selectedProductInput.value = offer.productId;
+
+  document.querySelectorAll("#productGrid > div").forEach((c) => {
+    c.classList.add("opacity-50", "pointer-events-none");
+  });
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
 }
 
 // ================= DISABLE =================
-function attachDisableActions() {
-  document.querySelectorAll(".disable").forEach((btn) => {
+function attachOfferActions() {
+  // DISABLE
+  document.querySelectorAll("[data-disable]").forEach((btn) => {
     btn.onclick = async () => {
-      await updateDoc(doc(db, "offers", btn.dataset.id), {
+      await updateDoc(doc(db, "offers", btn.dataset.disable), {
         status: "disabled",
         updatedAt: serverTimestamp(),
       });
       loadOffers();
+    };
+  });
+
+  // EDIT
+  document.querySelectorAll("[data-edit]").forEach((btn) => {
+    btn.onclick = () => {
+      const offerId = btn.dataset.edit;
+      openEditOffer(offerId);
     };
   });
 }
@@ -238,56 +294,43 @@ form.onsubmit = async (e) => {
     return;
   }
 
-  if (!thumbInput.files[0]) {
-    alert("Please upload an offer thumbnail");
-    return;
-  }
-
-  // HARD RULE: 1 active/scheduled offer per product
-  const existing = await getDocs(
-    query(
-      collection(db, "offers"),
-      where("productId", "==", selectedProductId),
-      where("status", "in", ["active", "scheduled"])
-    )
-  );
-
-  if (!existing.empty) {
-    alert("This product already has an active or scheduled offer");
-    return;
-  }
-
-  let imageUrl;
-  try {
-    imageUrl = await uploadImageToCloudinary(thumbInput.files[0]);
-  } catch (err) {
-    alert("Image upload failed");
-    return;
-  }
   const startDate = new Date(startInput.value);
   const endDate = new Date(endInput.value);
 
-  if (isNaN(startDate) || isNaN(endDate)) {
-    alert("Please select valid start and end date & time");
-    return;
-  }
   if (endDate <= startDate) {
     alert("End time must be after start time");
     return;
   }
-  await addDoc(collection(db, "offers"), {
-    ownerId: currentUser.uid,
-    productId: selectedProductId,
+
+  let thumbnailUrl = editingOfferData?.thumbnailUrl;
+
+  if (thumbInput.files[0]) {
+    thumbnailUrl = await uploadImageToCloudinary(thumbInput.files[0]);
+  }
+
+  const payload = {
     title: titleInput.value.trim(),
     discountType: typeInput.value,
     discountValue: Number(valueInput.value),
-    thumbnailUrl: imageUrl,
     startDate: Timestamp.fromDate(startDate),
     endDate: Timestamp.fromDate(endDate),
-    status: "scheduled",
-    createdAt: serverTimestamp(),
+    thumbnailUrl,
     updatedAt: serverTimestamp(),
-  });
+  };
+
+  if (editingOfferId) {
+    // UPDATE
+    await updateDoc(doc(db, "offers", editingOfferId), payload);
+  } else {
+    // CREATE
+    await addDoc(collection(db, "offers"), {
+      ...payload,
+      ownerId: currentUser.uid,
+      productId: selectedProductId,
+      status: "scheduled",
+      createdAt: serverTimestamp(),
+    });
+  }
 
   closeModal();
   loadOffers();
