@@ -5,7 +5,7 @@ import {
   doc,
   getDoc,
   updateDoc,
-  increment
+  increment,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= DOM =================
@@ -15,7 +15,7 @@ const badgeEl = document.getElementById("discountBadge");
 const validityEl = document.getElementById("offerValidity");
 const productEl = document.getElementById("productName");
 const shopEl = document.getElementById("shopName");
-
+const ctaBtn = document.getElementById("offerCta");
 // ================= GET OFFER ID =================
 const params = new URLSearchParams(window.location.search);
 const offerId = params.get("id");
@@ -58,14 +58,13 @@ async function loadOfferDetails() {
     badgeEl.className =
       "px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700";
 
-    validityEl.textContent =
-      `Valid till ${offer.endDate.toDate().toLocaleDateString()}`;
+    validityEl.textContent = `Valid till ${offer.endDate
+      .toDate()
+      .toLocaleDateString()}`;
 
     // 🔗 Fetch product
     if (offer.productId) {
-      const productSnap = await getDoc(
-        doc(db, "products", offer.productId)
-      );
+      const productSnap = await getDoc(doc(db, "products", offer.productId));
 
       if (productSnap.exists()) {
         productEl.textContent = productSnap.data().name;
@@ -74,9 +73,7 @@ async function loadOfferDetails() {
 
     // 🔗 Fetch shop
     if (offer.ownerId) {
-      const shopQuery = await getDoc(
-        doc(db, "shops", offer.ownerId)
-      );
+      const shopQuery = await getDoc(doc(db, "shops", offer.ownerId));
 
       if (shopQuery.exists()) {
         shopEl.textContent = shopQuery.data().name;
@@ -85,9 +82,22 @@ async function loadOfferDetails() {
 
     // 📈 Increment views (analytics)
     await updateDoc(offerRef, {
-      views: increment(1)
+      views: increment(1),
     });
+    ctaBtn.onclick = async () => {
+      try {
+        await updateDoc(doc(db, "offers", offerId), {
+          clicks: increment(1),
+        });
 
+        // future-ready redirect
+        // window.location.href = `/user/Shop.html?id=${offer.ownerId}`;
+
+        alert("Offer click tracked ✔");
+      } catch (err) {
+        console.error("Click tracking failed:", err);
+      }
+    };
   } catch (err) {
     console.error("Offer details error:", err);
     alert("Failed to load offer");
