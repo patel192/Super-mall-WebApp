@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
+  
+  <head>
+    <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard · SuperMall</title>
-
+  
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -148,6 +150,20 @@
 
           </div>
         </section>
+        <!-- OFFER TREND -->
+        <section class="space-y-4">
+
+          <h2 class="text-lg font-semibold text-dark">
+            Offer Performance Trend
+          </h2>
+
+          <div class="bg-white border rounded-2xl p-6">
+            <canvas id="offerTrendChart" height="120"></canvas>
+          </div>
+
+        </section>
+
+
 
         <!-- SMART KPI CARDS -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

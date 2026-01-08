@@ -8,7 +8,7 @@ import {
   where,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { getTopPerformingOffers } from "../utils/topOffers.js";
 // ================= DOM =================
 const loader = document.getElementById("pageLoader");
 const shopNameEl = document.getElementById("shopName");
@@ -23,6 +23,57 @@ const kpiOfferViews = document.getElementById("kpiOfferViews");
 const kpiOfferClicks = document.getElementById("kpiOfferClicks");
 const kpiOfferCTR = document.getElementById("kpiOfferCTR");
 const topOffersTable = document.getElementById("topOffersTable");
+
+// Helpers
+function renderOfferTrendChart(labels, views, clicks) {
+  const ctx = document.getElementById("offerTrendChart");
+
+  if (offerTrendChart) {
+    offerTrendChart.destroy();
+  }
+
+  offerTrendChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Views",
+          data: views,
+          borderColor: "#2563EB",
+          backgroundColor: "rgba(37,99,235,0.1)",
+          tension: 0.4,
+        },
+        {
+          label: "Clicks",
+          data: clicks,
+          borderColor: "#16A34A",
+          backgroundColor: "rgba(22,163,74,0.1)",
+          tension: 0.4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            precision: 0,
+          },
+        },
+      },
+    },
+  });
+}
+
+// CONST
+let offerTrendChart = null;
 
 // ================= HELPERS =================
 function isProfileComplete(shop) {
@@ -143,6 +194,13 @@ async function loadOfferPerformance(ownerId) {
   kpiOfferCTR.textContent = ctr;
 }
 async function loadTopPerformingOffers(ownerId) {
+  const topOffer = await getTopPerformingOffers({
+    limit: 5,
+    minViews: 30,
+  });
+
+  console.log(topOffer);
+
   const snap = await getDocs(
     query(collection(db, "offers"), where("ownerId", "==", ownerId))
   );
@@ -237,6 +295,42 @@ async function loadTopPerformingOffers(ownerId) {
     `;
   });
 }
+async function loadOfferTrend(ownerId, days = 7) {
+  const today = new Date();
+  const labels = [];
+  const viewsData = [];
+  const clicksData = [];
+
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+
+    const key = d.toISOString().slice(0, 10); // YYYY-MM-DD
+    labels.push(key);
+
+    const snap = await getDocs(
+      query(
+        collection(db, "offer_stats"),
+        where("ownerId", "==", ownerId),
+        where("date", "==", key)
+      )
+    );
+
+    let views = 0;
+    let clicks = 0;
+
+    snap.forEach((doc) => {
+      const data = doc.data();
+      views += data.views || 0;
+      clicks += data.clicks || 0;
+    });
+
+    viewsData.push(views);
+    clicksData.push(clicks);
+  }
+
+  renderOfferTrendChart(labels, viewsData, clicksData);
+}
 
 // ================= INIT =================
 onAuthStateChanged(auth, async (user) => {
@@ -314,7 +408,8 @@ onAuthStateChanged(auth, async (user) => {
     }
     await loadOffersAnalytics(user.uid);
     await loadOfferPerformance(user.uid);
-    loadTopPerformingOffers(user.uid);
+    await loadTopPerformingOffers(user.uid);
+    await loadOfferTrend(user.uid);
   } catch (err) {
     console.error("Admin dashboard error:", err);
     alert("Failed to load dashboard");

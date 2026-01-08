@@ -7,7 +7,7 @@ import {
   updateDoc,
   increment,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { trackOfferView, trackOfferClick } from "../utils/offerAnalytics.js";
 // ================= DOM =================
 const imageEl = document.getElementById("offerImage");
 const titleEl = document.getElementById("offerTitle");
@@ -45,6 +45,7 @@ async function loadOfferDetails() {
       window.location.href = "/user/User-Dashboard.html";
       return;
     }
+    await trackOfferView(offerId, offer.ownerId);
 
     // Inject UI
     imageEl.src = offer.thumbnailUrl;
@@ -80,20 +81,9 @@ async function loadOfferDetails() {
       }
     }
 
-    // 📈 Increment views (analytics)
-    await updateDoc(offerRef, {
-      views: increment(1),
-    });
     ctaBtn.onclick = async () => {
       try {
-        await updateDoc(doc(db, "offers", offerId), {
-          clicks: increment(1),
-        });
-
-        // future-ready redirect
-        // window.location.href = `/user/Shop.html?id=${offer.ownerId}`;
-
-        alert("Offer click tracked ✔");
+        await trackOfferClick(offerId, offer.ownerId);
       } catch (err) {
         console.error("Click tracking failed:", err);
       }

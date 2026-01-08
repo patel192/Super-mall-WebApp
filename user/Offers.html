@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offers · SuperMall</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body data-required-role="user" class="bg-muted text-slate-700">
+
+  <!-- AUTH GUARD -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <div id="sidebarMount"></div>
+
+    <!-- MAIN -->
+    <div class="flex-1 lg:ml-72">
+
+      <!-- NAVBAR -->
+      <div id="navbarMount"></div>
+
+      <!-- CONTENT -->
+      <main class="px-6 lg:px-10 py-8 space-y-6">
+
+        <div>
+          <h1 class="text-xl font-semibold text-dark">
+            Live Offers
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">
+            Discover the best deals available right now
+          </p>
+        </div>
+
+        <!-- OFFERS GRID -->
+        <div id="offersGrid"
+             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div class="bg-white border rounded-2xl p-6 text-center text-slate-400">
+            Loading offers…
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- USER LAYOUT -->
+  <script type="module" src="/js/layout/loadUserLayout.js"></script>
+
+  <!-- PAGE LOGIC -->
+  <script type="module" src="/js/user/offers.js"></script>
+
+</body>
+</html>

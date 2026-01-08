@@ -37,10 +37,35 @@ const endInput = document.getElementById("endDateTime");
 const thumbInput = document.getElementById("thumbnailInput");
 const thumbPreview = document.getElementById("thumbPreview");
 
+// CONSTS & VARIABLES =================
 let currentUser = null;
 let selectedProductId = null;
 let editingOfferId = null;
 let editingOfferData = null;
+let trendRendered = false;
+// HELPERS
+function drawSparkline(canvas, data) {
+  const ctx = canvas.getContext("2d");
+  const w = canvas.width;
+  const h = canvas.height;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const max = Math.max(...data, 1);
+  const stepX = w / (data.length - 1);
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#2563EB";
+  ctx.lineWidth = 2;
+
+  data.forEach((v, i) => {
+    const x = i * stepX;
+    const y = h - (v / max) * (h - 4) - 2;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+
+  ctx.stroke();
+}
 
 // ================= AUTH =================
 onAuthStateChanged(auth, async (user) => {
@@ -197,6 +222,8 @@ async function loadOffers() {
               ? "bg-green-100 text-green-700"
               : status === "scheduled"
               ? "bg-amber-100 text-amber-700"
+              : status === "paused"
+              ? "bg-orange-100 text-orange-700"
               : status === "expired"
               ? "bg-slate-200 text-slate-600"
               : "bg-red-100 text-red-700"
@@ -204,34 +231,74 @@ async function loadOffers() {
           ${status}
         </span>
       </td>
+<td class="px-6 py-4">
+  <canvas
+    class="offer-trend"
+    data-offer-id="${docSnap.id}"
+    width="90"
+    height="28">
+  </canvas>
+</td>
 
       <td class="px-6 py-4 text-right space-x-3">
-        <button
-          data-edit="${docSnap.id}"
-          class="text-blue-600 text-sm font-medium">
-          Edit
-        </button>
+  <button
+    data-edit="${docSnap.id}"
+    class="text-blue-600 text-sm font-medium">
+    Edit
+  </button>
 
-        ${
-          status === "active" || status === "scheduled"
-            ? `<button
-                data-disable="${docSnap.id}"
-                class="text-red-600 text-sm font-medium">
-                Disable
-              </button>`
-            : ""
-        }
-      </td>
+  ${
+    status === "active"
+      ? `<button data-pause="${docSnap.id}" class="text-amber-600 text-sm font-medium">Pause</button>`
+      : status === "paused"
+      ? `<button data-resume="${docSnap.id}" class="text-green-600 text-sm font-medium">Resume</button>`
+      : status === "scheduled"
+      ? `<button data-disable="${docSnap.id}" class="text-red-600 text-sm font-medium">Disable</button>`
+      : ""
+  }
+</td>
+
     `;
 
     offersTable.appendChild(row);
   });
 
+  await renderOfferTrends();
   attachOfferActions();
+}
+async function renderOfferTrends() {
+  if(trendRendered) return;
+  trendRendered = true;
+  const canvases = document.querySelectorAll(".offer-trend");
+
+  for (const canvas of canvases) {
+    const offerId = canvas.dataset.offerId;
+
+    // Fetch last 7 days stats
+    const statsSnap = await getDocs(
+      query(collection(db, "offer_stats"), where("offerId", "==", offerId))
+    );
+
+    // Map → last 7 days
+    const dailyViews = Array(7).fill(0);
+
+    statsSnap.forEach((doc) => {
+      const d = doc.data();
+      const dayIndex = Math.max(
+        0,
+        6 - Math.floor((Date.now() - d.date.toMillis()) / 86400000)
+      );
+      if (dayIndex >= 0 && dayIndex < 7) {
+        dailyViews[dayIndex] += d.views || 0;
+      }
+    });
+
+    drawSparkline(canvas, dailyViews);
+  }
 }
 
 // ================= ACTIONS =================
-function attachActions() {
+function attachOfferActions() {
   document.querySelectorAll("[data-disable]").forEach((btn) => {
     btn.onclick = async () => {
       await updateDoc(doc(db, "offers", btn.dataset.disable), {
