@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Profile · SuperMall</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body data-required-role="admin" class="bg-muted min-h-screen text-slate-700">
+
+  <!-- Auth -->
+  <script type="module" src="/public/js/auth/authGuard.js"></script>
+
+  <!-- Loader -->
+  <div id="pageLoader" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+  </div>
+
+  <div class="flex min-h-screen">
+    <div id="sidebarMount"></div>
+
+    <div class="flex-1 lg:ml-72">
+      <div id="navbarMount"></div>
+
+      <main class="px-6 lg:px-10 py-8 max-w-4xl">
+
+        <h1 class="text-2xl font-semibold text-dark mb-1">
+          Shop Profile
+        </h1>
+        <p class="text-sm text-slate-500 mb-8">
+          Complete your shop identity
+        </p>
+
+        <form id="shopForm" class="bg-white border rounded-2xl p-6 space-y-6">
+
+          <!-- LOGO -->
+          <div>
+            <label class="text-sm font-medium">Shop Logo</label>
+
+            <div class="mt-2 flex items-center gap-6">
+              <img id="logoPreview" src="https://via.placeholder.com/120"
+                class="w-24 h-24 rounded-xl object-cover border" />
+
+              <label class="cursor-pointer px-4 py-2 rounded-xl border text-sm
+                       hover:bg-slate-50 transition">
+                Upload Logo
+                <input id="logoInput" type="file" accept="image/*" hidden />
+              </label>
+            </div>
+          </div>
+
+          <!-- NAME -->
+          <div>
+            <label class="text-sm font-medium">Shop Name</label>
+            <input id="shopName" class="mt-1 w-full px-4 py-3 border rounded-xl
+                     focus:ring-2 focus:ring-primary outline-none" />
+          </div>
+
+          <!-- CATEGORY -->
+          <div>
+            <label class="text-sm font-medium">Category</label>
+            <select id="shopCategory" class="mt-1 w-full px-4 py-3 border rounded-xl
+                     focus:ring-2 focus:ring-primary outline-none">
+              <option value="">Select category</option>
+              <option>Fashion</option>
+              <option>Electronics</option>
+              <option>Food & Beverages</option>
+              <option>Groceries</option>
+              <option>Beauty</option>
+              <option>Services</option>
+            </select>
+          </div>
+
+          <!-- FLOOR (READ ONLY) -->
+          <div>
+            <label class="text-sm font-medium">Floor</label>
+            <input id="floorDisplay" disabled class="mt-1 w-full px-4 py-3 border rounded-xl
+                     bg-slate-100 text-slate-600" />
+          </div>
+
+          <!-- LOCATION -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input id="city" placeholder="City" class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2" />
+            <input id="state" placeholder="State" class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2" />
+            <input id="pincode" placeholder="Pincode"
+              class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2" />
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div>
+            <label class="text-sm font-medium">Description</label>
+            <textarea id="shopDescription" rows="4" class="mt-1 w-full px-4 py-3 border rounded-xl
+                     focus:ring-2 focus:ring-primary outline-none"></textarea>
+          </div>
+
+          <!-- ACTION -->
+          <div class="flex justify-end">
+            <button id="saveBtn" type="submit" class="px-6 py-3 rounded-xl bg-primary text-white
+                     font-medium hover:bg-blue-700 transition">
+              Save & Continue
+            </button>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="/public/js/layout/loadAdminLayout.js"></script>
+  <script type="module" src="/public/js/admin/shop-profile.js"></script>
+
+</body>
+
+</html>

@@ -1,89 +1,240 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SuperMall | Discover Deals Near You</title>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.7.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.7.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ["Poppins", "sans-serif"],
+          },
+          colors: {
+            primary: "#2563EB",
+            dark: "#0F172A",
+            muted: "#F1F5F9",
+          }
         }
-      });
-    </script>
-  </body>
+      }
+    }
+  </script>
+</head>
+
+<body class="font-poppins text-slate-700 bg-white">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 bg-white border-b">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <span class="font-semibold text-dark text-lg">SuperMall</span>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 text-sm">
+        <a href="#home" class="hover:text-primary">Home</a>
+        <a href="#features" class="hover:text-primary">Features</a>
+        <a href="#categories" class="hover:text-primary">Categories</a>
+        <a href="#offers" class="hover:text-primary">Offers</a>
+        <a href="#contact" class="hover:text-primary">Contact</a>
+        <button
+          id="loginBtn"
+          class="px-5 py-2 rounded-xl bg-primary text-white hover:bg-blue-700 transition">
+          Login
+        </button>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button id="menuToggle" class="md:hidden text-xl text-slate-700">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
+      <div class="px-6 py-4 flex flex-col gap-4 text-sm">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#categories">Categories</a>
+        <a href="#offers">Offers</a>
+        <a href="#contact">Contact</a>
+        <button
+          id="loginBtnMobile"
+          class="mt-2 px-4 py-2 rounded-lg bg-primary text-white">
+          Login
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section id="home" class="bg-muted">
+    <div class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+
+      <div>
+        <h1 class="text-4xl md:text-5xl font-bold text-dark leading-tight">
+          Discover the best shopping deals around you
+        </h1>
+        <p class="mt-5 text-slate-600 leading-relaxed">
+          SuperMall connects customers with trusted merchants, helping you
+          explore shops, compare prices, and grab exclusive offers — all in one place.
+        </p>
+
+        <div class="mt-8 flex gap-4">
+          <button
+            id="getStartedBtn"
+            class="px-6 py-3 rounded-xl bg-primary text-white hover:bg-blue-700 transition">
+            Get Started
+          </button>
+          <button
+            id="exploreOffersBtn"
+            class="px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 transition">
+            Explore Offers
+          </button>
+        </div>
+      </div>
+
+      <div class="hidden md:block">
+        <img
+          src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae"
+          alt="Shopping"
+          class="rounded-2xl shadow-lg">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section id="features" class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <h2 class="text-3xl font-semibold text-dark text-center">
+        Why choose SuperMall
+      </h2>
+
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="feature-card">
+          <h3>Shop Anywhere</h3>
+          <p>Browse multiple stores from your phone or laptop.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Secure Platform</h3>
+          <p>Firebase authentication ensures safe access.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Exclusive Offers</h3>
+          <p>Get the best deals from verified merchants.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Grow Your Business</h3>
+          <p>Merchants reach more customers online.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section id="categories" class="bg-muted py-20">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <h2 class="text-3xl font-semibold text-dark text-center">
+        Popular Categories
+      </h2>
+
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="category-card">Men’s Fashion</div>
+        <div class="category-card">Women’s Collection</div>
+        <div class="category-card">Electronics</div>
+        <div class="category-card">Groceries</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OFFERS ================= -->
+  <section id="offers" class="py-20">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-semibold text-dark">
+        Trending Offers
+      </h2>
+      <p class="mt-3 text-slate-600">
+        Grab the best deals before they’re gone.
+      </p>
+
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="offer-card">Flat 50% · Fashion Fiesta</div>
+        <div class="offer-card">Buy 1 Get 1 · Food Corner</div>
+        <div class="offer-card">Up to 30% · Tech World</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer id="contact" class="bg-dark text-slate-300 py-10">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm">
+      <p class="font-semibold text-white">SuperMall</p>
+      <p class="mt-2">
+        Connecting stores and customers through a modern digital platform.
+      </p>
+      <p class="mt-4 text-slate-400">
+        © 2025 SuperMall. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+
+    document.getElementById("loginBtn")?.addEventListener("click", () => {
+      window.location.href = "auth.html";
+    });
+
+    document.getElementById("loginBtnMobile")?.addEventListener("click", () => {
+      window.location.href = "auth.html";
+    });
+
+    document.getElementById("getStartedBtn")?.addEventListener("click", () => {
+      window.location.href = "auth.html";
+    });
+
+    document.getElementById("exploreOffersBtn")?.addEventListener("click", () => {
+      document.querySelector("#offers").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+
+  <!-- ================= UTIL CLASSES ================= -->
+  <style>
+    .feature-card {
+      @apply bg-white rounded-2xl p-6 border hover:shadow-md transition;
+    }
+    .category-card {
+      @apply bg-white rounded-2xl p-6 text-center border hover:shadow-md transition;
+    }
+    .offer-card {
+      @apply bg-muted rounded-2xl p-6 border;
+    }
+  </style>
+
+</body>
 </html>

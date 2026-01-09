@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard · SuperMall</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body data-required-role="user" class="bg-muted text-slate-700">
+
+  <!-- 🔒 AUTH GUARD -->
+  <script type="module" src="/public/js/auth/authGuard.js"></script>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <div id="sidebarMount"></div>
+
+    <!-- Main -->
+    <div class="flex-1 lg:ml-72">
+
+      <!-- Navbar -->
+      <div id="navbarMount"></div>
+
+      <!-- CONTENT -->
+      <main class="px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- ================= HERO ================= -->
+        <section class="bg-white border rounded-2xl p-6 flex flex-col gap-2">
+          <h1 class="text-xl font-semibold text-dark">
+            Welcome back 👋
+          </h1>
+          <p class="text-sm text-slate-500">
+            Discover trending offers and shops around you.
+          </p>
+        </section>
+
+        <!-- ================= KPIs ================= -->
+        <!-- KPIs -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+          <!-- Live Offers -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/public/user/Offers.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Live Offers</p>
+              <i class="fa-solid fa-tags text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiLiveOffers" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+          <!-- Shops -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/public/user/Shops.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Shops</p>
+              <i class="fa-solid fa-store text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiShops" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+          <!-- Categories -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/public/user/Categories.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Categories</p>
+              <i class="fa-solid fa-layer-group text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiCategories" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+          <!-- Floors (optional) -->
+          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
+            onclick="window.location.href='/public/user/Floors.html'">
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-slate-500">Floors</p>
+              <i class="fa-solid fa-building text-primary text-sm"></i>
+            </div>
+            <h2 id="kpiFloors" class="mt-2 text-2xl font-semibold text-dark">
+              —
+            </h2>
+          </div>
+
+        </section>
+
+
+
+        <!-- TRENDING OFFERS -->
+        <section class="space-y-4">
+
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Trending Offers
+            </h2>
+
+            <a href="/public/user/Offers.html" class="text-sm text-primary font-medium hover:underline">
+              View all
+            </a>
+          </div>
+
+          <div id="trendingOffersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Skeleton -->
+            <div class="bg-white border rounded-2xl p-5 animate-pulse">
+              <div class="h-40 bg-slate-200 rounded-xl mb-4"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================= DISCOVER SHOPS ================= -->
+        <section class="space-y-4">
+
+          <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-dark">
+              Popular Shops
+            </h2>
+            <a href="/public/user/Shops.html" class="text-sm text-primary font-medium">
+              Browse all
+            </a>
+          </div>
+
+          <div id="shopsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-slate-400 text-sm">
+                Loading shops…
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Layout Loader -->
+  <script type="module" src="/public/js/layout/loadUserLayout.js"></script>
+
+  <!-- Page Logic -->
+  <script type="module" src="/public/js/user/User-Dashboard.js"></script>
+
+</body>
+
+</html>
