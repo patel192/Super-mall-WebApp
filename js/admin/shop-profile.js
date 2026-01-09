@@ -15,8 +15,9 @@ import {
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { uploadImageToCloudinary } from "../utils/cloudinary.js";
+import { notifyUser } from "../utils/notificationService.js";
 
-// DOM
+// ================= DOM =================
 const loader = document.getElementById("pageLoader");
 const form = document.getElementById("shopForm");
 const saveBtn = document.getElementById("saveBtn");
@@ -32,20 +33,22 @@ const floorDisplay = document.getElementById("floorDisplay");
 const logoInput = document.getElementById("logoInput");
 const logoPreview = document.getElementById("logoPreview");
 
+// ================= STATE =================
 let shopDocRef = null;
 let logoUrl = "";
+let wasProfileCompleted = false;
 
-// IMAGE PREVIEW
+// ================= IMAGE PREVIEW =================
 logoInput.addEventListener("change", () => {
   const file = logoInput.files[0];
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = () => logoPreview.src = reader.result;
+  reader.onload = () => (logoPreview.src = reader.result);
   reader.readAsDataURL(file);
 });
 
-// LOAD EXISTING SHOP
+// ================= LOAD EXISTING SHOP =================
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
 
@@ -65,6 +68,9 @@ onAuthStateChanged(auth, async (user) => {
   shopDocRef = docSnap.ref;
   const shop = docSnap.data();
 
+  // Track previous profile state
+  wasProfileCompleted = !!shop.profileCompleted;
+
   nameInput.value = shop.name || "";
   categoryInput.value = shop.category || "";
   cityInput.value = shop.location?.city || "";
@@ -77,7 +83,7 @@ onAuthStateChanged(auth, async (user) => {
     logoPreview.src = shop.logoUrl;
   }
 
-  // LOAD FLOOR (READ ONLY)
+  // Load floor (read-only)
   if (shop.floorId) {
     const floorSnap = await getDoc(doc(db, "floors", shop.floorId));
     if (floorSnap.exists()) {
@@ -89,7 +95,7 @@ onAuthStateChanged(auth, async (user) => {
   loader.classList.add("hidden");
 });
 
-// SUBMIT
+// ================= SUBMIT =================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -123,6 +129,16 @@ form.addEventListener("submit", async (e) => {
     }
 
     await updateDoc(shopDocRef, payload);
+
+    // 🔔 Notify only on first-time profile completion
+    if (!wasProfileCompleted) {
+      await notifyUser(auth.currentUser.uid, {
+        type: "SHOP_PROFILE_COMPLETED",
+        title: "Shop Profile Completed",
+        message: "Your shop profile is now complete and visible to users.",
+        link: "/admin/Admin-Dashboard.html",
+      });
+    }
 
     window.location.href = "/admin/Admin-Dashboard.html";
 
