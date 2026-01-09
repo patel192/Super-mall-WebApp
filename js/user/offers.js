@@ -21,9 +21,18 @@ const offersGrid = document.getElementById("offersGrid");
 const pageTitle = document.getElementById("pageTitle");
 const pageSubtitle = document.getElementById("pageSubtitle");
 
-// ================= PARAM =================
+// ================= PARAMS =================
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("product");
+
+// ================= VIEW TRACKING (SESSION SAFE) =================
+function hasViewedOffer(offerId) {
+  return sessionStorage.getItem(`offer_viewed_${offerId}`);
+}
+
+function markOfferViewed(offerId) {
+  sessionStorage.setItem(`offer_viewed_${offerId}`, "1");
+}
 
 // ================= LOAD OFFERS =================
 async function loadOffers() {
@@ -45,6 +54,9 @@ async function loadOffers() {
       collection(db, "offers"),
       where("status", "==", "active")
     );
+
+    pageTitle.textContent = "Active Offers";
+    pageSubtitle.textContent = "Best deals available right now";
   }
 
   const snap = await getDocs(q);
@@ -53,28 +65,38 @@ async function loadOffers() {
     offersGrid.innerHTML = `
       <div class="col-span-full text-center text-slate-400 py-10">
         No active offers available
-      </div>`;
+      </div>
+    `;
     return;
   }
+
+  const now = Date.now();
 
   for (const docSnap of snap.docs) {
     const offer = docSnap.data();
 
-    // Load product info
+    // ⛔ Defensive expiry check (never show expired)
+    if (offer.endDate?.toMillis && offer.endDate.toMillis() < now) {
+      continue;
+    }
+
+    // ================= LOAD PRODUCT =================
     let productName = "Product";
     let productImage = "https://via.placeholder.com/400";
 
-    const productSnap = await getDoc(
-      doc(db, "products", offer.productId)
-    );
+    if (offer.productId) {
+      const productSnap = await getDoc(
+        doc(db, "products", offer.productId)
+      );
 
-    if (productSnap.exists()) {
-      const p = productSnap.data();
-      productName = p.name;
-      productImage = p.imageUrl || productImage;
+      if (productSnap.exists()) {
+        const p = productSnap.data();
+        productName = p.name || productName;
+        productImage = p.imageUrl || productImage;
+      }
     }
 
-    // Render card
+    // ================= CARD =================
     const card = document.createElement("div");
     card.className =
       "bg-white border rounded-2xl overflow-hidden hover:shadow-md transition";
@@ -83,14 +105,16 @@ async function loadOffers() {
       <div class="relative">
         <img
           src="${offer.thumbnailUrl || productImage}"
-          class="w-full h-44 object-cover"/>
+          class="w-full h-44 object-cover"
+          alt="Offer image"
+        />
 
         <span class="absolute top-3 left-3 px-2 py-1 rounded-lg
                      bg-red-600 text-white text-xs font-medium">
           ${
             offer.discountType === "percentage"
-              ? offer.discountValue + "% OFF"
-              : "₹" + offer.discountValue + " OFF"
+              ? `${offer.discountValue}% OFF`
+              : `₹${offer.discountValue} OFF`
           }
         </span>
       </div>
@@ -113,19 +137,22 @@ async function loadOffers() {
       </div>
     `;
 
-    // Track view (safe)
-    try {
-      await trackOfferView(docSnap.id, offer.productId);
-    } catch (err) {
-      console.warn("Offer view tracking failed", err);
+    // ================= ANALYTICS (SAFE) =================
+    if (!hasViewedOffer(docSnap.id)) {
+      try {
+        await trackOfferView(docSnap.id, offer.productId);
+        markOfferViewed(docSnap.id);
+      } catch (err) {
+        console.warn("Offer view tracking failed:", err);
+      }
     }
 
-    // Click
+    // ================= CLICK =================
     card.querySelector(".view-offer").onclick = async () => {
       try {
         await trackOfferClick(docSnap.id, offer.productId);
       } catch (err) {
-        console.warn("Offer click tracking failed", err);
+        console.warn("Offer click tracking failed:", err);
       }
 
       window.location.href =
@@ -133,6 +160,15 @@ async function loadOffers() {
     };
 
     offersGrid.appendChild(card);
+  }
+
+  // Empty after filtering expired
+  if (!offersGrid.children.length) {
+    offersGrid.innerHTML = `
+      <div class="col-span-full text-center text-slate-400 py-10">
+        No active offers available
+      </div>
+    `;
   }
 }
 
@@ -145,7 +181,8 @@ async function loadOffers() {
     offersGrid.innerHTML = `
       <div class="col-span-full text-center text-red-500 py-10">
         Failed to load offers
-      </div>`;
+      </div>
+    `;
   } finally {
     loader.classList.add("hidden");
   }

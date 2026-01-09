@@ -199,6 +199,7 @@ async function loadOffers() {
 
     let status;
     if (o.status === "disabled") status = "disabled";
+    else if (o.status === "paused") status = "paused";
     else if (now < start) status = "scheduled";
     else if (now > end) status = "expired";
     else status = "active";
@@ -266,23 +267,44 @@ async function loadOffers() {
   </canvas>
 </td>
 
-      <td class="px-6 py-4 text-right space-x-3">
-  <button
-    data-edit="${docSnap.id}"
-    class="text-blue-600 text-sm font-medium">
-    Edit
-  </button>
+     <td class="px-6 py-4 text-right space-x-3">
+  ${
+    status !== "expired" && status !== "disabled"
+      ? `<button data-edit="${docSnap.id}"
+                 class="text-blue-600 text-sm font-medium">
+            Edit
+         </button>`
+      : `<span class="text-slate-400 text-xs">—</span>`
+  }
 
   ${
     status === "active"
-      ? `<button data-pause="${docSnap.id}" class="text-amber-600 text-sm font-medium">Pause</button>`
-      : status === "paused"
-      ? `<button data-resume="${docSnap.id}" class="text-green-600 text-sm font-medium">Resume</button>`
-      : status === "scheduled"
-      ? `<button data-disable="${docSnap.id}" class="text-red-600 text-sm font-medium">Disable</button>`
+      ? `<button data-pause="${docSnap.id}"
+                 class="text-amber-600 text-sm font-medium">
+            Pause
+         </button>`
+      : ""
+  }
+
+  ${
+    status === "paused"
+      ? `<button data-resume="${docSnap.id}"
+                 class="text-green-600 text-sm font-medium">
+            Resume
+         </button>`
+      : ""
+  }
+
+  ${
+    status === "scheduled"
+      ? `<button data-disable="${docSnap.id}"
+                 class="text-red-600 text-sm font-medium">
+            Disable
+         </button>`
       : ""
   }
 </td>
+
 
     `;
 
@@ -422,7 +444,7 @@ form.onsubmit = async (e) => {
     alert("End time must be after start time");
     return;
   }
-  if(!selectedProductId){
+  if (!selectedProductId) {
     alert("Please select a product for the offer.");
     return;
   }
