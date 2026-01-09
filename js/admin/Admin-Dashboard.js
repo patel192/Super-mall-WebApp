@@ -23,11 +23,6 @@ const kpiOfferViews = document.getElementById("kpiOfferViews");
 const kpiOfferClicks = document.getElementById("kpiOfferClicks");
 const kpiOfferCTR = document.getElementById("kpiOfferCTR");
 const topOffersTable = document.getElementById("topOffersTable");
-const kpiTotalProducts = document.getElementById("kpiTotalProducts");
-const kpiActiveProducts = document.getElementById("kpiActiveProducts");
-const kpiProductViews = document.getElementById("kpiProductViews");
-const kpiProductClicks = document.getElementById("kpiProductClicks");
-const kpiProductCTR = document.getElementById("kpiProductCTR");
 const topProductsTable = document.getElementById("topProductsTable");
 
 // Helpers
@@ -253,7 +248,7 @@ async function loadProductPerformance(ownerId) {
   let views = 0;
   let clicks = 0;
 
-  snap.forEach(docSnap => {
+  snap.forEach((docSnap) => {
     const p = docSnap.data();
     total++;
 
@@ -263,8 +258,7 @@ async function loadProductPerformance(ownerId) {
     clicks += p.clicks || 0;
   });
 
-  const ctr =
-    views > 0 ? ((clicks / views) * 100).toFixed(2) + "%" : "0%";
+  const ctr = views > 0 ? ((clicks / views) * 100).toFixed(2) + "%" : "0%";
 
   // Inject UI
   document.getElementById("kpiProductTotal").textContent = total;
@@ -413,39 +407,72 @@ async function loadProductTrend(ownerId, days = 7) {
   renderProductTrendChart(labels, viewsData, clicksData);
 }
 
-async function loadTopPerformingProducts(ownerId) {
-  const snap = await getDocs(
-    query(collection(db, "products"), where("ownerId", "==", ownerId))
-  );
+async function loadTopPerformingProducts(ownerId, days = 7) {
+  const today = new Date();
+  const statsMap = new Map(); // productId → aggregated stats
 
-  if (snap.empty) {
+  // 1️⃣ Collect stats for last N days
+  for (let i = 0; i < days; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+
+    const dateKey = d.toISOString().slice(0, 10);
+
+    const snap = await getDocs(
+      query(
+        collection(db, "product_stats"),
+        where("ownerId", "==", ownerId),
+        where("date", "==", dateKey)
+      )
+    );
+
+    snap.forEach((docSnap) => {
+      const s = docSnap.data();
+
+      if (!statsMap.has(s.productId)) {
+        statsMap.set(s.productId, {
+          productId: s.productId,
+          views: 0,
+          clicks: 0,
+        });
+      }
+
+      const agg = statsMap.get(s.productId);
+      agg.views += s.views || 0;
+      agg.clicks += s.clicks || 0;
+    });
+  }
+
+  if (statsMap.size === 0) {
     topProductsTable.innerHTML = `
       <tr>
-        <td colspan="5"
-            class="px-6 py-10 text-center text-slate-400">
-          No products found
+        <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+          No product activity yet
         </td>
       </tr>`;
     return;
   }
 
+  // 2️⃣ Fetch product metadata (name, status)
+  const productSnaps = await getDocs(
+    query(collection(db, "products"), where("ownerId", "==", ownerId))
+  );
+
   const products = [];
 
-  snap.forEach((docSnap) => {
+  productSnaps.forEach((docSnap) => {
     const p = docSnap.data();
+    const stats = statsMap.get(docSnap.id);
 
-    const views = p.views || 0;
-    const clicks = p.clicks || 0;
+    if (!stats) return; // no activity
 
-    // 🚫 Ignore products with zero visibility
-    if (views < 10) return;
-
-    const ctr = views > 0 ? (clicks / views) * 100 : 0;
+    const ctr =
+      stats.views > 0 ? (stats.clicks / stats.views) * 100 : 0;
 
     products.push({
       name: p.name,
-      views,
-      clicks,
+      views: stats.views,
+      clicks: stats.clicks,
       ctr,
       status: p.status || "active",
     });
@@ -454,15 +481,14 @@ async function loadTopPerformingProducts(ownerId) {
   if (products.length === 0) {
     topProductsTable.innerHTML = `
       <tr>
-        <td colspan="5"
-            class="px-6 py-10 text-center text-slate-400">
-          Not enough product data yet
+        <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+          No qualifying products yet
         </td>
       </tr>`;
     return;
   }
 
-  // 🔥 SORT: Clicks → CTR → Views
+  // 3️⃣ Sort: Clicks → CTR → Views
   products.sort((a, b) => {
     if (b.clicks !== a.clicks) return b.clicks - a.clicks;
     if (b.ctr !== a.ctr) return b.ctr - a.ctr;
@@ -471,12 +497,12 @@ async function loadTopPerformingProducts(ownerId) {
 
   const topProducts = products.slice(0, 5);
 
+  // 4️⃣ Render
   topProductsTable.innerHTML = "";
 
   topProducts.forEach((p) => {
     topProductsTable.innerHTML += `
       <tr class="border-t">
-
         <td class="px-6 py-4 font-medium text-slate-900">
           ${p.name}
         </td>
@@ -503,11 +529,11 @@ async function loadTopPerformingProducts(ownerId) {
             ${p.status}
           </span>
         </td>
-
       </tr>
     `;
   });
 }
+
 
 async function loadOfferTrend(ownerId, days = 7) {
   const today = new Date();
