@@ -9,11 +9,10 @@ import {
   onSnapshot,
   updateDoc,
   doc,
-  getDocs
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { onAuthStateChanged } from
-  "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ================= DOM =================
 const notifBtn = document.getElementById("notifBtn");
@@ -31,8 +30,7 @@ function toggleDropdown() {
 }
 
 function closeDropdown(e) {
-  if (!notifDropdown.contains(e.target) &&
-      !notifBtn.contains(e.target)) {
+  if (!notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
     notifDropdown.classList.add("hidden");
   }
 }
@@ -50,14 +48,18 @@ function renderNotification(docSnap) {
         ${n.message}
       </p>
 
-      ${n.link ? `
+      ${
+        n.link
+          ? `
         <a href="${n.link}"
            data-id="${docSnap.id}"
            class="notif-link inline-block mt-2
                   text-xs text-primary hover:underline">
           View
         </a>
-      ` : ""}
+      `
+          : ""
+      }
     </div>
   `;
 }
@@ -75,10 +77,7 @@ onAuthStateChanged(auth, async (user) => {
 
   // Fetch role
   const userSnap = await getDocs(
-    query(
-      collection(db, "users"),
-      where("__name__", "==", user.uid)
-    )
+    query(collection(db, "users"), where("__name__", "==", user.uid))
   );
 
   if (userSnap.empty) return;
@@ -87,8 +86,7 @@ onAuthStateChanged(auth, async (user) => {
 
   const q = query(
     collection(db, "notifications"),
-    where("targetRole", "==", role),
-    where("read", "==", false),
+    where("targetUid", "==", user.uid),
     orderBy("createdAt", "desc")
   );
 
@@ -108,15 +106,9 @@ onAuthStateChanged(auth, async (user) => {
     snapshot.forEach((docSnap) => {
       const n = docSnap.data();
 
-      // User-specific notifications
-      if (n.targetUid && n.targetUid !== user.uid) return;
+      if (!n.read) unreadCount++;
 
-      unreadCount++;
-
-      notifList.insertAdjacentHTML(
-        "beforeend",
-        renderNotification(docSnap)
-      );
+      notifList.insertAdjacentHTML("beforeend", renderNotification(docSnap));
     });
 
     if (unreadCount > 0) {
@@ -147,13 +139,12 @@ markAllReadBtn?.addEventListener("click", async () => {
   const snaps = await getDocs(
     query(
       collection(db, "notifications"),
+      where("targetUid", "==", auth.currentUser.uid),
       where("read", "==", false)
     )
   );
 
-  const updates = snaps.docs.map((d) =>
-    updateDoc(d.ref, { read: true })
-  );
+  const updates = snaps.docs.map((d) => updateDoc(d.ref, { read: true }));
 
   await Promise.all(updates);
 });

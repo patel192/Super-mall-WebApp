@@ -11,7 +11,7 @@ import {
   setDoc,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import { notifyUser, notifySuperAdmin } from "../utils/notificationService.js";
 // ================= CONSTANTS =================
 const ROLES = Object.freeze({
   USER: "user",
@@ -194,6 +194,11 @@ function attachActionHandlers() {
           role: ROLES.REJECTED,
           rejectedAt: serverTimestamp(),
         });
+        await notifyUser(uid, {
+          type: "MERCHANT_REJECTED",
+          title: "Merchant Request Rejected",
+          message: "Your merchant request was rejected by the administrator.",
+        });
 
         await logEvent(
           "MERCHANT_REJECTED",
@@ -241,6 +246,14 @@ confirmApproveBtn.onclick = async () => {
       floorId,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
+    });
+    // 🔔 Notify merchant
+    await notifyUser(selectedMerchantUid, {
+      type: "MERCHANT_APPROVED",
+      title: "Merchant Approved",
+      message:
+        "Your merchant request has been approved. You can now manage your shop.",
+      link: "/admin/Admin-Dashboard.html",
     });
 
     // 3️⃣ Log action
