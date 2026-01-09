@@ -9,6 +9,7 @@ import {
   updateDoc,
   serverTimestamp,
   setDoc,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= CONSTANTS =================
@@ -18,6 +19,18 @@ const ROLES = Object.freeze({
   ADMIN: "admin",
   REJECTED: "rejected",
 });
+
+// ================= DOM =================
+const tableBody = document.getElementById("merchantTable");
+
+// Floor modal elements
+const floorModal = document.getElementById("floorModal");
+const floorSelect = document.getElementById("floorSelect");
+const cancelFloorBtn = document.getElementById("cancelFloorBtn");
+const confirmApproveBtn = document.getElementById("confirmApproveBtn");
+
+// State
+let selectedMerchantUid = null;
 
 // ================= HELPERS =================
 function getStatusLabel(role) {
@@ -58,9 +71,6 @@ function unlockButton(btn, text) {
   btn.classList.remove("opacity-70", "cursor-not-allowed");
 }
 
-// ================= DOM =================
-const tableBody = document.getElementById("merchantTable");
-
 // ================= LOGGER =================
 async function logEvent(type, message, targetUid) {
   await setDoc(doc(db, "logs", crypto.randomUUID()), {
@@ -68,6 +78,21 @@ async function logEvent(type, message, targetUid) {
     message,
     targetUid,
     timestamp: serverTimestamp(),
+  });
+}
+
+// ================= LOAD FLOORS =================
+async function loadFloors() {
+  floorSelect.innerHTML = `<option value="">Select a floor</option>`;
+
+  const snap = await getDocs(collection(db, "floors"));
+
+  snap.forEach((docSnap) => {
+    const floor = docSnap.data();
+    const option = document.createElement("option");
+    option.value = docSnap.id;
+    option.textContent = `${floor.name} (Level ${floor.level})`;
+    floorSelect.appendChild(option);
   });
 }
 
@@ -145,38 +170,13 @@ function listenPendingMerchants() {
 
 // ================= ACTION HANDLERS =================
 function attachActionHandlers() {
-  // APPROVE
+  // APPROVE (opens floor modal)
   document.querySelectorAll("[data-approve]").forEach((btn) => {
     btn.onclick = async () => {
-      const uid = btn.dataset.approve;
-
-      if (!confirm("Approve this merchant request?")) return;
-
-      lockButton(btn);
-
-      try {
-        await updateDoc(doc(db, "users", uid), {
-          role: ROLES.ADMIN,
-          approvedAt: serverTimestamp(),
-        });
-        await setDoc(doc(collection(db, "shops")), {
-          ownerId: uid,
-          name: "New Shop",
-          status: "active",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
-        await logEvent(
-          "MERCHANT_APPROVED",
-          "Merchant approved by super admin",
-          uid
-        );
-
-        // Realtime listener auto-removes row
-      } catch (err) {
-        unlockButton(btn, "Approve");
-        alert("Approval failed. Please try again.");
-      }
+      selectedMerchantUid = btn.dataset.approve;
+      await loadFloors();
+      floorModal.classList.remove("hidden");
+      floorModal.classList.add("flex");
     };
   });
 
@@ -200,8 +200,6 @@ function attachActionHandlers() {
           "Merchant request rejected by super admin",
           uid
         );
-
-        // Realtime listener auto-removes row
       } catch (err) {
         unlockButton(btn, "Reject");
         alert("Rejection failed. Please try again.");
@@ -209,6 +207,59 @@ function attachActionHandlers() {
     };
   });
 }
+
+// ================= MODAL ACTIONS =================
+cancelFloorBtn.onclick = () => {
+  floorModal.classList.add("hidden");
+  floorModal.classList.remove("flex");
+  selectedMerchantUid = null;
+};
+
+confirmApproveBtn.onclick = async () => {
+  const floorId = floorSelect.value;
+
+  if (!floorId) {
+    alert("Please select a floor.");
+    return;
+  }
+
+  confirmApproveBtn.disabled = true;
+  confirmApproveBtn.textContent = "Approving...";
+
+  try {
+    // 1️⃣ Update user role
+    await updateDoc(doc(db, "users", selectedMerchantUid), {
+      role: ROLES.ADMIN,
+      approvedAt: serverTimestamp(),
+    });
+
+    // 2️⃣ Create shop with floorId
+    await setDoc(doc(collection(db, "shops")), {
+      ownerId: selectedMerchantUid,
+      name: "New Shop",
+      status: "active",
+      floorId,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+
+    // 3️⃣ Log action
+    await logEvent(
+      "MERCHANT_APPROVED",
+      "Merchant approved and floor assigned",
+      selectedMerchantUid
+    );
+
+    floorModal.classList.add("hidden");
+    floorModal.classList.remove("flex");
+  } catch (err) {
+    alert("Approval failed. Please try again.");
+  } finally {
+    confirmApproveBtn.disabled = false;
+    confirmApproveBtn.textContent = "Approve & Assign";
+    selectedMerchantUid = null;
+  }
+};
 
 // ================= INIT =================
 listenPendingMerchants();

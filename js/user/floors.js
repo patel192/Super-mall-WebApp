@@ -5,7 +5,7 @@ import {
   collection,
   getDocs,
   query,
-  where
+  where,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= DOM =================
@@ -29,9 +29,10 @@ async function loadFloors() {
   for (const docSnap of floorsSnap.docs) {
     const floor = docSnap.data();
 
-    // Count shops on this floor
+    // Count active shops on this floor
     const shopsSnap = await getDocs(
-      query(collection(db, "shops"),
+      query(
+        collection(db, "shops"),
         where("floorId", "==", docSnap.id),
         where("status", "==", "active")
       )
@@ -53,8 +54,8 @@ async function loadFloors() {
         </div>
 
         <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary
-             flex items-center justify-center">
-          <i class="fa-solid fa-building"></i>
+                    flex items-center justify-center">
+          <i class="fa-solid fa-layer-group"></i>
         </div>
       </div>
 

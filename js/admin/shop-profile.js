@@ -7,9 +7,10 @@ import {
   query,
   where,
   getDocs,
-  addDoc,
   updateDoc,
-  serverTimestamp
+  serverTimestamp,
+  doc,
+  getDoc
 } from
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -26,6 +27,7 @@ const cityInput = document.getElementById("city");
 const stateInput = document.getElementById("state");
 const pincodeInput = document.getElementById("pincode");
 const descInput = document.getElementById("shopDescription");
+const floorDisplay = document.getElementById("floorDisplay");
 
 const logoInput = document.getElementById("logoInput");
 const logoPreview = document.getElementById("logoPreview");
@@ -54,21 +56,33 @@ onAuthStateChanged(auth, async (user) => {
 
   const snap = await getDocs(q);
 
-  if (!snap.empty) {
-    const docSnap = snap.docs[0];
-    shopDocRef = docSnap.ref;
-    const shop = docSnap.data();
+  if (snap.empty) {
+    alert("Shop not initialized. Please contact support.");
+    return;
+  }
 
-    nameInput.value = shop.name || "";
-    categoryInput.value = shop.category || "";
-    cityInput.value = shop.location?.city || "";
-    stateInput.value = shop.location?.state || "";
-    pincodeInput.value = shop.location?.pincode || "";
-    descInput.value = shop.description || "";
+  const docSnap = snap.docs[0];
+  shopDocRef = docSnap.ref;
+  const shop = docSnap.data();
 
-    if (shop.logoUrl) {
-      logoUrl = shop.logoUrl;
-      logoPreview.src = shop.logoUrl;
+  nameInput.value = shop.name || "";
+  categoryInput.value = shop.category || "";
+  cityInput.value = shop.location?.city || "";
+  stateInput.value = shop.location?.state || "";
+  pincodeInput.value = shop.location?.pincode || "";
+  descInput.value = shop.description || "";
+
+  if (shop.logoUrl) {
+    logoUrl = shop.logoUrl;
+    logoPreview.src = shop.logoUrl;
+  }
+
+  // LOAD FLOOR (READ ONLY)
+  if (shop.floorId) {
+    const floorSnap = await getDoc(doc(db, "floors", shop.floorId));
+    if (floorSnap.exists()) {
+      const f = floorSnap.data();
+      floorDisplay.value = `${f.name} (Level ${f.level})`;
     }
   }
 
@@ -97,7 +111,7 @@ form.addEventListener("submit", async (e) => {
         state: stateInput.value.trim(),
         pincode: pincodeInput.value.trim(),
       },
-      status: "active",
+      profileCompleted: true,
       updatedAt: serverTimestamp(),
     };
 
@@ -108,15 +122,7 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    if (shopDocRef) {
-      await updateDoc(shopDocRef, payload);
-    } else {
-      await addDoc(collection(db, "shops"), {
-        ...payload,
-        ownerId: auth.currentUser.uid,
-        createdAt: serverTimestamp(),
-      });
-    }
+    await updateDoc(shopDocRef, payload);
 
     window.location.href = "/admin/Admin-Dashboard.html";
 

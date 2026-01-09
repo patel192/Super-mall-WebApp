@@ -48,6 +48,36 @@
       </main>
     </div>
   </div>
+  <!-- FLOOR SELECTION MODAL -->
+  <div id="floorModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl w-full max-w-md p-6 space-y-5">
+
+      <h2 class="text-lg font-semibold text-slate-900">
+        Assign Floor to Shop
+      </h2>
+
+      <p class="text-sm text-slate-500">
+        Select a floor before approving the merchant.
+      </p>
+
+      <select id="floorSelect" class="w-full px-4 py-3 border rounded-xl">
+        <option value="">Loading floors…</option>
+      </select>
+
+      <div class="flex justify-end gap-3 pt-4">
+        <button id="cancelFloorBtn" class="px-4 py-2 rounded-xl border">
+          Cancel
+        </button>
+
+        <button id="confirmApproveBtn" class="px-5 py-2 rounded-xl bg-green-600 text-white">
+          Approve & Assign
+        </button>
+      </div>
+
+    </div>
+  </div>
+
 
   <!-- Layout Loader -->
   <script type="module" src="/js/layout/loadSuperAdminLayout.js"></script>
