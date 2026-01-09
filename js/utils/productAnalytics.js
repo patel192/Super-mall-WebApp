@@ -7,7 +7,9 @@ import {
   setDoc,
   updateDoc,
   increment,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= HELPERS =================
@@ -20,20 +22,46 @@ export async function trackProductView(productId, ownerId) {
   try {
     const sessionKey = `product_viewed_${productId}`;
     if (sessionStorage.getItem(sessionKey)) return;
-
     sessionStorage.setItem(sessionKey, "1");
 
+    const productRef = doc(db, "products", productId);
+    const productSnap = await getDoc(productRef);
+    if (!productSnap.exists()) return;
+
+    const product = productSnap.data();
+    const isFirstView =
+      (product.views || 0) === 0 && !product.firstViewNotified;
+
     // 1️⃣ Increment total views
-    await updateDoc(doc(db, "products", productId), {
+    await updateDoc(productRef, {
       views: increment(1),
     });
+
+    // 🔔 FIRST VIEW NOTIFICATION (GLOBAL, ONCE)
+    if (isFirstView && ownerId) {
+      await addDoc(collection(db, "notifications"), {
+        type: "PRODUCT_FIRST_VIEW",
+        title: "Product Viewed 🎉",
+        message: `Your product "${product.name}" received its first view.`,
+        targetRole: "admin",
+        targetUid: ownerId,
+        link: "/admin/Products.html",
+        read: false,
+        createdAt: serverTimestamp(),
+      });
+
+      // lock it forever
+      await updateDoc(productRef, {
+        firstViewNotified: true,
+      });
+    }
 
     // 2️⃣ Daily stats
     const today = getTodayKey();
     const statsRef = doc(db, "product_stats", `${productId}_${today}`);
-    const snap = await getDoc(statsRef);
+    const statsSnap = await getDoc(statsRef);
 
-    if (snap.exists()) {
+    if (statsSnap.exists()) {
       await updateDoc(statsRef, {
         views: increment(1),
         updatedAt: serverTimestamp(),
@@ -49,6 +77,7 @@ export async function trackProductView(productId, ownerId) {
         updatedAt: serverTimestamp(),
       });
     }
+
   } catch (err) {
     console.error("Product view tracking failed:", err);
   }
@@ -59,20 +88,46 @@ export async function trackProductClick(productId, ownerId) {
   try {
     const sessionKey = `product_clicked_${productId}`;
     if (sessionStorage.getItem(sessionKey)) return;
-
     sessionStorage.setItem(sessionKey, "1");
 
+    const productRef = doc(db, "products", productId);
+    const productSnap = await getDoc(productRef);
+    if (!productSnap.exists()) return;
+
+    const product = productSnap.data();
+    const isFirstClick =
+      (product.clicks || 0) === 0 && !product.firstClickNotified;
+
     // 1️⃣ Increment total clicks
-    await updateDoc(doc(db, "products", productId), {
+    await updateDoc(productRef, {
       clicks: increment(1),
     });
+
+    // 🔔 FIRST CLICK NOTIFICATION (GLOBAL, ONCE)
+    if (isFirstClick && ownerId) {
+      await addDoc(collection(db, "notifications"), {
+        type: "PRODUCT_FIRST_CLICK",
+        title: "Product Clicked 🎯",
+        message: `Your product "${product.name}" received its first click.`,
+        targetRole: "admin",
+        targetUid: ownerId,
+        link: "/admin/Products.html",
+        read: false,
+        createdAt: serverTimestamp(),
+      });
+
+      // lock it forever
+      await updateDoc(productRef, {
+        firstClickNotified: true,
+      });
+    }
 
     // 2️⃣ Daily stats
     const today = getTodayKey();
     const statsRef = doc(db, "product_stats", `${productId}_${today}`);
-    const snap = await getDoc(statsRef);
+    const statsSnap = await getDoc(statsRef);
 
-    if (snap.exists()) {
+    if (statsSnap.exists()) {
       await updateDoc(statsRef, {
         clicks: increment(1),
         updatedAt: serverTimestamp(),
@@ -88,6 +143,7 @@ export async function trackProductClick(productId, ownerId) {
         updatedAt: serverTimestamp(),
       });
     }
+
   } catch (err) {
     console.error("Product click tracking failed:", err);
   }

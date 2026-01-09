@@ -15,7 +15,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { uploadImageToCloudinary } from "../utils/cloudinary.js";
-import { notifyUser } from "../utils/notificationService.js";
 
 // ================= DOM =================
 const table = document.getElementById("productsTable");
@@ -30,13 +29,15 @@ const priceInput = document.getElementById("productPrice");
 const categoryInput = document.getElementById("productCategory");
 const imageInput = document.getElementById("productImage");
 
+// ================= STATE =================
 let currentUser = null;
 let editingId = null;
 let existingImageUrl = null;
 let shopId = null;
+let shopOwnerId = null;
 
-// ================= HELPERS =================
-async function loadMyShopId() {
+// ================= LOAD SHOP CONTEXT =================
+async function loadMyShopContext() {
   const snap = await getDocs(
     query(collection(db, "shops"), where("ownerId", "==", currentUser.uid))
   );
@@ -45,7 +46,9 @@ async function loadMyShopId() {
     throw new Error("Shop not found for merchant");
   }
 
-  shopId = snap.docs[0].id;
+  const shopDoc = snap.docs[0];
+  shopId = shopDoc.id;
+  shopOwnerId = shopDoc.data().ownerId;
 }
 
 // ================= SPARKLINE =================
@@ -75,10 +78,10 @@ onAuthStateChanged(auth, async (user) => {
 
   currentUser = user;
 
-  await loadMyShopId();
+  await loadMyShopContext(); // ✅ FIXED
   await loadProducts();
 
-  document.getElementById("pageLoader").classList.add("hidden");
+  document.getElementById("pageLoader")?.classList.add("hidden");
 });
 
 // ================= LOAD PRODUCTS =================
@@ -86,7 +89,7 @@ async function loadProducts() {
   table.innerHTML = "";
 
   const snap = await getDocs(
-    query(collection(db, "products"), where("ownerId", "==", currentUser.uid))
+    query(collection(db, "products"), where("shopId", "==", shopId))
   );
 
   if (snap.empty) {
@@ -119,9 +122,11 @@ async function loadProducts() {
 
       <td class="px-6 py-4">
         <span class="px-2 py-1 rounded-full text-xs
-          ${p.status === "active"
-            ? "bg-green-100 text-green-700"
-            : "bg-slate-100 text-slate-600"}">
+          ${
+            p.status === "active"
+              ? "bg-green-100 text-green-700"
+              : "bg-slate-100 text-slate-600"
+          }">
           ${p.status || "active"}
         </span>
       </td>
@@ -130,11 +135,13 @@ async function loadProducts() {
       <td class="px-6 py-4">${clicks}</td>
 
       <td class="px-6 py-4 font-medium
-        ${ctr >= 5
-          ? "text-green-600"
-          : ctr >= 2
-          ? "text-amber-600"
-          : "text-red-600"}">
+        ${
+          ctr >= 5
+            ? "text-green-600"
+            : ctr >= 2
+            ? "text-amber-600"
+            : "text-red-600"
+        }">
         ${ctr}%
       </td>
 
@@ -146,7 +153,9 @@ async function loadProducts() {
 
       <td class="px-6 py-4 text-right space-x-2">
         <button class="edit text-blue-600" data-id="${docSnap.id}">Edit</button>
-        <button class="delete text-red-600" data-id="${docSnap.id}">Delete</button>
+        <button class="delete text-red-600" data-id="${
+          docSnap.id
+        }">Delete</button>
       </td>
     `;
 
@@ -165,7 +174,10 @@ async function renderProductTrends() {
     const productId = canvas.dataset.productId;
 
     const snap = await getDocs(
-      query(collection(db, "product_stats"), where("productId", "==", productId))
+      query(
+        collection(db, "product_stats"),
+        where("productId", "==", productId)
+      )
     );
 
     const daily = Array(7).fill(0);
@@ -191,14 +203,16 @@ function attachActions() {
       const snap = await getDocs(
         query(collection(db, "products"), where("__name__", "==", id))
       );
-      const p = snap.docs[0].data();
 
+      const p = snap.docs[0].data();
       editingId = id;
       existingImageUrl = p.imageUrl;
+
       nameInput.value = p.name;
       descInput.value = p.description;
       priceInput.value = p.price;
       categoryInput.value = p.category;
+
       openModal();
     };
   });
@@ -227,7 +241,7 @@ form.onsubmit = async (e) => {
     price: Number(priceInput.value),
     category: categoryInput.value.trim(),
     imageUrl,
-    ownerId: currentUser.uid,
+    ownerId: shopOwnerId, // ✅ FIXED
     shopId,
     status: "active",
     updatedAt: serverTimestamp(),
@@ -241,7 +255,7 @@ form.onsubmit = async (e) => {
   if (editingId) {
     await updateDoc(doc(db, "products", editingId), payload);
   } else {
-    await addDoc(collection(db, "products"), {
+    const productRef = await addDoc(collection(db, "products"), {
       ...payload,
       views: 0,
       clicks: 0,
@@ -249,11 +263,15 @@ form.onsubmit = async (e) => {
     });
 
     // 🔔 PRODUCT CREATED NOTIFICATION
-    await notifyUser(currentUser.uid, {
+    await addDoc(collection(db, "notifications"), {
       type: "PRODUCT_CREATED",
       title: "Product Added",
-      message: `"${payload.name}" has been added to your shop.`,
+      message: `Your product "${payload.name}" is now live.`,
+      targetRole: "admin",
+      targetUid: shopOwnerId,
       link: "/admin/Products.html",
+      read: false,
+      createdAt: serverTimestamp(),
     });
   }
 

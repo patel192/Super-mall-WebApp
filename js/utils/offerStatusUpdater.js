@@ -31,25 +31,26 @@ async function updateOfferStatuses() {
     );
 
     for (const snap of toActivate.docs) {
+      const offerRef = doc(db, "offers", snap.id);
       const offer = snap.data();
 
-      await updateDoc(doc(db, "offers", snap.id), {
+      await updateDoc(offerRef, {
         status: "active",
         updatedAt: Timestamp.now(),
       });
 
-      // 🔔 Notify admin (offer live)
-      if (!offer._liveNotified) {
+      // 🔔 OFFER LIVE NOTIFICATION (ONCE)
+      if (!offer.liveNotified && offer.ownerId) {
         await notifyUser(offer.ownerId, {
           type: "OFFER_LIVE",
-          title: "Offer is Live",
+          title: "Offer is Live 🎉",
           message: `Your offer "${offer.title}" is now live.`,
           link: "/admin/Offers.html",
+          targetRole: "admin",
         });
 
-        // Mark as notified to avoid duplicates
-        await updateDoc(doc(db, "offers", snap.id), {
-          _liveNotified: true,
+        await updateDoc(offerRef, {
+          liveNotified: true,
         });
       }
     }
@@ -64,25 +65,26 @@ async function updateOfferStatuses() {
     );
 
     for (const snap of toExpire.docs) {
+      const offerRef = doc(db, "offers", snap.id);
       const offer = snap.data();
 
-      await updateDoc(doc(db, "offers", snap.id), {
+      await updateDoc(offerRef, {
         status: "expired",
         updatedAt: Timestamp.now(),
       });
 
-      // 🔔 Notify admin (offer expired)
-      if (!offer._expiredNotified) {
+      // 🔔 OFFER EXPIRED NOTIFICATION (ONCE)
+      if (!offer.expiredNotified && offer.ownerId) {
         await notifyUser(offer.ownerId, {
           type: "OFFER_EXPIRED",
-          title: "Offer Expired",
+          title: "Offer Expired ⏰",
           message: `Your offer "${offer.title}" has expired.`,
           link: "/admin/Offers.html",
+          targetRole: "admin",
         });
 
-        // Mark as notified to avoid duplicates
-        await updateDoc(doc(db, "offers", snap.id), {
-          _expiredNotified: true,
+        await updateDoc(offerRef, {
+          expiredNotified: true,
         });
       }
     }
@@ -93,7 +95,7 @@ async function updateOfferStatuses() {
 
 // ================= PUBLIC API =================
 export function startOfferStatusUpdater() {
-  // Run once immediately
+  // Run immediately
   updateOfferStatuses();
 
   // Run periodically

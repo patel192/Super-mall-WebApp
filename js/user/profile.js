@@ -12,6 +12,7 @@ import {
   "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { uploadImageToCloudinary } from "../utils/cloudinary.js";
+import { notifyUser } from "../utils/notificationService.js";
 
 // ================= DOM =================
 const loader = document.getElementById("pageLoader");
@@ -27,6 +28,7 @@ const avatarPreview = document.getElementById("avatarPreview");
 
 // ================= STATE =================
 let profileImageUrl = "";
+let hadAvatarBefore = false;
 
 // ================= IMAGE PREVIEW =================
 avatarInput.addEventListener("change", () => {
@@ -61,6 +63,7 @@ onAuthStateChanged(auth, async (user) => {
     if (u.profileImageUrl) {
       profileImageUrl = u.profileImageUrl;
       avatarPreview.src = u.profileImageUrl;
+      hadAvatarBefore = true;
     }
 
   } catch (err) {
@@ -76,11 +79,14 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   try {
+    let avatarUpdated = false;
+
     if (avatarInput.files[0]) {
       profileImageUrl = await uploadImageToCloudinary(
         avatarInput.files[0],
         "users"
       );
+      avatarUpdated = true;
     }
 
     await updateDoc(
@@ -92,6 +98,26 @@ form.addEventListener("submit", async (e) => {
         updatedAt: serverTimestamp()
       }
     );
+
+    // 🔔 PROFILE UPDATED (USER)
+    await notifyUser(auth.currentUser.uid, {
+      type: "PROFILE_UPDATED",
+      title: "Profile Updated",
+      message: "Your profile information has been updated successfully.",
+      link: "/user/Profile.html"
+    });
+
+    // 🔔 PROFILE IMAGE ADDED / UPDATED (ONCE PER SAVE)
+    if (avatarUpdated) {
+      await notifyUser(auth.currentUser.uid, {
+        type: "PROFILE_IMAGE_UPDATED",
+        title: hadAvatarBefore ? "Profile Image Updated" : "Profile Image Added",
+        message: hadAvatarBefore
+          ? "Your profile picture has been updated."
+          : "You added a profile picture to your account.",
+        link: "/user/Profile.html"
+      });
+    }
 
     alert("Profile updated successfully");
 

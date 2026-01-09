@@ -10,6 +10,8 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+import { notifyUser } from "../utils/notificationService.js";
+
 // ================= DOM =================
 const form = document.getElementById("floorForm");
 const table = document.getElementById("floorsTable");
@@ -80,15 +82,35 @@ form.addEventListener("submit", async (e) => {
 
   if (!payload.name) return;
 
+  // ================= UPDATE =================
   if (floorIdInput.value) {
-    await updateDoc(
-      doc(db, "floors", floorIdInput.value),
-      payload
-    );
+    const floorRef = doc(db, "floors", floorIdInput.value);
+
+    await updateDoc(floorRef, payload);
+
+    // 🔔 FLOOR UPDATED (SUPER ADMIN AUDIT)
+    await notifyUser(null, {
+      type: "FLOOR_UPDATED",
+      title: "Floor Updated",
+      message: `Floor "${payload.name}" (Level ${payload.level}) was updated.`,
+      targetRole: "super_admin",
+      link: "/super-admin/Floors.html"
+    });
+
   } else {
+    // ================= CREATE =================
     await addDoc(collection(db, "floors"), {
       ...payload,
       createdAt: serverTimestamp()
+    });
+
+    // 🔔 FLOOR CREATED (SUPER ADMIN AUDIT)
+    await notifyUser(null, {
+      type: "FLOOR_CREATED",
+      title: "Floor Created",
+      message: `New floor "${payload.name}" (Level ${payload.level}) was created.`,
+      targetRole: "super_admin",
+      link: "/super-admin/Floors.html"
     });
   }
 
@@ -98,11 +120,11 @@ form.addEventListener("submit", async (e) => {
 
 // ================= ACTIONS =================
 function attachActions() {
-  document.querySelectorAll("[data-edit]").forEach(btn => {
+  document.querySelectorAll("[data-edit]").forEach((btn) => {
     btn.onclick = () => editFloor(btn.dataset.edit);
   });
 
-  document.querySelectorAll("[data-delete]").forEach(btn => {
+  document.querySelectorAll("[data-delete]").forEach((btn) => {
     btn.onclick = () => deleteFloor(btn.dataset.delete);
   });
 }
@@ -111,7 +133,7 @@ function attachActions() {
 async function editFloor(id) {
   const snap = await getDocs(collection(db, "floors"));
 
-  snap.forEach(docSnap => {
+  snap.forEach((docSnap) => {
     if (docSnap.id === id) {
       const f = docSnap.data();
       floorIdInput.value = id;
@@ -126,7 +148,26 @@ async function editFloor(id) {
 // ================= DELETE =================
 async function deleteFloor(id) {
   if (!confirm("Delete this floor? Shops linked to it may break.")) return;
-  await deleteDoc(doc(db, "floors", id));
+
+  const floorRef = doc(db, "floors", id);
+  const snap = await getDocs(collection(db, "floors"));
+
+  let floorName = "Unknown";
+  snap.forEach((d) => {
+    if (d.id === id) floorName = d.data().name;
+  });
+
+  await deleteDoc(floorRef);
+
+  // 🔔 FLOOR DELETED (CRITICAL AUDIT)
+  await notifyUser(null, {
+    type: "FLOOR_DELETED",
+    title: "Floor Deleted",
+    message: `Floor "${floorName}" was deleted.`,
+    targetRole: "super_admin",
+    link: "/super-admin/Floors.html"
+  });
+
   loadFloors();
 }
 
