@@ -2,12 +2,12 @@
 import { auth, db } from "/js/firebase-config.js";
 import {
   onAuthStateChanged,
-  signOut
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
   doc,
-  getDoc
+  getDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= HTML LOADER =================
@@ -39,10 +39,10 @@ async function loadUserProfile(user) {
       avatarImg.classList.remove("hidden");
       avatarInitial.classList.add("hidden");
     } else if (avatarInitial) {
-      avatarInitial.textContent =
-        (data.fullName || "U").charAt(0).toUpperCase();
+      avatarInitial.textContent = (data.fullName || "U")
+        .charAt(0)
+        .toUpperCase();
     }
-
   } catch (err) {
     console.warn("Navbar profile load failed:", err);
   }
@@ -55,18 +55,40 @@ async function initUserLayout() {
 
   // Sidebar toggle
   document.getElementById("menuBtn")?.addEventListener("click", () => {
-    document
-      .getElementById("sidebar")
-      ?.classList.toggle("-translate-x-full");
+    document.getElementById("sidebar").classList.toggle("-translate-x-full");
   });
 
-  // Logout
-  document.getElementById("logoutBtn")?.addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "/auth.html";
+  // 🔐 Logout (dropdown)
+  document
+    .getElementById("navLogoutBtn")
+    ?.addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.href = "/auth.html";
+    });
+
+  // 👤 Avatar dropdown toggle
+  const profileBtn = document.getElementById("navProfileBtn");
+  const profileMenu = document.getElementById("navProfileMenu");
+
+  profileBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    profileMenu.classList.toggle("hidden");
   });
 
-  // Auth → load profile
+  // ❌ Close dropdown on outside click
+  document.addEventListener("click", (e) => {
+    if (!profileMenu.contains(e.target)) {
+      profileMenu.classList.add("hidden");
+    }
+  });
+
+  // Active link highlight
+  const currentPath = window.location.pathname;
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    if (link.getAttribute("href") === currentPath) {
+      link.classList.add("bg-primary", "text-white");
+    }
+  });
   onAuthStateChanged(auth, (user) => {
     if (user) {
       loadUserProfile(user);

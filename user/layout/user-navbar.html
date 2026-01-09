@@ -7,8 +7,7 @@
         <i class="fa-solid fa-bars"></i>
       </button>
 
-      <h1 id="pageTitle"
-          class="text-lg font-semibold text-slate-900">
+      <h1 id="pageTitle" class="text-lg font-semibold text-slate-900">
         Dashboard
       </h1>
     </div>
@@ -17,38 +16,53 @@
     <div class="hidden md:flex items-center gap-3
                 bg-slate-100 px-4 py-2 rounded-xl">
       <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
-      <input
-        type="text"
-        placeholder="Search shops, offers, products"
+      <input type="text" placeholder="Search shops, offers, products"
         class="bg-transparent outline-none text-sm w-64" />
     </div>
 
-    <!-- USER AVATAR -->
-    <div class="flex items-center gap-3">
-      <div
-        id="navAvatarWrapper"
-        class="w-9 h-9 rounded-full bg-primary text-white
-               flex items-center justify-center text-sm font-semibold">
+    <!-- USER AVATAR DROPDOWN -->
+    <div class="relative">
 
-        <img
-          id="navAvatar"
-          class="hidden w-9 h-9 rounded-full object-cover"
-          alt="Profile" />
+      <!-- Trigger -->
+      <div id="navProfileBtn" class="flex items-center gap-3 cursor-pointer select-none">
 
-        <span id="navAvatarInitial">U</span>
+        <div id="navAvatarWrapper" class="w-9 h-9 rounded-full bg-primary text-white
+             flex items-center justify-center text-sm font-semibold">
+
+          <img id="navAvatar" class="hidden w-9 h-9 rounded-full object-cover" alt="Profile" />
+
+          <span id="navAvatarInitial">U</span>
+        </div>
+
+        <span id="navUserName" class="hidden sm:block text-sm font-medium text-slate-700">
+          —
+        </span>
       </div>
 
-      <span
-        id="navUserName"
-        class="hidden sm:block text-sm font-medium text-slate-700">
-        —
-      </span>
+      <!-- Dropdown -->
+      <div id="navProfileMenu" class="hidden absolute right-0 mt-3 w-44 bg-white border
+              rounded-xl shadow-lg z-50 overflow-hidden">
+
+        <a href="/user/Profile.html" class="block px-4 py-3 text-sm text-slate-700
+              hover:bg-slate-100 transition">
+          <i class="fa-solid fa-user mr-2"></i>
+          Profile
+        </a>
+
+        <button id="navLogoutBtn" class="w-full text-left px-4 py-3 text-sm text-red-600
+             hover:bg-red-50 transition">
+          <i class="fa-solid fa-right-from-bracket mr-2"></i>
+          Logout
+        </button>
+      </div>
+
     </div>
+
+
 
     <!-- CTA -->
     <div>
-      <a href="/user/merchant-register.html"
-         class="px-5 py-2.5 rounded-xl
+      <a href="/user/merchant-register.html" class="px-5 py-2.5 rounded-xl
                 bg-primary text-white text-sm font-medium
                 hover:bg-blue-700 transition">
         Register as Merchant
