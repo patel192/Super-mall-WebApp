@@ -7,7 +7,8 @@
         <i class="fa-solid fa-bars"></i>
       </button>
 
-      <h1 id="pageTitle" class="text-lg font-semibold text-slate-900">
+      <h1 id="pageTitle"
+          class="text-lg font-semibold text-slate-900">
         Dashboard
       </h1>
     </div>
@@ -16,19 +17,42 @@
     <div class="hidden md:flex items-center gap-3
                 bg-slate-100 px-4 py-2 rounded-xl">
       <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
-      <input type="text" placeholder="Search shops, offers, products"
+      <input
+        type="text"
+        placeholder="Search shops, offers, products"
         class="bg-transparent outline-none text-sm w-64" />
+    </div>
+
+    <!-- USER AVATAR -->
+    <div class="flex items-center gap-3">
+      <div
+        id="navAvatarWrapper"
+        class="w-9 h-9 rounded-full bg-primary text-white
+               flex items-center justify-center text-sm font-semibold">
+
+        <img
+          id="navAvatar"
+          class="hidden w-9 h-9 rounded-full object-cover"
+          alt="Profile" />
+
+        <span id="navAvatarInitial">U</span>
+      </div>
+
+      <span
+        id="navUserName"
+        class="hidden sm:block text-sm font-medium text-slate-700">
+        —
+      </span>
     </div>
 
     <!-- CTA -->
     <div>
-      <button>
-        <a href="/user/merchant-register.html" class="px-5 py-2.5 rounded-xl
-               bg-primary text-white text-sm font-medium
-               hover:bg-blue-700 transition">
-          Register as Merchant
-        </a>
-      </button>
+      <a href="/user/merchant-register.html"
+         class="px-5 py-2.5 rounded-xl
+                bg-primary text-white text-sm font-medium
+                hover:bg-blue-700 transition">
+        Register as Merchant
+      </a>
     </div>
 
   </div>

@@ -16,21 +16,14 @@ const shopsGrid = document.getElementById("shopsGrid");
 const pageTitle = document.getElementById("pageTitle");
 const pageSubtitle = document.getElementById("pageSubtitle");
 
-// ================= GET FLOOR ID =================
+// ================= PARAM =================
 const params = new URLSearchParams(window.location.search);
 const floorId = params.get("floor");
 
-if (!floorId) {
-  shopsGrid.innerHTML = `
-    <div class="col-span-full text-center text-slate-400 py-10">
-      Invalid floor selection
-    </div>`;
-  loader.classList.add("hidden");
-  throw new Error("Missing floorId");
-}
-
-// ================= LOAD FLOOR INFO =================
+// ================= LOAD FLOOR INFO (OPTIONAL) =================
 async function loadFloorInfo() {
+  if (!floorId) return;
+
   const snap = await getDoc(doc(db, "floors", floorId));
   if (snap.exists()) {
     const floor = snap.data();
@@ -43,18 +36,32 @@ async function loadFloorInfo() {
 async function loadShops() {
   shopsGrid.innerHTML = "";
 
-  const snap = await getDocs(
-    query(
+  let q;
+
+  if (floorId) {
+    // 🟦 Floor-based shops
+    q = query(
       collection(db, "shops"),
       where("floorId", "==", floorId),
       where("status", "==", "active")
-    )
-  );
+    );
+  } else {
+    // 🟩 All shops (sidebar entry)
+    pageTitle.textContent = "All Shops";
+    pageSubtitle.textContent = "Browse all available shops";
+
+    q = query(
+      collection(db, "shops"),
+      where("status", "==", "active")
+    );
+  }
+
+  const snap = await getDocs(q);
 
   if (snap.empty) {
     shopsGrid.innerHTML = `
       <div class="col-span-full text-center text-slate-400 py-10">
-        No shops available on this floor
+        No shops available
       </div>`;
     return;
   }
@@ -88,7 +95,8 @@ async function loadShops() {
     `;
 
     card.onclick = () => {
-      window.location.href = `/user/Shop-Details.html?id=${docSnap.id}`;
+      window.location.href =
+        `/user/Shop-Details.html?id=${docSnap.id}`;
     };
 
     shopsGrid.appendChild(card);
