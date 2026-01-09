@@ -2,115 +2,118 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Offer Details · SuperMall</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offer Details · SuperMall</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#2563EB",
-                        muted: "#F1F5F9",
-                        dark: "#0F172A"
-                    }
-                }
-            }
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
         }
-    </script>
+      }
+    }
+  </script>
 </head>
 
-<body data-required-role="user" class="bg-muted min-h-screen">
+<body data-required-role="user" class="bg-muted min-h-screen text-slate-700">
 
-    <!-- AUTH GUARD -->
-    <script type="module" src="/js/auth/authGuard.js"></script>
+  <!-- 🔒 AUTH -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
 
-    <div class="flex min-h-screen">
+  <!-- 🔄 LOADER -->
+  <div id="pageLoader"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+  </div>
 
-        <!-- Sidebar -->
-        <div id="sidebarMount"></div>
+  <div class="flex min-h-screen">
 
-        <div class="flex-1 lg:ml-72">
+    <div id="sidebarMount"></div>
 
-            <!-- Navbar -->
-            <div id="navbarMount"></div>
+    <div class="flex-1 lg:ml-72">
+      <div id="navbarMount"></div>
 
-            <!-- CONTENT -->
-            <main class="px-6 lg:px-10 py-8 max-w-5xl mx-auto">
+      <main class="px-6 lg:px-10 py-8 max-w-5xl mx-auto">
 
-                <div id="offerContainer" class="bg-white border rounded-2xl overflow-hidden">
-
-                    <!-- IMAGE -->
-                    <img id="offerImage" class="w-full h-72 object-cover" src="" alt="Offer" />
-
-                    <!-- DETAILS -->
-                    <div class="p-6 space-y-4">
-
-                        <div class="flex items-center gap-3">
-                            <span id="discountBadge" class="px-3 py-1 rounded-full text-sm font-medium">
-                                —
-                            </span>
-                        </div>
-
-                        <h1 id="offerTitle" class="text-2xl font-semibold text-dark">
-                            —
-                        </h1>
-
-                        <p id="offerValidity" class="text-sm text-slate-500">
-                            —
-                        </p>
-
-                        <hr />
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-                            <!-- Product -->
-                            <div>
-                                <p class="text-xs text-slate-400 mb-1">Product</p>
-                                <p id="productName" class="font-medium text-slate-900">
-                                    —
-                                </p>
-                            </div>
-
-                            <!-- Shop -->
-                            <div>
-                                <p class="text-xs text-slate-400 mb-1">Shop</p>
-                                <p id="shopName" class="font-medium text-slate-900">
-                                    -
-                                </p>
-                            </div>
-
-                        </div>
-
-                        <!-- CTA -->
-                        <div class="pt-4">
-                            <button id="offerCta" class="px-6 py-3 rounded-xl bg-primary text-white
-         font-medium hover:bg-blue-700 transition">
-                                View in Shop
-                            </button>
-
-                        </div>
-
-                    </div>
-                </div>
-
-            </main>
+        <!-- STATUS BANNER -->
+        <div id="statusBanner"
+             class="hidden mb-6 px-4 py-3 rounded-xl text-sm font-medium">
         </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+          <!-- IMAGE -->
+          <div class="bg-white border rounded-2xl overflow-hidden">
+            <img id="offerImage"
+                 class="w-full h-[420px] object-cover"
+                 src="" />
+          </div>
+
+          <!-- DETAILS -->
+          <div class="space-y-5">
+
+            <h1 id="offerTitle"
+                class="text-2xl font-semibold text-dark">
+              —
+            </h1>
+
+            <p id="offerDiscount"
+               class="text-xl font-bold text-primary">
+              —
+            </p>
+
+            <p id="offerCountdown"
+               class="text-sm text-slate-600">
+              —
+            </p>
+
+            <p id="offerDesc"
+               class="text-slate-600 leading-relaxed">
+              —
+            </p>
+
+            <div class="pt-4 space-y-2 text-sm text-slate-500">
+              <p>
+                Valid from
+                <span id="offerStart"></span>
+                to
+                <span id="offerEnd"></span>
+              </p>
+
+              <p id="shopInfo" class="font-medium"></p>
+            </div>
+
+            <!-- CTA -->
+            <div class="pt-6 flex gap-4">
+              <button id="productBtn"
+                class="px-6 py-3 rounded-xl bg-primary text-white
+                       text-sm font-medium hover:bg-blue-700 transition">
+                View Product
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
     </div>
+  </div>
 
-    <!-- Layout -->
-    <script type="module" src="/js/layout/loadUserLayout.js"></script>
+  <!-- Layout -->
+  <script type="module" src="/js/layout/loadUserLayout.js"></script>
 
-    <!-- Page Logic -->
-    <script type="module" src="/js/user/offer-details.js"></script>
+  <!-- Logic -->
+  <script type="module" src="/js/user/offer-details.js"></script>
 
 </body>
-
 </html>

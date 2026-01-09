@@ -3,95 +3,158 @@ import { db } from "../firebase-config.js";
 
 import {
   doc,
-  getDoc,
-  updateDoc,
-  increment,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { trackOfferView, trackOfferClick } from "../utils/offerAnalytics.js";
+
+import {
+  trackOfferView,
+  trackOfferClick
+} from "../utils/offerAnalytics.js";
+
 // ================= DOM =================
+const loader = document.getElementById("pageLoader");
+
 const imageEl = document.getElementById("offerImage");
 const titleEl = document.getElementById("offerTitle");
-const badgeEl = document.getElementById("discountBadge");
-const validityEl = document.getElementById("offerValidity");
-const productEl = document.getElementById("productName");
-const shopEl = document.getElementById("shopName");
-const ctaBtn = document.getElementById("offerCta");
-// ================= GET OFFER ID =================
+const discountEl = document.getElementById("offerDiscount");
+const descEl = document.getElementById("offerDesc");
+
+const startEl = document.getElementById("offerStart");
+const endEl = document.getElementById("offerEnd");
+const countdownEl = document.getElementById("offerCountdown");
+const statusBanner = document.getElementById("statusBanner");
+
+const shopInfo = document.getElementById("shopInfo");
+const productBtn = document.getElementById("productBtn");
+
+// ================= PARAM =================
 const params = new URLSearchParams(window.location.search);
 const offerId = params.get("id");
 
 if (!offerId) {
-  alert("Invalid offer");
-  window.location.href = "/user/User-Dashboard.html";
+  window.location.href = "/user/Offers.html";
+}
+
+// ================= HELPERS =================
+function formatDate(ts) {
+  return ts.toDate().toLocaleString();
+}
+
+function startCountdown(endMs) {
+  function tick() {
+    const diff = endMs - Date.now();
+
+    if (diff <= 0) {
+      countdownEl.textContent = "Offer expired";
+      return;
+    }
+
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    countdownEl.textContent =
+      `Ends in ${h}h ${m}m ${s}s`;
+  }
+
+  tick();
+  setInterval(tick, 1000);
 }
 
 // ================= LOAD OFFER =================
-async function loadOfferDetails() {
+async function loadOffer() {
   try {
-    const offerRef = doc(db, "offers", offerId);
-    const offerSnap = await getDoc(offerRef);
+    const offerSnap = await getDoc(doc(db, "offers", offerId));
 
     if (!offerSnap.exists()) {
       alert("Offer not found");
-      window.location.href = "/user/User-Dashboard.html";
+      window.location.href = "/user/Offers.html";
       return;
     }
 
     const offer = offerSnap.data();
+    const now = Date.now();
 
-    // 🚫 Only active offers visible
-    if (offer.status !== "active") {
-      alert("This offer is no longer available");
-      window.location.href = "/user/User-Dashboard.html";
-      return;
+    // STATUS
+    let status = offer.status;
+    if (status === "active" && offer.endDate.toMillis() < now) {
+      status = "expired";
     }
-    await trackOfferView(offerId, offer.ownerId);
 
-    // Inject UI
+    // STATUS BANNER
+    if (status !== "active") {
+      statusBanner.classList.remove("hidden");
+
+      if (status === "paused") {
+        statusBanner.textContent = "This offer is currently paused";
+        statusBanner.className =
+          "mb-6 px-4 py-3 rounded-xl bg-orange-100 text-orange-700 text-sm font-medium";
+      } else if (status === "expired") {
+        statusBanner.textContent = "This offer has expired";
+        statusBanner.className =
+          "mb-6 px-4 py-3 rounded-xl bg-slate-200 text-slate-600 text-sm font-medium";
+      } else {
+        statusBanner.textContent = "This offer is not available";
+        statusBanner.className =
+          "mb-6 px-4 py-3 rounded-xl bg-red-100 text-red-700 text-sm font-medium";
+      }
+    }
+
+    // UI
     imageEl.src = offer.thumbnailUrl;
     titleEl.textContent = offer.title;
 
-    badgeEl.textContent =
+    discountEl.textContent =
       offer.discountType === "percentage"
         ? `${offer.discountValue}% OFF`
         : `₹${offer.discountValue} OFF`;
 
-    badgeEl.className =
-      "px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700";
+    startEl.textContent = formatDate(offer.startDate);
+    endEl.textContent = formatDate(offer.endDate);
 
-    validityEl.textContent = `Valid till ${offer.endDate
-      .toDate()
-      .toLocaleDateString()}`;
+    descEl.textContent =
+      offer.description || "Special offer available for this product.";
 
-    // 🔗 Fetch product
-    if (offer.productId) {
-      const productSnap = await getDoc(doc(db, "products", offer.productId));
-
-      if (productSnap.exists()) {
-        productEl.textContent = productSnap.data().name;
-      }
+    // COUNTDOWN
+    if (status === "active") {
+      startCountdown(offer.endDate.toMillis());
+    } else {
+      countdownEl.textContent = "Not active";
     }
 
-    // 🔗 Fetch shop
+    // SHOP INFO
     if (offer.ownerId) {
-      const shopQuery = await getDoc(doc(db, "shops", offer.ownerId));
+      const shopSnap = await getDoc(
+        doc(db, "shops", offer.ownerId)
+      );
 
-      if (shopQuery.exists()) {
-        shopEl.textContent = shopQuery.data().name;
+      if (shopSnap.exists()) {
+        shopInfo.textContent =
+          `Sold by ${shopSnap.data().name}`;
       }
     }
 
-    ctaBtn.onclick = async () => {
+    // ANALYTICS (safe)
+    try {
+      await trackOfferView(offerId, offer.productId);
+    } catch {}
+
+    // CTA
+    productBtn.onclick = async () => {
       try {
-        await trackOfferClick(offerId, offer.ownerId);
-      } catch (err) {
-        console.error("Click tracking failed:", err);
-      }
+        await trackOfferClick(offerId, offer.productId);
+      } catch {}
+
+      window.location.href =
+        `/user/Product-Details.html?id=${offer.productId}`;
     };
+
   } catch (err) {
-    console.error("Offer details error:", err);
+    console.error(err);
     alert("Failed to load offer");
+  } finally {
+    loader.classList.add("hidden");
   }
 }
 
-loadOfferDetails();
+loadOffer();
