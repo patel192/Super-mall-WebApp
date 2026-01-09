@@ -6,6 +6,7 @@ async function loadLayout(id, url) {
 
 await loadLayout("sidebar", "/super-admin/layout/super-admin-sidebar.html");
 await loadLayout("navbar", "/super-admin/layout/super-admin-navbar.html");
+await import("../utils/notificationBell.js");
 (function activateSidebar() {
   const currentPath = window.location.pathname;
   const navLinks = document.querySelectorAll("[data-nav]");

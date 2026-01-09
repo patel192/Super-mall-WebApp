@@ -7,8 +7,7 @@
         SUPER ADMIN
       </h1>
 
-      <span
-        class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-md
+      <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-md
                text-[11px] font-medium bg-indigo-50 text-indigo-600">
         Platform Control
       </span>
@@ -16,21 +15,54 @@
 
     <!-- Right -->
     <div class="flex items-center gap-4">
+      <!-- 🔔 Notifications -->
+      <div class="relative">
+        <button id="notifBtn" class="relative text-slate-600 hover:text-slate-900 transition">
+          <i class="fa-solid fa-bell text-lg"></i>
+
+          <!-- Badge -->
+          <span id="notifBadge" class="hidden absolute -top-1 -right-1
+                 min-w-[18px] h-[18px] px-1
+                 rounded-full bg-red-600 text-white
+                 text-[11px] font-semibold
+                 flex items-center justify-center">
+            0
+          </span>
+        </button>
+
+        <!-- Dropdown -->
+        <div id="notifDropdown" class="hidden absolute right-0 mt-3 w-96 max-w-[90vw]
+              bg-white border rounded-2xl shadow-lg z-50 overflow-hidden">
+
+          <div class="px-4 py-3 border-b">
+            <p class="text-sm font-semibold text-slate-700">
+              Notifications
+            </p>
+          </div>
+
+          <div id="notifList" class="max-h-96 overflow-y-auto divide-y text-sm">
+            <div class="px-4 py-6 text-center text-slate-400">
+              No notifications
+            </div>
+          </div>
+
+          <div class="px-4 py-3 border-t text-right">
+            <button id="markAllRead" class="text-xs text-primary hover:underline">
+              Mark all as read
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- Search (future-ready) -->
       <div class="hidden md:flex items-center gap-2 px-3 py-1.5
                   bg-slate-100 rounded-lg">
         <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs"></i>
-        <input
-          type="text"
-          placeholder="Search users, merchants..."
-          class="bg-transparent outline-none text-xs w-48"
-        />
+        <input type="text" placeholder="Search users, merchants..." class="bg-transparent outline-none text-xs w-48" />
       </div>
 
       <!-- Admin Badge -->
-      <div
-        class="flex items-center gap-2 px-3 py-1.5 rounded-lg
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg
                bg-slate-900 text-white text-xs font-medium">
         <i class="fa-solid fa-shield-halved text-[10px]"></i>
         SUPER ADMIN

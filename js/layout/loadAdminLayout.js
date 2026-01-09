@@ -11,6 +11,7 @@ async function loadLayout() {
 
   document.getElementById("sidebarMount").innerHTML = sidebar;
   document.getElementById("navbarMount").innerHTML = navbar;
+  await import("../utils/notificationBell.js");
 
   initLayout();
 }

@@ -52,7 +52,7 @@ async function loadUserProfile(user) {
 async function initUserLayout() {
   await loadHTML("#sidebarMount", "/user/layout/user-sidebar.html");
   await loadHTML("#navbarMount", "/user/layout/user-navbar.html");
-
+await import("../utils/notificationBell.js");
   // Sidebar toggle
   document.getElementById("menuBtn")?.addEventListener("click", () => {
     document.getElementById("sidebar").classList.toggle("-translate-x-full");
