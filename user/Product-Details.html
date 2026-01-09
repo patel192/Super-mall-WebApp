@@ -35,74 +35,69 @@
        class="fixed inset-0 z-50 flex items-center justify-center bg-white">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
-      <span class="text-sm text-slate-600">
-        Loading product…
-      </span>
+      <span class="text-sm text-slate-600">Loading product…</span>
     </div>
   </div>
 
   <div class="flex min-h-screen">
-
-    <!-- SIDEBAR -->
     <div id="sidebarMount"></div>
 
-    <!-- MAIN -->
     <div class="flex-1 lg:ml-72">
-
-      <!-- NAVBAR -->
       <div id="navbarMount"></div>
 
-      <!-- CONTENT -->
-      <main class="px-6 lg:px-10 py-8">
+      <main class="px-6 lg:px-10 py-8 space-y-10">
 
+        <!-- PRODUCT -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-          <!-- IMAGE -->
           <div class="bg-white border rounded-2xl overflow-hidden">
             <img id="productImage"
-                 class="w-full h-[420px] object-contain bg-slate-50"
-                 src=""
-                 alt="Product" />
+                 class="w-full h-[420px] object-contain bg-slate-50" />
           </div>
 
-          <!-- DETAILS -->
           <div class="space-y-5">
-
-            <h1 id="productName"
-                class="text-2xl font-semibold text-dark">
-              —
-            </h1>
-
-            <p id="productCategory"
-               class="text-sm text-slate-500">
-              —
-            </p>
-
-            <p id="productDesc"
-               class="text-slate-600 leading-relaxed">
-              —
-            </p>
+            <h1 id="productName" class="text-2xl font-semibold text-dark">—</h1>
+            <p id="productCategory" class="text-sm text-slate-500">—</p>
+            <p id="productDesc" class="text-slate-600 leading-relaxed">—</p>
 
             <div class="flex items-center gap-6 pt-4">
-
               <span id="productPrice"
-                    class="text-3xl font-bold text-primary">
-                —
-              </span>
+                    class="text-3xl font-bold text-primary">—</span>
 
               <button id="productCta"
                       class="px-6 py-3 rounded-xl bg-primary text-white
                              text-sm font-medium hover:bg-blue-700 transition">
                 View Offers
               </button>
-
             </div>
 
-            <!-- META -->
             <div class="pt-6 text-xs text-slate-400">
               <span id="shopName">—</span>
             </div>
+          </div>
+        </div>
 
+        <!-- 📊 PRODUCT STATS -->
+        <div class="bg-white border rounded-2xl p-6">
+          <h2 class="text-sm font-semibold text-slate-700 mb-4">
+            Product Activity
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+            <div>
+              <p class="text-xs text-slate-500">Views</p>
+              <p id="statViews" class="text-2xl font-semibold text-dark">—</p>
+            </div>
+
+            <div>
+              <p class="text-xs text-slate-500">Clicks</p>
+              <p id="statClicks" class="text-2xl font-semibold text-dark">—</p>
+            </div>
+
+            <div>
+              <p class="text-xs text-slate-500">CTR</p>
+              <p id="statCTR" class="text-2xl font-semibold text-dark">—</p>
+            </div>
           </div>
         </div>
 
@@ -110,10 +105,7 @@
     </div>
   </div>
 
-  <!-- LAYOUT -->
   <script type="module" src="/js/layout/loadUserLayout.js"></script>
-
-  <!-- LOGIC -->
   <script type="module" src="/js/user/product-details.js"></script>
 
 </body>

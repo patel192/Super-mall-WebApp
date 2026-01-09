@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Products · SuperMall</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#2563EB",
+            muted: "#F1F5F9",
+            dark: "#0F172A"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body data-required-role="user" class="bg-muted min-h-screen text-slate-700">
+
+  <!-- 🔒 AUTH -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
+
+  <!-- 🔄 LOADER -->
+  <div id="pageLoader"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+    <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+  </div>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <div id="sidebarMount"></div>
+
+    <!-- Main -->
+    <div class="flex-1 lg:ml-72">
+      <div id="navbarMount"></div>
+
+      <main class="px-6 lg:px-10 py-8 space-y-8">
+
+        <!-- Header -->
+        <div>
+          <h1 class="text-xl font-semibold text-dark">
+            Compare Products
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">
+            Select two products to compare their details
+          </p>
+        </div>
+
+        <!-- Selectors -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <select id="productA"
+                  class="w-full px-4 py-3 border rounded-xl bg-white">
+            <option value="">Select first product</option>
+          </select>
+
+          <select id="productB"
+                  class="w-full px-4 py-3 border rounded-xl bg-white">
+            <option value="">Select second product</option>
+          </select>
+        </div>
+
+        <!-- Compare Button -->
+        <div>
+          <button id="compareBtn"
+                  class="px-6 py-3 rounded-xl bg-primary text-white
+                         font-medium hover:bg-blue-700 transition">
+            Compare
+          </button>
+        </div>
+
+        <!-- Comparison Table -->
+        <div id="compareSection" class="hidden bg-white border rounded-2xl overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-slate-500">
+              <tr>
+                <th class="px-6 py-4 text-left">Feature</th>
+                <th class="px-6 py-4">Product A</th>
+                <th class="px-6 py-4">Product B</th>
+              </tr>
+            </thead>
+            <tbody id="compareTable"></tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <script type="module" src="/js/layout/loadUserLayout.js"></script>
+
+  <!-- Logic -->
+  <script type="module" src="/js/user/compare.js"></script>
+
+</body>
+</html>
