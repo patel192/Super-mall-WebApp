@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8" />
+
+<head>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard · SuperMall</title>
-  
+
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js -->
@@ -112,6 +112,42 @@
 
           </div>
         </section>
+        <!-- PRODUCT PERFORMANCE -->
+        <section class="space-y-4">
+
+          <h2 class="text-lg font-semibold text-dark">
+            Product Performance
+          </h2>
+
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Products</p>
+              <h3 id="kpiProductTotal" class="text-2xl font-semibold text-dark mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Active Products</p>
+              <h3 id="kpiProductActive" class="text-2xl font-semibold text-green-600 mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Views</p>
+              <h3 id="kpiProductViews" class="text-2xl font-semibold mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Clicks</p>
+              <h3 id="kpiProductClicks" class="text-2xl font-semibold mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Avg CTR</p>
+              <h3 id="kpiProductCTR" class="text-2xl font-semibold text-primary mt-1">—</h3>
+            </div>
+
+          </div>
+        </section>
 
         <!-- TOP PERFORMING OFFERS -->
         <section class="space-y-4">
@@ -150,6 +186,45 @@
 
           </div>
         </section>
+        <!-- TOP PERFORMING PRODUCTS -->
+        <section class="space-y-4">
+
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Top Performing Products
+            </h2>
+
+            <a href="/admin/Products.html" class="text-sm text-primary font-medium hover:underline">
+              View all →
+            </a>
+          </div>
+
+          <div class="bg-white border rounded-2xl overflow-hidden">
+
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-slate-500">
+                <tr>
+                  <th class="px-6 py-4 text-left">Product</th>
+                  <th class="px-6 py-4">Views</th>
+                  <th class="px-6 py-4">Clicks</th>
+                  <th class="px-6 py-4">CTR</th>
+                  <th class="px-6 py-4">Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="topProductsTable">
+                <tr>
+                  <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+                    Loading top products…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+        </section>
+
         <!-- OFFER TREND -->
         <section class="space-y-4">
 
@@ -162,8 +237,6 @@
           </div>
 
         </section>
-
-
 
         <!-- SMART KPI CARDS -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -316,6 +389,19 @@
           </div>
 
         </section>
+        <!-- PRODUCT PERFORMANCE TREND -->
+        <section class="space-y-4">
+
+          <h2 class="text-lg font-semibold text-dark">
+            Product Performance Trend
+          </h2>
+
+          <div class="bg-white border rounded-2xl p-6">
+            <canvas id="productTrendChart" height="120"></canvas>
+          </div>
+
+        </section>
+
 
         <!-- QUICK ACTIONS -->
         <section class="bg-white border rounded-2xl p-5">

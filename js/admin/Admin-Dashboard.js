@@ -23,6 +23,12 @@ const kpiOfferViews = document.getElementById("kpiOfferViews");
 const kpiOfferClicks = document.getElementById("kpiOfferClicks");
 const kpiOfferCTR = document.getElementById("kpiOfferCTR");
 const topOffersTable = document.getElementById("topOffersTable");
+const kpiTotalProducts = document.getElementById("kpiTotalProducts");
+const kpiActiveProducts = document.getElementById("kpiActiveProducts");
+const kpiProductViews = document.getElementById("kpiProductViews");
+const kpiProductClicks = document.getElementById("kpiProductClicks");
+const kpiProductCTR = document.getElementById("kpiProductCTR");
+const topProductsTable = document.getElementById("topProductsTable");
 
 // Helpers
 function renderOfferTrendChart(labels, views, clicks) {
@@ -74,7 +80,50 @@ function renderOfferTrendChart(labels, views, clicks) {
 
 // CONST
 let offerTrendChart = null;
+let productTrendChart = null;
 
+function renderProductTrendChart(labels, views, clicks) {
+  const ctx = document.getElementById("productTrendChart");
+
+  if (productTrendChart) {
+    productTrendChart.destroy();
+  }
+
+  productTrendChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Views",
+          data: views,
+          borderColor: "#2563EB",
+          backgroundColor: "rgba(37,99,235,0.1)",
+          tension: 0.4,
+        },
+        {
+          label: "Clicks",
+          data: clicks,
+          borderColor: "#16A34A",
+          backgroundColor: "rgba(22,163,74,0.1)",
+          tension: 0.4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "top" },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 },
+        },
+      },
+    },
+  });
+}
 // ================= HELPERS =================
 function isProfileComplete(shop) {
   return Boolean(shop.name && shop.category && shop.location?.city);
@@ -193,6 +242,38 @@ async function loadOfferPerformance(ownerId) {
   kpiOfferClicks.textContent = totalClicks;
   kpiOfferCTR.textContent = ctr;
 }
+// ================= PRODUCT ANALYTICS =================
+async function loadProductPerformance(ownerId) {
+  const snap = await getDocs(
+    query(collection(db, "products"), where("ownerId", "==", ownerId))
+  );
+
+  let total = 0;
+  let active = 0;
+  let views = 0;
+  let clicks = 0;
+
+  snap.forEach(docSnap => {
+    const p = docSnap.data();
+    total++;
+
+    if (p.status === "active") active++;
+
+    views += p.views || 0;
+    clicks += p.clicks || 0;
+  });
+
+  const ctr =
+    views > 0 ? ((clicks / views) * 100).toFixed(2) + "%" : "0%";
+
+  // Inject UI
+  document.getElementById("kpiProductTotal").textContent = total;
+  document.getElementById("kpiProductActive").textContent = active;
+  document.getElementById("kpiProductViews").textContent = views;
+  document.getElementById("kpiProductClicks").textContent = clicks;
+  document.getElementById("kpiProductCTR").textContent = ctr;
+}
+
 async function loadTopPerformingOffers(ownerId) {
   const topOffer = await getTopPerformingOffers({
     limit: 5,
@@ -295,6 +376,139 @@ async function loadTopPerformingOffers(ownerId) {
     `;
   });
 }
+async function loadProductTrend(ownerId, days = 7) {
+  const today = new Date();
+  const labels = [];
+  const viewsData = [];
+  const clicksData = [];
+
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+
+    const key = d.toISOString().slice(0, 10);
+    labels.push(key);
+
+    const snap = await getDocs(
+      query(
+        collection(db, "product_stats"),
+        where("ownerId", "==", ownerId),
+        where("date", "==", key)
+      )
+    );
+
+    let views = 0;
+    let clicks = 0;
+
+    snap.forEach((doc) => {
+      const data = doc.data();
+      views += data.views || 0;
+      clicks += data.clicks || 0;
+    });
+
+    viewsData.push(views);
+    clicksData.push(clicks);
+  }
+
+  renderProductTrendChart(labels, viewsData, clicksData);
+}
+
+async function loadTopPerformingProducts(ownerId) {
+  const snap = await getDocs(
+    query(collection(db, "products"), where("ownerId", "==", ownerId))
+  );
+
+  if (snap.empty) {
+    topProductsTable.innerHTML = `
+      <tr>
+        <td colspan="5"
+            class="px-6 py-10 text-center text-slate-400">
+          No products found
+        </td>
+      </tr>`;
+    return;
+  }
+
+  const products = [];
+
+  snap.forEach((docSnap) => {
+    const p = docSnap.data();
+
+    const views = p.views || 0;
+    const clicks = p.clicks || 0;
+
+    // 🚫 Ignore products with zero visibility
+    if (views < 10) return;
+
+    const ctr = views > 0 ? (clicks / views) * 100 : 0;
+
+    products.push({
+      name: p.name,
+      views,
+      clicks,
+      ctr,
+      status: p.status || "active",
+    });
+  });
+
+  if (products.length === 0) {
+    topProductsTable.innerHTML = `
+      <tr>
+        <td colspan="5"
+            class="px-6 py-10 text-center text-slate-400">
+          Not enough product data yet
+        </td>
+      </tr>`;
+    return;
+  }
+
+  // 🔥 SORT: Clicks → CTR → Views
+  products.sort((a, b) => {
+    if (b.clicks !== a.clicks) return b.clicks - a.clicks;
+    if (b.ctr !== a.ctr) return b.ctr - a.ctr;
+    return b.views - a.views;
+  });
+
+  const topProducts = products.slice(0, 5);
+
+  topProductsTable.innerHTML = "";
+
+  topProducts.forEach((p) => {
+    topProductsTable.innerHTML += `
+      <tr class="border-t">
+
+        <td class="px-6 py-4 font-medium text-slate-900">
+          ${p.name}
+        </td>
+
+        <td class="px-6 py-4">
+          ${p.views}
+        </td>
+
+        <td class="px-6 py-4">
+          ${p.clicks}
+        </td>
+
+        <td class="px-6 py-4 font-medium">
+          ${p.ctr.toFixed(1)}%
+        </td>
+
+        <td class="px-6 py-4">
+          <span class="px-2 py-1 rounded-full text-xs
+            ${
+              p.status === "active"
+                ? "bg-green-100 text-green-700"
+                : "bg-slate-200 text-slate-600"
+            }">
+            ${p.status}
+          </span>
+        </td>
+
+      </tr>
+    `;
+  });
+}
+
 async function loadOfferTrend(ownerId, days = 7) {
   const today = new Date();
   const labels = [];
@@ -409,7 +623,10 @@ onAuthStateChanged(auth, async (user) => {
     await loadOffersAnalytics(user.uid);
     await loadOfferPerformance(user.uid);
     await loadTopPerformingOffers(user.uid);
+    await loadTopPerformingProducts(user.uid);
     await loadOfferTrend(user.uid);
+    await loadProductTrend(user.uid);
+    await loadProductPerformance(user.uid);
   } catch (err) {
     console.error("Admin dashboard error:", err);
     alert("Failed to load dashboard");

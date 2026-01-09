@@ -18,20 +18,20 @@ const requiredRole = document.body.dataset.requiredRole;
 function redirectByRole(role) {
   switch (role) {
     case ROLES.SUPER_ADMIN:
-      window.location.href = "/html/super-admin/Dashboard.html";
+      window.location.href = "/super-admin/Dashboard.html";
       break;
 
     case ROLES.ADMIN:
-      window.location.href = "/html/admin/Admin-Dashboard.html";
+      window.location.href = "/admin/Admin-Dashboard.html";
       break;
 
     case ROLES.USER:
     case ROLES.MERCHANT_PENDING:
-      window.location.href = "/html/user/User-Dashboard.html";
+      window.location.href = "/user/User-Dashboard.html";
       break;
 
     default:
-      window.location.href = "/signup-login.html?mode=login";
+      window.location.href = "/auth.html?mode=login";
   }
 }
 
@@ -40,7 +40,7 @@ onAuthStateChanged(auth, async (user) => {
   try {
     // 1️⃣ Not logged in
     if (!user) {
-      window.location.href = "/signup-login.html?mode=login";
+      window.location.href = "/auth.html?mode=login";
       return;
     }
 
@@ -49,7 +49,7 @@ onAuthStateChanged(auth, async (user) => {
 
     if (!snap.exists()) {
       await signOut(auth);
-      window.location.href = "/signup-login.html?mode=login";
+      window.location.href = "/auth.html?mode=login";
       return;
     }
 
@@ -60,7 +60,7 @@ onAuthStateChanged(auth, async (user) => {
     if (!validRoles.includes(role)) {
       console.error("Invalid role:", role);
       await signOut(auth);
-      window.location.href = "/signup-login.html?mode=login";
+      window.location.href = "/auth.html?mode=login";
       return;
     }
 

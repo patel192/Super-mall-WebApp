@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Floors · Super Admin · SuperMall</title>
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body data-required-role="super_admin"
+      class="bg-muted text-slate-700 min-h-screen">
+
+  <!-- 🔒 AUTH GUARD -->
+  <script type="module" src="/js/auth/authGuard.js"></script>
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar (SUPER ADMIN) -->
+    <div id="sidebar"></div>
+
+    <!-- Main -->
+    <div class="flex-1">
+
+      <!-- Navbar -->
+      <div id="navbar"></div>
+
+      <!-- Content -->
+      <main class="px-8 py-8 space-y-8">
+
+        <!-- Header -->
+        <div>
+          <h1 class="text-xl font-semibold text-slate-900">
+            Floors Management
+          </h1>
+          <p class="text-sm text-slate-500">
+            Create and manage mall floors
+          </p>
+        </div>
+
+        <!-- Create / Edit Floor -->
+        <div class="bg-white border rounded-2xl p-6">
+          <h2 id="formTitle" class="font-medium mb-4">
+            Create Floor
+          </h2>
+
+          <form id="floorForm" class="grid md:grid-cols-3 gap-4">
+            <input type="hidden" id="floorId" />
+
+            <input
+              id="floorName"
+              class="px-4 py-3 border rounded-xl"
+              placeholder="Floor name (e.g. Ground Floor)"
+              required />
+
+            <input
+              id="floorLevel"
+              type="number"
+              class="px-4 py-3 border rounded-xl"
+              placeholder="Level (0,1,2...)"
+              required />
+
+            <input
+              id="floorDesc"
+              class="px-4 py-3 border rounded-xl"
+              placeholder="Description (optional)" />
+
+            <button
+              type="submit"
+              class="md:col-span-3 px-5 py-2.5 rounded-xl
+                     bg-blue-600 text-white font-medium">
+              Save Floor
+            </button>
+          </form>
+        </div>
+
+        <!-- Floors Table -->
+        <div class="bg-white border rounded-2xl overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 text-slate-500">
+              <tr>
+                <th class="px-6 py-4 text-left">Name</th>
+                <th class="px-6 py-4">Level</th>
+                <th class="px-6 py-4">Description</th>
+                <th class="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="floorsTable">
+              <tr>
+                <td colspan="4"
+                    class="px-6 py-10 text-center text-slate-400">
+                  Loading floors…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- SUPER ADMIN LAYOUT LOADER -->
+  <script type="module" src="/js/layout/loadSuperAdminLayout.js"></script>
+
+  <!-- PAGE LOGIC -->
+  <script type="module" src="/js/super-admin/floors.js"></script>
+
+</body>
+</html>
