@@ -7,7 +7,8 @@
   <title>Product Details · SuperMall</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <script>
     tailwind.config = {
@@ -30,7 +31,8 @@
   <script type="module" src="/js/auth/authGuard.js"></script>
 
   <!-- 🔄 LOADER -->
-  <div id="pageLoader" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+  <div id="pageLoader"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
       <span class="text-sm text-slate-600">
@@ -57,32 +59,40 @@
 
           <!-- IMAGE -->
           <div class="bg-white border rounded-2xl overflow-hidden">
-            <img id="productImage" class="w-full h-[420px] object-contain bg-slate-50" src="" alt="Product" />
+            <img id="productImage"
+                 class="w-full h-[420px] object-contain bg-slate-50"
+                 src=""
+                 alt="Product" />
           </div>
 
           <!-- DETAILS -->
           <div class="space-y-5">
 
-            <h1 id="productName" class="text-2xl font-semibold text-dark">
+            <h1 id="productName"
+                class="text-2xl font-semibold text-dark">
               —
             </h1>
 
-            <p id="productCategory" class="text-sm text-slate-500">
+            <p id="productCategory"
+               class="text-sm text-slate-500">
               —
             </p>
 
-            <p id="productDesc" class="text-slate-600 leading-relaxed">
+            <p id="productDesc"
+               class="text-slate-600 leading-relaxed">
               —
             </p>
 
             <div class="flex items-center gap-6 pt-4">
 
-              <span id="productPrice" class="text-3xl font-bold text-primary">
+              <span id="productPrice"
+                    class="text-3xl font-bold text-primary">
                 —
               </span>
 
-              <button id="productCta" class="px-6 py-3 rounded-xl bg-primary text-white
-                       text-sm font-medium hover:bg-blue-700 transition">
+              <button id="productCta"
+                      class="px-6 py-3 rounded-xl bg-primary text-white
+                             text-sm font-medium hover:bg-blue-700 transition">
                 View Offers
               </button>
 
@@ -107,5 +117,4 @@
   <script type="module" src="/js/user/product-details.js"></script>
 
 </body>
-
 </html>

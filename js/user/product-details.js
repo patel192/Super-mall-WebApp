@@ -3,11 +3,7 @@ import { db } from "../firebase-config.js";
 
 import {
   doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  getDocs
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import {
@@ -31,24 +27,24 @@ const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
 
 if (!productId) {
-  alert("Invalid product");
   window.location.href = "/user/Floors.html";
+  throw new Error("Missing productId");
 }
 
 // ================= LOAD PRODUCT =================
 async function loadProduct() {
   try {
-    const snap = await getDoc(doc(db, "products", productId));
+    const productSnap = await getDoc(doc(db, "products", productId));
 
-    if (!snap.exists()) {
+    if (!productSnap.exists()) {
       alert("Product not found");
       window.location.href = "/user/Floors.html";
       return;
     }
 
-    const product = snap.data();
+    const product = productSnap.data();
 
-    if (product.status !== "active") {
+    if (product.status && product.status !== "active") {
       alert("Product not available");
       window.location.href = "/user/Floors.html";
       return;
@@ -58,30 +54,33 @@ async function loadProduct() {
     imageEl.src = product.imageUrl || "https://via.placeholder.com/600";
     nameEl.textContent = product.name;
     categoryEl.textContent = product.category || "General";
-    descEl.textContent =
-      product.description || "No description available";
+    descEl.textContent = product.description || "No description available";
     priceEl.textContent = `₹${product.price}`;
 
-    // ================= LOAD SHOP (CORRECT) =================
+    // ================= LOAD SHOP =================
+    let shopId = null;
+
     if (product.shopId) {
-      const shopSnap = await getDoc(doc(db, "shops", product.shopId));
+      shopId = product.shopId;
+      const shopSnap = await getDoc(doc(db, "shops", shopId));
       if (shopSnap.exists()) {
         shopEl.textContent = `Sold by ${shopSnap.data().name}`;
       }
     }
 
-    // ================= ANALYTICS (SAFE) =================
+    // ================= ANALYTICS: VIEW =================
     try {
-      await trackProductView(productId, product.shopId);
+      await trackProductView(productId, shopId);
     } catch (err) {
-      console.warn("Product view tracking failed", err);
+      console.warn("Product view tracking failed:", err);
     }
 
+    // ================= CTA CLICK =================
     ctaBtn.onclick = async () => {
       try {
-        await trackProductClick(productId, product.shopId);
+        await trackProductClick(productId, shopId);
       } catch (err) {
-        console.warn("Product click tracking failed", err);
+        console.warn("Product click tracking failed:", err);
       }
 
       window.location.href =
@@ -89,11 +88,12 @@ async function loadProduct() {
     };
 
   } catch (err) {
-    console.error("Product details error:", err);
+    console.error("Failed to load product:", err);
     alert("Failed to load product");
   } finally {
     loader.classList.add("hidden");
   }
 }
 
+// ================= INIT =================
 loadProduct();
