@@ -42,6 +42,7 @@ let currentUser = null;
 let selectedProductId = null;
 let editingOfferId = null;
 let editingOfferData = null;
+let blockedProductIds = new Set();
 
 // HELPERS
 function drawSparkline(canvas, data) {
@@ -66,6 +67,24 @@ function drawSparkline(canvas, data) {
 
   ctx.stroke();
 }
+async function loadBlockedProducts() {
+  blockedProductIds.clear();
+
+  const snap = await getDocs(
+    query(
+      collection(db, "offers"),
+      where("ownerId", "==", currentUser.uid),
+      where("status", "in", ["active", "scheduled"])
+    )
+  );
+
+  snap.forEach((doc) => {
+    const o = doc.data();
+    if (o.productId) {
+      blockedProductIds.add(o.productId);
+    }
+  });
+}
 
 // ================= AUTH =================
 onAuthStateChanged(auth, async (user) => {
@@ -74,6 +93,7 @@ onAuthStateChanged(auth, async (user) => {
   currentUser = user;
   startOfferStatusUpdater();
 
+  await loadBlockedProducts();
   await loadProducts();
   await loadOffers();
 
@@ -112,6 +132,7 @@ async function loadProducts() {
 
   snap.forEach((docSnap) => {
     const p = docSnap.data();
+    const isBlocked = blockedProductIds.has(docSnap.id);
 
     const card = document.createElement("div");
     card.className =
@@ -126,15 +147,20 @@ async function loadProducts() {
       </div>
     `;
 
-    card.onclick = () => {
-      document
-        .querySelectorAll("#productGrid > div")
-        .forEach((c) => c.classList.remove("ring-2", "ring-primary"));
+    if (isBlocked && !editingOfferId) {
+      card.classList.add("opacity-50", "cursor-not-allowed");
+      card.title = "This product already has an active or scheduled offer";
+    } else {
+      card.onclick = () => {
+        document
+          .querySelectorAll("#productGrid > div")
+          .forEach((c) => c.classList.remove("ring-2", "ring-primary"));
 
-      card.classList.add("ring-2", "ring-primary");
-      selectedProductId = docSnap.id;
-      selectedProductInput.value = docSnap.id;
-    };
+        card.classList.add("ring-2", "ring-primary");
+        selectedProductId = docSnap.id;
+        selectedProductInput.value = docSnap.id;
+      };
+    }
 
     productGrid.appendChild(card);
   });
@@ -392,9 +418,16 @@ form.onsubmit = async (e) => {
 
   const startDate = new Date(startInput.value);
   const endDate = new Date(endInput.value);
-
   if (endDate <= startDate) {
     alert("End time must be after start time");
+    return;
+  }
+  if(!selectedProductId){
+    alert("Please select a product for the offer.");
+    return;
+  }
+  if (!editingOfferId && blockedProductIds.has(selectedProductId)) {
+    alert("This product already has an active or scheduled offer.");
     return;
   }
 
@@ -416,11 +449,22 @@ form.onsubmit = async (e) => {
   if (editingOfferId) {
     await updateDoc(doc(db, "offers", editingOfferId), payload);
   } else {
+    const now = Date.now();
+    const startMs = startDate.getTime();
+    const endMs = endDate.getTime();
+
+    let initialStatus = "scheduled";
+    if (now >= startMs && now <= endMs) {
+      initialStatus = "active";
+    } else if (now > endMs) {
+      initialStatus = "expired";
+    }
+
     await addDoc(collection(db, "offers"), {
       ...payload,
       ownerId: currentUser.uid,
       productId: selectedProductId,
-      status: "scheduled",
+      status: initialStatus, // ✅ FIXED
       views: 0,
       clicks: 0,
       createdAt: serverTimestamp(),

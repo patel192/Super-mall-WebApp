@@ -3,7 +3,11 @@ import { db } from "../firebase-config.js";
 
 import {
   doc,
-  getDoc
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import {
@@ -28,18 +32,17 @@ const productId = params.get("id");
 
 if (!productId) {
   alert("Invalid product");
-  window.location.href = "/user/Products.html";
+  window.location.href = "/user/Floors.html";
 }
 
 // ================= LOAD PRODUCT =================
 async function loadProduct() {
   try {
-    const ref = doc(db, "products", productId);
-    const snap = await getDoc(ref);
+    const snap = await getDoc(doc(db, "products", productId));
 
     if (!snap.exists()) {
       alert("Product not found");
-      window.location.href = "/user/Products.html";
+      window.location.href = "/user/Floors.html";
       return;
     }
 
@@ -47,32 +50,42 @@ async function loadProduct() {
 
     if (product.status !== "active") {
       alert("Product not available");
-      window.location.href = "/user/Products.html";
+      window.location.href = "/user/Floors.html";
       return;
     }
 
-    // Inject UI
+    // ================= RENDER PRODUCT =================
     imageEl.src = product.imageUrl || "https://via.placeholder.com/600";
     nameEl.textContent = product.name;
     categoryEl.textContent = product.category || "General";
-    descEl.textContent = product.description || "No description available";
+    descEl.textContent =
+      product.description || "No description available";
     priceEl.textContent = `₹${product.price}`;
 
-    // Shop name
-    if (product.ownerId) {
-      const shopSnap = await getDoc(doc(db, "shops", product.ownerId));
+    // ================= LOAD SHOP (CORRECT) =================
+    if (product.shopId) {
+      const shopSnap = await getDoc(doc(db, "shops", product.shopId));
       if (shopSnap.exists()) {
         shopEl.textContent = `Sold by ${shopSnap.data().name}`;
       }
     }
 
-    // ✅ TRACK VIEW (UTIL)
-    await trackProductView(productId, product.ownerId);
+    // ================= ANALYTICS (SAFE) =================
+    try {
+      await trackProductView(productId, product.shopId);
+    } catch (err) {
+      console.warn("Product view tracking failed", err);
+    }
 
-    // ✅ TRACK CLICK (UTIL)
     ctaBtn.onclick = async () => {
-      await trackProductClick(productId, product.ownerId);
-      window.location.href = `/user/Offers.html?product=${productId}`;
+      try {
+        await trackProductClick(productId, product.shopId);
+      } catch (err) {
+        console.warn("Product click tracking failed", err);
+      }
+
+      window.location.href =
+        `/user/Offers.html?product=${productId}`;
     };
 
   } catch (err) {
