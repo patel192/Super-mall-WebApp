@@ -24,7 +24,7 @@
           colors: {
             primary: "#2563EB",
             dark: "#0F172A",
-            muted: "#F1F5F9",
+            muted: "#F8FAFC",
           }
         }
       }
@@ -32,41 +32,35 @@
   </script>
 </head>
 
-<body class="font-poppins text-slate-700 bg-white">
+<body class="font-poppins text-slate-700 bg-white scroll-smooth">
 
   <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-40 bg-white border-b">
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-      <!-- Logo -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center">
+        <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow">
           <i class="fa-solid fa-cart-shopping"></i>
         </div>
         <span class="font-semibold text-dark text-lg">SuperMall</span>
       </div>
 
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-8 text-sm">
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
         <a href="#home" class="hover:text-primary">Home</a>
         <a href="#features" class="hover:text-primary">Features</a>
         <a href="#categories" class="hover:text-primary">Categories</a>
         <a href="#offers" class="hover:text-primary">Offers</a>
         <a href="#contact" class="hover:text-primary">Contact</a>
-        <button
-          id="loginBtn"
-          class="px-5 py-2 rounded-xl bg-primary text-white hover:bg-blue-700 transition">
+        <button id="loginBtn" class="px-5 py-2 rounded-xl bg-primary text-white hover:bg-blue-700 shadow">
           Login
         </button>
       </nav>
 
-      <!-- Mobile Menu Button -->
-      <button id="menuToggle" class="md:hidden text-xl text-slate-700">
+      <button id="menuToggle" class="md:hidden text-xl">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
 
-    <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden md:hidden border-t bg-white">
       <div class="px-6 py-4 flex flex-col gap-4 text-sm">
         <a href="#home">Home</a>
@@ -74,9 +68,7 @@
         <a href="#categories">Categories</a>
         <a href="#offers">Offers</a>
         <a href="#contact">Contact</a>
-        <button
-          id="loginBtnMobile"
-          class="mt-2 px-4 py-2 rounded-lg bg-primary text-white">
+        <button id="loginBtnMobile" class="mt-2 px-4 py-2 rounded-lg bg-primary text-white">
           Login
         </button>
       </div>
@@ -84,27 +76,28 @@
   </header>
 
   <!-- ================= HERO ================= -->
-  <section id="home" class="bg-muted">
-    <div class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+  <section id="home" class="bg-gradient-to-br from-muted to-white">
+    <div class="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-14 items-center">
 
       <div>
+        <span class="inline-block mb-4 text-sm font-medium text-primary bg-blue-50 px-4 py-1 rounded-full">
+          Smart Digital Marketplace
+        </span>
+
         <h1 class="text-4xl md:text-5xl font-bold text-dark leading-tight">
           Discover the best shopping deals around you
         </h1>
-        <p class="mt-5 text-slate-600 leading-relaxed">
+
+        <p class="mt-6 text-slate-600 max-w-xl">
           SuperMall connects customers with trusted merchants, helping you
           explore shops, compare prices, and grab exclusive offers — all in one place.
         </p>
 
-        <div class="mt-8 flex gap-4">
-          <button
-            id="getStartedBtn"
-            class="px-6 py-3 rounded-xl bg-primary text-white hover:bg-blue-700 transition">
+        <div class="mt-10 flex flex-wrap gap-4">
+          <button id="getStartedBtn" class="px-7 py-3 rounded-xl bg-primary text-white shadow-lg">
             Get Started
           </button>
-          <button
-            id="exploreOffersBtn"
-            class="px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 transition">
+          <button id="exploreOffersBtn" class="px-7 py-3 rounded-xl border">
             Explore Offers
           </button>
         </div>
@@ -112,89 +105,76 @@
 
       <div class="hidden md:block">
         <img
-          src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae"
-          alt="Shopping"
-          class="rounded-2xl shadow-lg">
+          src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?auto=format&fit=crop&w=900&q=80"
+          alt="Shopping Mall"
+          class="rounded-3xl shadow-xl">
       </div>
 
-    </div>
-  </section>
-
-  <!-- ================= FEATURES ================= -->
-  <section id="features" class="py-20">
-    <div class="max-w-7xl mx-auto px-6">
-
-      <h2 class="text-3xl font-semibold text-dark text-center">
-        Why choose SuperMall
-      </h2>
-
-      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="feature-card">
-          <h3>Shop Anywhere</h3>
-          <p>Browse multiple stores from your phone or laptop.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Secure Platform</h3>
-          <p>Firebase authentication ensures safe access.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Exclusive Offers</h3>
-          <p>Get the best deals from verified merchants.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Grow Your Business</h3>
-          <p>Merchants reach more customers online.</p>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- ================= CATEGORIES ================= -->
-  <section id="categories" class="bg-muted py-20">
+  <section id="categories" class="bg-muted py-24">
     <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-semibold text-dark text-center">Popular Categories</h2>
 
-      <h2 class="text-3xl font-semibold text-dark text-center">
-        Popular Categories
-      </h2>
+      <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="category-card">Men’s Fashion</div>
-        <div class="category-card">Women’s Collection</div>
-        <div class="category-card">Electronics</div>
-        <div class="category-card">Groceries</div>
+        <div class="bg-white rounded-2xl overflow-hidden border hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium text-center">Men’s Fashion</p>
+        </div>
+
+        <div class="bg-white rounded-2xl overflow-hidden border hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium text-center">Women’s Collection</p>
+        </div>
+
+        <div class="bg-white rounded-2xl overflow-hidden border hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium text-center">Electronics</p>
+        </div>
+
+        <div class="bg-white rounded-2xl overflow-hidden border hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium text-center">Groceries</p>
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- ================= OFFERS ================= -->
-  <section id="offers" class="py-20">
+  <section id="offers" class="py-24">
     <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-semibold text-dark">
-        Trending Offers
-      </h2>
-      <p class="mt-3 text-slate-600">
-        Grab the best deals before they’re gone.
-      </p>
+      <h2 class="text-3xl font-semibold text-dark">Trending Offers</h2>
 
-      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="offer-card">Flat 50% · Fashion Fiesta</div>
-        <div class="offer-card">Buy 1 Get 1 · Food Corner</div>
-        <div class="offer-card">Up to 30% · Tech World</div>
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="bg-white border rounded-2xl overflow-hidden hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium">Flat 50% · Fashion Fiesta</p>
+        </div>
+
+        <div class="bg-white border rounded-2xl overflow-hidden hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium">Buy 1 Get 1 · Food Corner</p>
+        </div>
+
+        <div class="bg-white border rounded-2xl overflow-hidden hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" class="h-40 w-full object-cover">
+          <p class="p-5 font-medium">Up to 30% · Tech World</p>
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- ================= FOOTER ================= -->
-  <footer id="contact" class="bg-dark text-slate-300 py-10">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm">
-      <p class="font-semibold text-white">SuperMall</p>
-      <p class="mt-2">
-        Connecting stores and customers through a modern digital platform.
-      </p>
-      <p class="mt-4 text-slate-400">
-        © 2025 SuperMall. All rights reserved.
-      </p>
-    </div>
+  <footer id="contact" class="bg-dark text-slate-300 py-14 text-center text-sm">
+    <p class="font-semibold text-white text-lg">SuperMall</p>
+    <p class="mt-3">Connecting stores and customers through a modern digital platform.</p>
+    <p class="mt-6 text-slate-500">© 2025 SuperMall. All rights reserved.</p>
   </footer>
 
   <!-- ================= SCRIPTS ================= -->
@@ -222,19 +202,6 @@
       document.querySelector("#offers").scrollIntoView({ behavior: "smooth" });
     });
   </script>
-
-  <!-- ================= UTIL CLASSES ================= -->
-  <style>
-    .feature-card {
-      @apply bg-white rounded-2xl p-6 border hover:shadow-md transition;
-    }
-    .category-card {
-      @apply bg-white rounded-2xl p-6 text-center border hover:shadow-md transition;
-    }
-    .offer-card {
-      @apply bg-muted rounded-2xl p-6 border;
-    }
-  </style>
 
 </body>
 </html>
