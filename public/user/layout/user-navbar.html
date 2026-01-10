@@ -1,24 +1,30 @@
-<header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b">
+<header class="sticky top-0 z-30
+               bg-gradient-to-r from-violet-50 via-white to-white/80
+               backdrop-blur border-b border-slate-200">
+
   <div class="flex items-center justify-between px-6 lg:px-8 py-4 gap-6">
 
     <!-- Left -->
     <div class="flex items-center gap-4">
       <button id="menuBtn"
-              class="lg:hidden text-xl text-slate-600 hover:text-slate-900 transition">
+        class="lg:hidden w-10 h-10 rounded-xl
+               flex items-center justify-center
+               text-slate-600 hover:text-violet-600
+               hover:bg-violet-50 transition">
         <i class="fa-solid fa-bars"></i>
       </button>
 
       <h1 id="pageTitle"
-          class="text-lg font-semibold text-slate-900 tracking-tight">
+        class="text-lg font-semibold text-slate-900 tracking-tight">
         Dashboard
       </h1>
     </div>
 
     <!-- Search -->
     <div class="hidden md:flex items-center gap-3
-                bg-slate-100/80 backdrop-blur
-                px-4 py-2.5 rounded-2xl
-                border border-slate-200">
+                bg-white/80 backdrop-blur
+                px-5 py-2.5 rounded-2xl
+                border border-slate-200 shadow-sm">
       <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i>
       <input
         type="text"
@@ -27,42 +33,41 @@
     </div>
 
     <!-- Right -->
-    <div class="flex items-center gap-5">
+    <div class="flex items-center gap-4">
 
       <!-- 🔔 Notifications -->
       <div class="relative">
         <button id="notifBtn"
-                class="relative w-10 h-10 rounded-xl
-                       flex items-center justify-center
-                       text-slate-600 hover:text-slate-900
-                       hover:bg-slate-100 transition">
+          class="relative w-11 h-11 rounded-2xl
+                 flex items-center justify-center
+                 text-slate-600 hover:text-violet-600
+                 hover:bg-violet-50 transition">
           <i class="fa-solid fa-bell text-lg"></i>
 
-          <!-- Badge -->
           <span id="notifBadge"
-                class="hidden absolute -top-1 -right-1
-                       min-w-[18px] h-[18px] px-1
-                       rounded-full bg-red-600 text-white
-                       text-[11px] font-semibold
-                       flex items-center justify-center">
+            class="hidden absolute -top-1 -right-1
+                   min-w-[18px] h-[18px] px-1
+                   rounded-full bg-pink-500 text-white
+                   text-[11px] font-semibold
+                   flex items-center justify-center">
             0
           </span>
         </button>
 
         <!-- Dropdown -->
         <div id="notifDropdown"
-             class="hidden absolute right-0 mt-3 w-96 max-w-[90vw]
-                    bg-white border rounded-2xl shadow-xl
-                    z-50 overflow-hidden">
+          class="hidden absolute right-0 mt-3 w-96 max-w-[90vw]
+                 bg-white border border-slate-200
+                 rounded-3xl shadow-xl z-50 overflow-hidden">
 
-          <div class="px-5 py-4 border-b">
+          <div class="px-5 py-4 border-b bg-violet-50/40">
             <p class="text-sm font-semibold text-slate-800">
               Notifications
             </p>
           </div>
 
           <div id="notifList"
-               class="max-h-96 overflow-y-auto divide-y text-sm">
+            class="max-h-96 overflow-y-auto divide-y text-sm">
             <div class="px-4 py-8 text-center text-slate-400">
               No notifications
             </div>
@@ -70,7 +75,7 @@
 
           <div class="px-5 py-3 border-t text-right bg-slate-50">
             <button id="markAllRead"
-                    class="text-xs text-primary hover:underline">
+              class="text-xs text-violet-600 hover:underline">
               Mark all as read
             </button>
           </div>
@@ -82,44 +87,45 @@
 
         <!-- Trigger -->
         <div id="navProfileBtn"
-             class="flex items-center gap-3 cursor-pointer select-none
-                    px-2 py-1.5 rounded-xl
-                    hover:bg-slate-100 transition">
+          class="flex items-center gap-3 cursor-pointer select-none
+                 px-2 py-1.5 rounded-2xl
+                 hover:bg-violet-50 transition">
 
           <div id="navAvatarWrapper"
-               class="w-9 h-9 rounded-full bg-primary text-white
-                      flex items-center justify-center
-                      text-sm font-semibold shadow-sm">
+            class="w-10 h-10 rounded-full
+                   bg-gradient-to-tr from-primary to-violet-500
+                   text-white flex items-center justify-center
+                   text-sm font-semibold shadow">
 
             <img id="navAvatar"
-                 class="hidden w-9 h-9 rounded-full object-cover"
-                 alt="Profile" />
+              class="hidden w-10 h-10 rounded-full object-cover"
+              alt="Profile" />
 
             <span id="navAvatarInitial">U</span>
           </div>
 
           <span id="navUserName"
-                class="hidden sm:block text-sm font-medium text-slate-700">
+            class="hidden sm:block text-sm font-medium text-slate-700">
             —
           </span>
         </div>
 
         <!-- Dropdown -->
         <div id="navProfileMenu"
-             class="hidden absolute right-0 mt-3 w-48 bg-white border
-                    rounded-2xl shadow-xl z-50 overflow-hidden">
+          class="hidden absolute right-0 mt-3 w-52 bg-white border border-slate-200
+                 rounded-3xl shadow-xl z-50 overflow-hidden">
 
           <a href="/user/Profile.html"
-             class="block px-4 py-3 text-sm text-slate-700
-                    hover:bg-slate-100 transition">
+            class="block px-5 py-3 text-sm text-slate-700
+                   hover:bg-violet-50 transition">
             <i class="fa-solid fa-user mr-2"></i>
             Profile
           </a>
 
           <button id="navLogoutBtn"
-                  class="w-full text-left px-4 py-3
-                         text-sm text-red-600
-                         hover:bg-red-50 transition">
+            class="w-full text-left px-5 py-3
+                   text-sm text-red-600
+                   hover:bg-red-50 transition">
             <i class="fa-solid fa-right-from-bracket mr-2"></i>
             Logout
           </button>
@@ -128,10 +134,12 @@
 
       <!-- CTA -->
       <a href="/user/merchant-register.html"
-         class="hidden sm:inline-flex items-center justify-center
-                px-5 py-2.5 rounded-xl
-                bg-primary text-white text-sm font-medium
-                hover:bg-blue-700 shadow-sm transition">
+        class="hidden sm:inline-flex items-center justify-center
+               px-6 py-2.5 rounded-2xl
+               bg-gradient-to-r from-primary to-violet-500
+               text-white text-sm font-medium
+               shadow-md hover:shadow-lg
+               hover:opacity-95 transition">
         Register as Merchant
       </a>
 
