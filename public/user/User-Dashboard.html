@@ -14,6 +14,7 @@
 
   <script>
     tailwind.config = {
+      darkMode: "class",
       theme: {
         extend: {
           colors: {
@@ -27,138 +28,94 @@
   </script>
 </head>
 
-<body data-required-role="user" class="bg-muted text-slate-700">
+<body data-required-role="user" class="bg-muted text-slate-700 dark:bg-slate-900 dark:text-slate-200">
 
   <!-- 🔒 AUTH GUARD -->
   <script type="module" src="/js/auth/authGuard.js"></script>
 
   <div class="flex min-h-screen">
 
-    <!-- Sidebar -->
     <div id="sidebarMount"></div>
 
-    <!-- Main -->
     <div class="flex-1 lg:ml-72">
 
-      <!-- Navbar -->
       <div id="navbarMount"></div>
 
-      <!-- CONTENT -->
       <main class="px-6 lg:px-8 py-8 space-y-10">
 
-        <!-- ================= HERO ================= -->
-        <section class="bg-white border rounded-2xl p-6 flex flex-col gap-2">
-          <h1 class="text-xl font-semibold text-dark">
-            Welcome back 👋
-          </h1>
-          <p class="text-sm text-slate-500">
-            Discover trending offers and shops around you.
-          </p>
+        <!-- HERO -->
+        <section class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-3xl p-7 shadow-sm lift">
+          <h1 class="text-2xl font-semibold">Welcome back 👋</h1>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Discover trending offers and shops around you.</p>
         </section>
 
-        <!-- ================= KPIs ================= -->
         <!-- KPIs -->
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <!-- Live Offers -->
-          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
-            onclick="window.location.href='/user/Offers.html'">
-            <div class="flex items-center justify-between">
-              <p class="text-xs text-slate-500">Live Offers</p>
-              <i class="fa-solid fa-tags text-primary text-sm"></i>
+          <div onclick="window.location.href='/user/Offers.html'"
+            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
+            <div class="flex justify-between">
+              <p class="text-xs text-slate-500">LIVE OFFERS</p>
+              <i class="fa-solid fa-tags text-primary"></i>
             </div>
-            <h2 id="kpiLiveOffers" class="mt-2 text-2xl font-semibold text-dark">
-              —
-            </h2>
+            <h2 id="kpiLiveOffers" class="mt-3 text-3xl font-bold">—</h2>
           </div>
 
-          <!-- Shops -->
-          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
-            onclick="window.location.href='/user/Shops.html'">
-            <div class="flex items-center justify-between">
-              <p class="text-xs text-slate-500">Shops</p>
-              <i class="fa-solid fa-store text-primary text-sm"></i>
+          <div onclick="window.location.href='/user/Shops.html'"
+            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
+            <div class="flex justify-between">
+              <p class="text-xs text-slate-500">SHOPS</p>
+              <i class="fa-solid fa-store text-primary"></i>
             </div>
-            <h2 id="kpiShops" class="mt-2 text-2xl font-semibold text-dark">
-              —
-            </h2>
+            <h2 id="kpiShops" class="mt-3 text-3xl font-bold">—</h2>
           </div>
 
-          <!-- Categories -->
-          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
-            onclick="window.location.href='/user/Categories.html'">
-            <div class="flex items-center justify-between">
-              <p class="text-xs text-slate-500">Categories</p>
-              <i class="fa-solid fa-layer-group text-primary text-sm"></i>
+          <div onclick="window.location.href='/user/Categories.html'"
+            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
+            <div class="flex justify-between">
+              <p class="text-xs text-slate-500">CATEGORIES</p>
+              <i class="fa-solid fa-layer-group text-primary"></i>
             </div>
-            <h2 id="kpiCategories" class="mt-2 text-2xl font-semibold text-dark">
-              —
-            </h2>
+            <h2 id="kpiCategories" class="mt-3 text-3xl font-bold">—</h2>
           </div>
 
-          <!-- Floors (optional) -->
-          <div class="bg-white border rounded-xl p-4 hover:shadow-sm transition cursor-pointer"
-            onclick="window.location.href='/user/Floors.html'">
-            <div class="flex items-center justify-between">
-              <p class="text-xs text-slate-500">Floors</p>
-              <i class="fa-solid fa-building text-primary text-sm"></i>
+          <div onclick="window.location.href='/user/Floors.html'"
+            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
+            <div class="flex justify-between">
+              <p class="text-xs text-slate-500">FLOORS</p>
+              <i class="fa-solid fa-building text-primary"></i>
             </div>
-            <h2 id="kpiFloors" class="mt-2 text-2xl font-semibold text-dark">
-              —
-            </h2>
+            <h2 id="kpiFloors" class="mt-3 text-3xl font-bold">—</h2>
           </div>
-
         </section>
-
-
 
         <!-- TRENDING OFFERS -->
-        <section class="space-y-4">
-
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold text-dark">
-              Trending Offers
-            </h2>
-
-            <a href="/user/Offers.html" class="text-sm text-primary font-medium hover:underline">
-              View all
-            </a>
+        <section class="space-y-5">
+          <div class="flex justify-between">
+            <h2 class="text-lg font-semibold">Trending Offers</h2>
+            <a href="/user/Offers.html" class="text-sm text-primary">View all</a>
           </div>
 
           <div id="trendingOffersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <!-- Skeleton -->
-            <div class="bg-white border rounded-2xl p-5 animate-pulse">
-              <div class="h-40 bg-slate-200 rounded-xl mb-4"></div>
-              <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
-              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+            <div class="bg-white border rounded-2xl p-5">
+              <div class="h-44 shimmer rounded-xl mb-4"></div>
+              <div class="h-4 shimmer rounded w-3/4 mb-2"></div>
+              <div class="h-3 shimmer rounded w-1/2"></div>
             </div>
-
           </div>
-
         </section>
 
-
-        <!-- ================= DISCOVER SHOPS ================= -->
-        <section class="space-y-4">
-
-          <div class="flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-dark">
-              Popular Shops
-            </h2>
-            <a href="/user/Shops.html" class="text-sm text-primary font-medium">
-              Browse all
-            </a>
+        <!-- SHOPS -->
+        <section class="space-y-5">
+          <div class="flex justify-between">
+            <h2 class="text-lg font-semibold">Popular Shops</h2>
+            <a href="/user/Shops.html" class="text-sm text-primary">Browse all</a>
           </div>
 
           <div id="shopsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <div class="bg-white border rounded-2xl p-5">
-              <p class="text-slate-400 text-sm">
-                Loading shops…
-              </p>
+            <div class="bg-white border rounded-2xl p-6">
+              <p class="text-slate-400 text-sm">Loading shops…</p>
             </div>
-
           </div>
         </section>
 
@@ -172,6 +129,37 @@
   <!-- Page Logic -->
   <script type="module" src="/js/user/User-Dashboard.js"></script>
 
-</body>
+  <!-- UI Effects -->
+  <style>
+    .lift {
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
 
+    .lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, .2);
+    }
+
+    .shimmer {
+      position: relative;
+      overflow: hidden;
+      background: #e5e7eb;
+    }
+
+    .shimmer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+      animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+  </style>
+
+</body>
 </html>

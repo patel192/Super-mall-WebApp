@@ -9,47 +9,47 @@ import {
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ================= DOM =================
-
 const shopsGrid = document.getElementById("shopsGrid");
 const grid = document.getElementById("trendingOffersGrid");
 
-// ================= INIT =================
 (async function initDashboard() {
   await Promise.all([loadUserKPIs(), loadTrendingOffers(), loadPopularShops()]);
 })();
 
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  let current = 0;
+  const step = Math.max(1, Math.ceil(target / 30));
+
+  function update() {
+    current += step;
+    if (current >= target) {
+      el.textContent = target;
+    } else {
+      el.textContent = current;
+      requestAnimationFrame(update);
+    }
+  }
+
+  update();
+}
+
 async function loadUserKPIs() {
   try {
-    const now = new Date();
+    const [offersSnap, shopsSnap, categoriesSnap, floorsSnap] = await Promise.all([
+      getDocs(query(collection(db, "offers"), where("status", "==", "active"))),
+      getDocs(query(collection(db, "shops"), where("status", "==", "active"))),
+      getDocs(collection(db, "categories")),
+      getDocs(collection(db, "floors")),
+    ]);
 
-    // Parallel queries (FAST)
-    const [offersSnap, shopsSnap, categoriesSnap, floorsSnap] =
-      await Promise.all([
-        // Live offers
-        getDocs(
-          query(collection(db, "offers"), where("status", "==", "active"))
-        ),
+    animateCount("kpiLiveOffers", offersSnap.size);
+    animateCount("kpiShops", shopsSnap.size);
+    animateCount("kpiCategories", categoriesSnap.size);
+    animateCount("kpiFloors", floorsSnap.size);
 
-        // Active shops
-        getDocs(
-          query(collection(db, "shops"), where("status", "==", "active"))
-        ),
-
-        // Categories
-        getDocs(collection(db, "categories")),
-
-        // Floors (optional)
-        getDocs(collection(db, "floors")),
-      ]);
-
-    document.getElementById("kpiLiveOffers").textContent = offersSnap.size;
-
-    document.getElementById("kpiShops").textContent = shopsSnap.size;
-
-    document.getElementById("kpiCategories").textContent = categoriesSnap.size;
-
-    document.getElementById("kpiFloors").textContent = floorsSnap.size;
   } catch (err) {
     console.error("Failed to load KPIs:", err);
   }
@@ -69,9 +69,10 @@ async function loadTrendingOffers() {
 
     if (snap.empty) {
       grid.innerHTML = `
-          <p class="text-sm text-slate-400">
-            No active offers right now
-          </p>`;
+        <div class="text-center py-10 text-slate-400">
+          <img src="https://illustrations.popsy.co/gray/empty-cart.svg" class="w-40 mx-auto mb-4">
+          <p class="text-sm">No active offers right now</p>
+        </div>`;
       return;
     }
 
@@ -80,51 +81,35 @@ async function loadTrendingOffers() {
 
       const card = document.createElement("div");
       card.className =
-        "bg-white border rounded-2xl overflow-hidden hover:shadow-md transition cursor-pointer";
+        "bg-white border rounded-2xl overflow-hidden lift cursor-pointer";
 
       card.onclick = () => {
         window.location.href = `/user/Offer-Details.html?id=${docSnap.id}`;
       };
 
       card.innerHTML = `
-          <div class="relative">
-            <img
-              src="${o.thumbnailUrl}"
-              class="w-full h-44 object-cover"/>
+        <div class="relative">
+          <img src="${o.thumbnailUrl}" class="w-full h-44 object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
 
-            <span class="absolute top-3 left-3
-              px-3 py-1 rounded-full text-xs font-medium
-              bg-green-100 text-green-700">
-              ${
-                o.discountType === "percentage"
-                  ? o.discountValue + "% OFF"
-                  : "₹" + o.discountValue + " OFF"
-              }
-            </span>
-          </div>
+          <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+            ${o.discountType === "percentage" ? o.discountValue + "% OFF" : "₹" + o.discountValue + " OFF"}
+          </span>
 
-          <div class="p-4 space-y-1">
-            <h3 class="font-medium text-slate-900 line-clamp-1">
-              ${o.title}
-            </h3>
-
-            <p class="text-sm text-slate-500">
-              Valid till ${o.endDate.toDate().toLocaleDateString()}
-            </p>
-          </div>
-        `;
+          <h3 class="absolute bottom-3 left-4 text-white font-medium">
+            ${o.title}
+          </h3>
+        </div>
+      `;
 
       grid.appendChild(card);
     });
   } catch (err) {
     console.error("Trending offers error:", err);
-    grid.innerHTML = `
-        <p class="text-sm text-red-500">
-          Failed to load offers
-        </p>`;
+    grid.innerHTML = `<p class="text-sm text-red-500">Failed to load offers</p>`;
   }
 }
-// ================= SHOPS =================
+
 async function loadPopularShops() {
   shopsGrid.innerHTML = "";
 
@@ -132,9 +117,10 @@ async function loadPopularShops() {
 
   if (snap.empty) {
     shopsGrid.innerHTML = `
-      <p class="text-slate-400 text-sm">
-        No shops found
-      </p>`;
+      <div class="text-center py-10 text-slate-400">
+        <img src="https://illustrations.popsy.co/gray/storefront.svg" class="w-40 mx-auto mb-4">
+        <p>No shops found</p>
+      </div>`;
     return;
   }
 
@@ -142,16 +128,21 @@ async function loadPopularShops() {
     const s = docSnap.data();
 
     const card = document.createElement("div");
-    card.className =
-      "bg-white border rounded-2xl p-5 hover:shadow-md transition";
+    card.className = "bg-white border rounded-2xl p-5 lift";
 
     card.innerHTML = `
-      <h3 class="font-medium text-dark">
-        ${s.name}
-      </h3>
-      <p class="text-sm text-slate-500 mt-1">
-        ${s.category}
-      </p>
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center font-bold">
+          ${s.name.charAt(0)}
+        </div>
+
+        <div>
+          <h3 class="font-medium text-dark">${s.name}</h3>
+          <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+            ${s.category}
+          </span>
+        </div>
+      </div>
     `;
 
     shopsGrid.appendChild(card);

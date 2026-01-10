@@ -1,34 +1,41 @@
-<header class="sticky top-0 z-30 bg-white border-b">
+<header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b">
   <div class="flex items-center justify-between px-6 lg:px-8 py-4 gap-6">
 
     <!-- Left -->
     <div class="flex items-center gap-4">
-      <button id="menuBtn" class="lg:hidden text-xl text-slate-600">
+      <button id="menuBtn"
+              class="lg:hidden text-xl text-slate-600 hover:text-slate-900 transition">
         <i class="fa-solid fa-bars"></i>
       </button>
 
-      <h1 id="pageTitle" class="text-lg font-semibold text-slate-900">
+      <h1 id="pageTitle"
+          class="text-lg font-semibold text-slate-900 tracking-tight">
         Dashboard
       </h1>
     </div>
 
     <!-- Search -->
     <div class="hidden md:flex items-center gap-3
-                bg-slate-100 px-4 py-2 rounded-xl">
-      <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+                bg-slate-100/80 backdrop-blur
+                px-4 py-2.5 rounded-2xl
+                border border-slate-200">
+      <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i>
       <input
         type="text"
         placeholder="Search shops, offers, products"
-        class="bg-transparent outline-none text-sm w-64" />
+        class="bg-transparent outline-none text-sm w-64 placeholder:text-slate-400" />
     </div>
 
     <!-- Right -->
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-5">
 
       <!-- 🔔 Notifications -->
       <div class="relative">
         <button id="notifBtn"
-                class="relative text-slate-600 hover:text-slate-900 transition">
+                class="relative w-10 h-10 rounded-xl
+                       flex items-center justify-center
+                       text-slate-600 hover:text-slate-900
+                       hover:bg-slate-100 transition">
           <i class="fa-solid fa-bell text-lg"></i>
 
           <!-- Badge -->
@@ -45,22 +52,23 @@
         <!-- Dropdown -->
         <div id="notifDropdown"
              class="hidden absolute right-0 mt-3 w-96 max-w-[90vw]
-                    bg-white border rounded-2xl shadow-lg z-50 overflow-hidden">
+                    bg-white border rounded-2xl shadow-xl
+                    z-50 overflow-hidden">
 
-          <div class="px-4 py-3 border-b">
-            <p class="text-sm font-semibold text-slate-700">
+          <div class="px-5 py-4 border-b">
+            <p class="text-sm font-semibold text-slate-800">
               Notifications
             </p>
           </div>
 
           <div id="notifList"
                class="max-h-96 overflow-y-auto divide-y text-sm">
-            <div class="px-4 py-6 text-center text-slate-400">
+            <div class="px-4 py-8 text-center text-slate-400">
               No notifications
             </div>
           </div>
 
-          <div class="px-4 py-3 border-t text-right">
+          <div class="px-5 py-3 border-t text-right bg-slate-50">
             <button id="markAllRead"
                     class="text-xs text-primary hover:underline">
               Mark all as read
@@ -74,12 +82,14 @@
 
         <!-- Trigger -->
         <div id="navProfileBtn"
-             class="flex items-center gap-3 cursor-pointer select-none">
+             class="flex items-center gap-3 cursor-pointer select-none
+                    px-2 py-1.5 rounded-xl
+                    hover:bg-slate-100 transition">
 
           <div id="navAvatarWrapper"
                class="w-9 h-9 rounded-full bg-primary text-white
                       flex items-center justify-center
-                      text-sm font-semibold">
+                      text-sm font-semibold shadow-sm">
 
             <img id="navAvatar"
                  class="hidden w-9 h-9 rounded-full object-cover"
@@ -96,8 +106,8 @@
 
         <!-- Dropdown -->
         <div id="navProfileMenu"
-             class="hidden absolute right-0 mt-3 w-44 bg-white border
-                    rounded-xl shadow-lg z-50 overflow-hidden">
+             class="hidden absolute right-0 mt-3 w-48 bg-white border
+                    rounded-2xl shadow-xl z-50 overflow-hidden">
 
           <a href="/user/Profile.html"
              class="block px-4 py-3 text-sm text-slate-700
@@ -118,9 +128,10 @@
 
       <!-- CTA -->
       <a href="/user/merchant-register.html"
-         class="px-5 py-2.5 rounded-xl
+         class="hidden sm:inline-flex items-center justify-center
+                px-5 py-2.5 rounded-xl
                 bg-primary text-white text-sm font-medium
-                hover:bg-blue-700 transition">
+                hover:bg-blue-700 shadow-sm transition">
         Register as Merchant
       </a>
 

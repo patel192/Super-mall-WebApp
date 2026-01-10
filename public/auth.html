@@ -5,13 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SuperMall · Authentication</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <script>
@@ -30,115 +26,90 @@
   </script>
 </head>
 
-<body class="font-poppins bg-slate-100 min-h-screen flex items-center justify-center px-4">
+<body class="font-poppins bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen flex items-center justify-center px-4">
 
-  <!-- ================= CONTAINER ================= -->
-  <div class="w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden grid md:grid-cols-2">
+  <div class="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2">
 
-    <!-- ================= IMAGE SIDE ================= -->
+    <!-- IMAGE SIDE -->
     <div class="relative hidden md:block">
-      <img
-        id="signupImage"
-        src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae"
+      <img id="signupImage"
+        src="https://images.unsplash.com/photo-1607082350899-7e105aa886ae?auto=format&fit=crop&w=1200&q=80"
         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
         alt="Signup">
 
-      <img
-        id="loginImage"
-        src="https://images.unsplash.com/photo-1556742031-c6961e8560b0"
+      <img id="loginImage"
+        src="https://images.unsplash.com/photo-1556742031-c6961e8560b0?auto=format&fit=crop&w=1200&q=80"
         class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500"
         alt="Login">
 
-      <div class="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80"></div>
 
       <div class="relative z-10 p-10 text-white h-full flex flex-col justify-between">
         <div>
-          <h2 class="text-3xl font-bold">SuperMall</h2>
-          <p class="mt-2 text-sm text-slate-200 leading-relaxed">
-            Discover shops, compare products, and unlock exclusive offers.
+          <h2 class="text-4xl font-bold">SuperMall</h2>
+          <p class="mt-4 text-slate-200 max-w-sm">
+            Discover shops, compare products, and unlock exclusive offers from trusted merchants.
           </p>
         </div>
-
-        <p class="text-sm text-slate-300">
-          Secure authentication powered by Firebase
-        </p>
+        <p class="text-sm text-slate-300">Secure authentication powered by Firebase</p>
       </div>
     </div>
 
-    <!-- ================= FORM SIDE ================= -->
-    <div class="p-8 md:p-10 flex flex-col justify-center">
+    <!-- FORM SIDE -->
+    <div class="p-8 md:p-12 flex flex-col justify-center">
 
-      <!-- Header -->
-      <div class="mb-6">
-        <h2 id="authTitle" class="text-2xl font-semibold text-slate-900">
-          Create your account
-        </h2>
+      <div class="mb-8">
+        <h2 id="authTitle" class="text-3xl font-semibold text-slate-900">Create your account</h2>
         <p class="mt-2 text-sm text-slate-500">
           <span id="authHint">Already have an account?</span>
-          <a href="#" id="toggleAuth" class="text-primary font-medium ml-1">
-            Login
-          </a>
+          <a href="#" id="toggleAuth" class="text-primary font-medium ml-1 hover:underline">Login</a>
         </p>
       </div>
 
-      <!-- ================= SIGNUP ================= -->
-      <div id="signupContainer" class="space-y-5 transition-opacity duration-300">
+      <!-- SIGNUP -->
+      <div id="signupContainer" class="space-y-6 transition-opacity duration-300">
 
-        <!-- STEP 1 -->
-        <div id="step1" class="space-y-4">
+        <div id="step1" class="space-y-5">
           <input id="fullName" placeholder="Full name"
-            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
 
           <input id="email" type="email" placeholder="Email address"
-            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid sm:grid-cols-2 gap-4">
             <input id="password" type="password" placeholder="Password"
-              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
-
+              class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
             <input id="confirmPassword" type="password" placeholder="Confirm password"
-              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+              class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
           </div>
 
           <button id="next1"
-            class="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
+            class="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 shadow transition">
             Next
           </button>
         </div>
 
-        <!-- STEP 2 -->
-        <div id="step2" class="hidden space-y-4">
+        <div id="step2" class="hidden space-y-5">
           <input id="phone" placeholder="Phone number"
-            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <input id="city" placeholder="City"
-              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
-            <input id="state" placeholder="State"
-              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
-            <input id="pincode" placeholder="Pincode"
-              class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+          <div class="grid sm:grid-cols-3 gap-4">
+            <input id="city" placeholder="City" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
+            <input id="state" placeholder="State" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
+            <input id="pincode" placeholder="Pincode" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
           </div>
 
           <input id="street" placeholder="Street address"
-            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+            class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
 
           <div class="grid grid-cols-2 gap-4">
-            <button id="back1"
-              class="py-3 rounded-xl border text-slate-600 hover:bg-slate-100 transition">
-              Back
-            </button>
-            <button id="next2"
-              class="py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
-              Next
-            </button>
+            <button id="back1" class="py-3 rounded-xl border text-slate-600 hover:bg-slate-50">Back</button>
+            <button id="next2" class="py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 shadow">Next</button>
           </div>
         </div>
 
-        <!-- STEP 3 -->
-        <div id="step3" class="hidden space-y-4">
-          <select id="role"
-            class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+        <div id="step3" class="hidden space-y-5">
+          <select id="role" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
             <option value="" disabled selected>Select role</option>
             <option value="user">Customer</option>
           </select>
@@ -149,18 +120,11 @@
           </label>
 
           <div class="grid grid-cols-2 gap-4">
-            <button id="back2"
-              class="py-3 rounded-xl border text-slate-600 hover:bg-slate-100 transition">
-              Back
-            </button>
-            <button id="finish"
-              class="py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
-              Create account
-            </button>
+            <button id="back2" class="py-3 rounded-xl border text-slate-600 hover:bg-slate-50">Back</button>
+            <button id="finish" class="py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 shadow">Create account</button>
           </div>
         </div>
 
-        <!-- Google Signup -->
         <button id="googleBtn"
           class="w-full flex items-center justify-center gap-3 py-3 border rounded-xl hover:bg-slate-50 transition">
           <i class="fa-brands fa-google"></i>
@@ -168,21 +132,20 @@
         </button>
       </div>
 
-      <!-- ================= LOGIN ================= -->
-      <div id="loginContainer" class="hidden space-y-4 opacity-0 transition-opacity duration-300">
+      <!-- LOGIN -->
+      <div id="loginContainer" class="hidden space-y-5 opacity-0 transition-opacity duration-300">
         <input id="loginEmail" type="email" placeholder="Email"
-          class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
-
+          class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
         <input id="loginPassword" type="password" placeholder="Password"
-          class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-primary">
+          class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary outline-none">
 
         <button id="loginBtn"
-          class="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 transition">
+          class="w-full py-3 rounded-xl bg-primary text-white font-medium hover:bg-blue-700 shadow">
           Login
         </button>
 
         <button id="googleLoginBtn"
-          class="w-full flex items-center justify-center gap-3 py-3 border rounded-xl hover:bg-slate-50 transition">
+          class="w-full flex items-center justify-center gap-3 py-3 border rounded-xl hover:bg-slate-50">
           <i class="fa-brands fa-google"></i>
           Continue with Google
         </button>
@@ -191,7 +154,7 @@
     </div>
   </div>
 
-  <!-- ================= TOGGLE LOGIC ================= -->
+  <!-- Toggle logic unchanged -->
   <script>
     const toggleAuth = document.getElementById("toggleAuth");
     const signup = document.getElementById("signupContainer");
@@ -239,9 +202,8 @@
     });
   </script>
 
-  <!-- Firebase Logic -->
   <script type="module" src="/js/auth/signup.js"></script>
-  <script type="module" src="/js/auth/login.js"></script>
+  <script type="module" src="/public/js/auth/login.js"></script>
 
 </body>
 </html>
