@@ -83,7 +83,7 @@ async function loadTrendingOffers() {
         "bg-white border rounded-2xl overflow-hidden hover:shadow-md transition cursor-pointer";
 
       card.onclick = () => {
-        window.location.href = `/public/user/Offer-Details.html?id=${docSnap.id}`;
+        window.location.href = `/user/Offer-Details.html?id=${docSnap.id}`;
       };
 
       card.innerHTML = `

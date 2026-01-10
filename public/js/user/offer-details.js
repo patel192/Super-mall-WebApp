@@ -32,7 +32,7 @@ const params = new URLSearchParams(window.location.search);
 const offerId = params.get("id");
 
 if (!offerId) {
-  window.location.href = "/public/user/Offers.html";
+  window.location.href = "/user/Offers.html";
 }
 
 // ================= HELPERS =================
@@ -68,7 +68,7 @@ async function loadOffer() {
 
     if (!offerSnap.exists()) {
       alert("Offer not found");
-      window.location.href = "/public/user/Offers.html";
+      window.location.href = "/user/Offers.html";
       return;
     }
 
@@ -146,7 +146,7 @@ async function loadOffer() {
       } catch {}
 
       window.location.href =
-        `/public/user/Product-Details.html?id=${offer.productId}`;
+        `/user/Product-Details.html?id=${offer.productId}`;
     };
 
   } catch (err) {

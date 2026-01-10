@@ -4,8 +4,8 @@ async function loadLayout(id, url) {
   container.innerHTML = await res.text();
 }
 
-await loadLayout("sidebar", "/public/super-admin/layout/super-admin-sidebar.html");
-await loadLayout("navbar", "/public/super-admin/layout/super-admin-navbar.html");
+await loadLayout("sidebar", "/super-admin/layout/super-admin-sidebar.html");
+await loadLayout("navbar", "/super-admin/layout/super-admin-navbar.html");
 await import("../utils/notificationBell.js");
 (function activateSidebar() {
   const currentPath = window.location.pathname;

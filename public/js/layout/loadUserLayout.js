@@ -50,8 +50,8 @@ async function loadUserProfile(user) {
 
 // ================= INIT =================
 async function initUserLayout() {
-  await loadHTML("#sidebarMount", "/public/user/layout/user-sidebar.html");
-  await loadHTML("#navbarMount", "/public/user/layout/user-navbar.html");
+  await loadHTML("#sidebarMount", "/user/layout/user-sidebar.html");
+  await loadHTML("#navbarMount", "/user/layout/user-navbar.html");
 await import("../utils/notificationBell.js");
   // Sidebar toggle
   document.getElementById("menuBtn")?.addEventListener("click", () => {
@@ -63,7 +63,7 @@ await import("../utils/notificationBell.js");
     .getElementById("navLogoutBtn")
     ?.addEventListener("click", async () => {
       await signOut(auth);
-      window.location.href = "/public/auth.html";
+      window.location.href = "/auth.html";
     });
 
   // 👤 Avatar dropdown toggle

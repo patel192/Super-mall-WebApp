@@ -120,7 +120,7 @@ export function notifyMerchantApproved(uid) {
     type: NOTIFICATION_TYPES.MERCHANT_APPROVED,
     title: "Merchant Approved",
     message: "Your merchant request has been approved. Welcome to SuperMall!",
-    link: "/public/admin/Admin-Dashboard.html",
+    link: "/admin/Admin-Dashboard.html",
   });
 }
 
@@ -130,7 +130,7 @@ export function notifyOfferExpiring(adminUid, offerId, offerTitle) {
     type: NOTIFICATION_TYPES.OFFER_EXPIRING,
     title: "Offer Expiring Soon",
     message: `Your offer "${offerTitle}" is expiring soon.`,
-    link: "/public/admin/Offers.html",
+    link: "/admin/Offers.html",
     entityType: "offer",
     entityId: offerId,
   });
@@ -142,7 +142,7 @@ export function notifyNewOfferToUsers(offerId, title) {
     type: NOTIFICATION_TYPES.NEW_OFFER,
     title: "New Offer Available",
     message: title,
-    link: `/public/user/Offers.html?offer=${offerId}`,
+    link: `/user/Offers.html?offer=${offerId}`,
     entityType: "offer",
     entityId: offerId,
   });

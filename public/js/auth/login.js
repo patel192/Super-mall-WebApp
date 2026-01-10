@@ -74,23 +74,23 @@ async function fetchAdminShop(uid) {
 async function redirectByRole(role, uid) {
   switch (role) {
     case ROLES.SUPER_ADMIN:
-      window.location.href = "/public/super-admin/Dashboard.html";
+      window.location.href = "/super-admin/Dashboard.html";
       break;
 
     case ROLES.ADMIN:
       // 🔐 Fetch shop ONLY for admin
       await fetchAdminShop(uid);
-      window.location.href = "/public/admin/Admin-Dashboard.html";
+      window.location.href = "/admin/Admin-Dashboard.html";
       break;
 
     case ROLES.USER:
     case ROLES.MERCHANT_PENDING:
-      window.location.href = "/public/user/User-Dashboard.html";
+      window.location.href = "/user/User-Dashboard.html";
       break;
 
     default:
       console.warn("Unknown role:", role);
-      window.location.href = "/public/auth.html";
+      window.location.href = "/auth.html";
   }
 }
 

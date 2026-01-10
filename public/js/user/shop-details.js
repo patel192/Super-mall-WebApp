@@ -133,7 +133,7 @@ async function loadProducts() {
     `;
 
     card.onclick = () => {
-      window.location.href = `/public/user/Product-Details.html?id=${docSnap.id}`;
+      window.location.href = `/user/Product-Details.html?id=${docSnap.id}`;
     };
 
     productsGrid.appendChild(card);

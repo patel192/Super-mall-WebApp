@@ -30,8 +30,8 @@
 <body data-required-role="super_admin" class="bg-muted text-slate-700 min-h-screen">
 
   <!-- 🔒 AUTH GUARD -->
-  <script type="module" src="/public/js/auth/authGuard.js"></script>
-<script type="module" src="/public/js/super-admin/dashboard.js"></script>
+  <script type="module" src="/js/auth/authGuard.js"></script>
+<script type="module" src="/js/super-admin/dashboard.js"></script>
   <div class="flex min-h-screen">
 
     <!-- Sidebar (loaded dynamically) -->
@@ -50,7 +50,7 @@
         <!-- ================= KPI GRID ================= -->
         <section id="kpiSection" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
 
-          <a class="kpi-card" href="/public/super-admin/Users.html">
+          <a class="kpi-card" href="/super-admin/Users.html">
             <div class="kpi-header">
               <span>Total Users</span>
               <i class="fa-regular fa-users"></i>
@@ -59,7 +59,7 @@
             <div class="kpi-meta text-slate-500">All registered users</div>
           </a>
 
-          <a class="kpi-card" href="/public/super-admin/Merchants.html">
+          <a class="kpi-card" href="/super-admin/Merchants.html">
             <div class="kpi-header">
               <span>Merchants</span>
               <i class="fa-regular fa-store"></i>
@@ -68,7 +68,7 @@
             <div class="kpi-meta text-slate-500">Approved shops</div>
           </a>
 
-          <a class="kpi-card bg-amber-50/40 border-amber-200" href="/public/super-admin/Merchant-Approvals.html">
+          <a class="kpi-card bg-amber-50/40 border-amber-200" href="/super-admin/Merchant-Approvals.html">
             <div class="kpi-header text-amber-700">
               <span>Pending Requests</span>
               <i class="fa-regular fa-clock"></i>
@@ -77,7 +77,7 @@
             <div class="kpi-meta text-amber-600">Needs approval</div>
           </a>
 
-          <a class="kpi-card bg-red-50/40 border-red-200" href="/public/super-admin/Rejected-Merchants.html">
+          <a class="kpi-card bg-red-50/40 border-red-200" href="/super-admin/Rejected-Merchants.html">
             <div class="kpi-header text-red-700">
               <span>Rejected Merchants</span>
               <i class="fa-regular fa-circle-xmark"></i>
@@ -98,7 +98,7 @@
           </h2>
 
           <div class="flex flex-wrap gap-4">
-            <a href="/public/super-admin/Merchant-Approvals.html" class="px-6 py-3 rounded-xl bg-primary text-white
+            <a href="/super-admin/Merchant-Approvals.html" class="px-6 py-3 rounded-xl bg-primary text-white
                      font-medium hover:bg-blue-700 transition">
               Review Merchant Requests
             </a>
@@ -110,7 +110,7 @@
   </div>
 
   <!-- Layout Loader -->
-  <script type="module" src="/public/js/layout/loadSuperAdminLayout.js"></script>
+  <script type="module" src="/js/layout/loadSuperAdminLayout.js"></script>
 
 </body>
 

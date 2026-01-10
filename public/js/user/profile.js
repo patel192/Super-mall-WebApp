@@ -104,7 +104,7 @@ form.addEventListener("submit", async (e) => {
       type: "PROFILE_UPDATED",
       title: "Profile Updated",
       message: "Your profile information has been updated successfully.",
-      link: "/public/user/Profile.html"
+      link: "/user/Profile.html"
     });
 
     // 🔔 PROFILE IMAGE ADDED / UPDATED (ONCE PER SAVE)
@@ -115,7 +115,7 @@ form.addEventListener("submit", async (e) => {
         message: hadAvatarBefore
           ? "Your profile picture has been updated."
           : "You added a profile picture to your account.",
-        link: "/public/user/Profile.html"
+        link: "/user/Profile.html"
       });
     }
 

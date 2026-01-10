@@ -97,7 +97,7 @@ document.getElementById("finish").addEventListener("click", async () => {
     });
 
     alert("Account created successfully");
-    window.location.href = "/public/auth.html?mode=login";
+    window.location.href = "/auth.html?mode=login";
 
   } catch (err) {
     alert(err.message);
@@ -121,7 +121,7 @@ document.getElementById("googleBtn").addEventListener("click", async () => {
       { merge: true }
     );
 
-    window.location.href = "/public/auth.html?mode=login";
+    window.location.href = "/auth.html?mode=login";
   } catch {
     alert("Google signup failed");
   }

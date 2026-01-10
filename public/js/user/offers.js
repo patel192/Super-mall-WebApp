@@ -156,7 +156,7 @@ async function loadOffers() {
       }
 
       window.location.href =
-        `/public/user/Offer-Details.html?id=${docSnap.id}`;
+        `/user/Offer-Details.html?id=${docSnap.id}`;
     };
 
     offersGrid.appendChild(card);

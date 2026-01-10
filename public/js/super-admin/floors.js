@@ -94,7 +94,7 @@ form.addEventListener("submit", async (e) => {
       title: "Floor Updated",
       message: `Floor "${payload.name}" (Level ${payload.level}) was updated.`,
       targetRole: "super_admin",
-      link: "/public/super-admin/Floors.html"
+      link: "/super-admin/Floors.html"
     });
 
   } else {
@@ -110,7 +110,7 @@ form.addEventListener("submit", async (e) => {
       title: "Floor Created",
       message: `New floor "${payload.name}" (Level ${payload.level}) was created.`,
       targetRole: "super_admin",
-      link: "/public/super-admin/Floors.html"
+      link: "/super-admin/Floors.html"
     });
   }
 
@@ -165,7 +165,7 @@ async function deleteFloor(id) {
     title: "Floor Deleted",
     message: `Floor "${floorName}" was deleted.`,
     targetRole: "super_admin",
-    link: "/public/super-admin/Floors.html"
+    link: "/super-admin/Floors.html"
   });
 
   loadFloors();

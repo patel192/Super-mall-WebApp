@@ -36,7 +36,7 @@ const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
 
 if (!productId) {
-  window.location.href = "/public/user/Floors.html";
+  window.location.href = "/user/Floors.html";
   throw new Error("Missing productId");
 }
 
@@ -72,7 +72,7 @@ async function loadProduct() {
 
     if (!productSnap.exists()) {
       alert("Product not found");
-      window.location.href = "/public/user/Floors.html";
+      window.location.href = "/user/Floors.html";
       return;
     }
 
@@ -98,7 +98,7 @@ async function loadProduct() {
 
     ctaBtn.onclick = async () => {
       await trackProductClick(productId, shopId);
-      window.location.href = `/public/user/Offers.html?product=${productId}`;
+      window.location.href = `/user/Offers.html?product=${productId}`;
     };
 
     await loadStats();

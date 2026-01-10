@@ -67,7 +67,7 @@ async function loadCategories() {
 
     card.onclick = () => {
       window.location.href =
-        `/public/user/Shops.html?category=${encodeURIComponent(category)}`;
+        `/user/Shops.html?category=${encodeURIComponent(category)}`;
     };
 
     categoriesGrid.appendChild(card);

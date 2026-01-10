@@ -45,7 +45,7 @@ async function updateOfferStatuses() {
           type: "OFFER_LIVE",
           title: "Offer is Live 🎉",
           message: `Your offer "${offer.title}" is now live.`,
-          link: "/public/admin/Offers.html",
+          link: "/admin/Offers.html",
           targetRole: "admin",
         });
 
@@ -79,7 +79,7 @@ async function updateOfferStatuses() {
           type: "OFFER_EXPIRED",
           title: "Offer Expired ⏰",
           message: `Your offer "${offer.title}" has expired.`,
-          link: "/public/admin/Offers.html",
+          link: "/admin/Offers.html",
           targetRole: "admin",
         });
 

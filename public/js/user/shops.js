@@ -96,7 +96,7 @@ async function loadShops() {
 
     card.onclick = () => {
       window.location.href =
-        `/public/user/Shop-Details.html?id=${docSnap.id}`;
+        `/user/Shop-Details.html?id=${docSnap.id}`;
     };
 
     shopsGrid.appendChild(card);

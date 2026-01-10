@@ -45,7 +45,7 @@ export async function trackProductView(productId, ownerId) {
         message: `Your product "${product.name}" received its first view.`,
         targetRole: "admin",
         targetUid: ownerId,
-        link: "/public/admin/Products.html",
+        link: "/admin/Products.html",
         read: false,
         createdAt: serverTimestamp(),
       });
@@ -111,7 +111,7 @@ export async function trackProductClick(productId, ownerId) {
         message: `Your product "${product.name}" received its first click.`,
         targetRole: "admin",
         targetUid: ownerId,
-        link: "/public/admin/Products.html",
+        link: "/admin/Products.html",
         read: false,
         createdAt: serverTimestamp(),
       });

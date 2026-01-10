@@ -136,11 +136,11 @@ form.addEventListener("submit", async (e) => {
         type: "SHOP_PROFILE_COMPLETED",
         title: "Shop Profile Completed",
         message: "Your shop profile is now complete and visible to users.",
-        link: "/public/admin/Admin-Dashboard.html",
+        link: "/admin/Admin-Dashboard.html",
       });
     }
 
-    window.location.href = "/public/admin/Admin-Dashboard.html";
+    window.location.href = "/admin/Admin-Dashboard.html";
 
   } catch (err) {
     console.error(err);

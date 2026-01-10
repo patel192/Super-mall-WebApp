@@ -5,8 +5,8 @@ import { signOut } from
 // Mount layout partials
 async function loadLayout() {
   const [sidebar, navbar] = await Promise.all([
-    fetch("/public/admin/layout/admin-sidebar.html").then(r => r.text()),
-    fetch("/public/admin/layout/admin-navbar.html").then(r => r.text())
+    fetch("/admin/layout/admin-sidebar.html").then(r => r.text()),
+    fetch("/admin/layout/admin-navbar.html").then(r => r.text())
   ]);
 
   document.getElementById("sidebarMount").innerHTML = sidebar;
@@ -38,7 +38,7 @@ function initLayout() {
   // Logout
   document.getElementById("logoutBtn")?.addEventListener("click", async () => {
     await signOut(auth);
-    window.location.href = "/public/auth.html?mode=login";
+    window.location.href = "/auth.html?mode=login";
   });
 
   // Hide loader

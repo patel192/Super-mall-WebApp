@@ -65,7 +65,7 @@ async function loadFloors() {
     `;
 
     card.onclick = () => {
-      window.location.href = `/public/user/Shops.html?floor=${docSnap.id}`;
+      window.location.href = `/user/Shops.html?floor=${docSnap.id}`;
     };
 
     floorsGrid.appendChild(card);

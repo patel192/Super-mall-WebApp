@@ -30,7 +30,7 @@
 <body class="bg-muted min-h-screen flex items-center justify-center px-4">
 
   <!-- 🔒 AUTH GUARD -->
-  <script type="module" src="/public/js/auth/authGuard.js"></script>
+  <script type="module" src="/js/auth/authGuard.js"></script>
 
   <!-- ================= CONTAINER ================= -->
   <div class="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden animate-fadeIn">
@@ -168,7 +168,7 @@
 
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = "/public/auth.html";
+        window.location.href = "/auth.html";
         return;
       }
 
@@ -185,13 +185,13 @@
       // ❌ Block if already merchant or pending
       if (role === "admin") {
         alert("You are already a merchant.");
-        window.location.href = "/public/html/admin/Admin-Dashboard.html";
+        window.location.href = "/html/admin/Admin-Dashboard.html";
         return;
       }
 
       if (role === "merchant_pending") {
         alert("Your merchant request is already under review.");
-        window.location.href = "/public/html/user/User-Dashboard.html";
+        window.location.href = "/html/user/User-Dashboard.html";
         return;
       }
 
@@ -251,7 +251,7 @@
 
           alert("Your merchant request has been submitted for approval.");
 
-          window.location.href = "/public/auth.html";
+          window.location.href = "/auth.html";
 
         } catch (err) {
           console.error("Merchant registration failed:", err);

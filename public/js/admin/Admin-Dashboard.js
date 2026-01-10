@@ -576,7 +576,7 @@ async function loadOfferTrend(ownerId, days = 7) {
 onAuthStateChanged(auth, async (user) => {
   try {
     if (!user) {
-      window.location.href = "/public/auth.html";
+      window.location.href = "/auth.html";
       return;
     }
 
@@ -589,7 +589,7 @@ onAuthStateChanged(auth, async (user) => {
     const shopSnap = await getDocs(shopQuery);
 
     if (shopSnap.empty) {
-      window.location.href = "/public/admin/Shop-Profile.html";
+      window.location.href = "/admin/Shop-Profile.html";
       return;
     }
 
@@ -598,7 +598,7 @@ onAuthStateChanged(auth, async (user) => {
 
     // 2️⃣ Force completion
     if (!isProfileComplete(shop)) {
-      window.location.href = "/public/admin/Shop-Profile.html";
+      window.location.href = "/admin/Shop-Profile.html";
       return;
     }
 

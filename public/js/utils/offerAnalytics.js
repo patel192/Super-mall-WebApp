@@ -45,7 +45,7 @@ export async function trackOfferView(offerId, ownerId) {
         message: `Your offer "${offer.title}" received its first view.`,
         targetRole: "admin",
         targetUid: ownerId,
-        link: "/public/admin/Offers.html",
+        link: "/admin/Offers.html",
         read: false,
         createdAt: serverTimestamp(),
       });
@@ -111,7 +111,7 @@ export async function trackOfferClick(offerId, ownerId) {
         message: `Your offer "${offer.title}" received its first click.`,
         targetRole: "admin",
         targetUid: ownerId,
-        link: "/public/admin/Offers.html",
+        link: "/admin/Offers.html",
         read: false,
         createdAt: serverTimestamp(),
       });

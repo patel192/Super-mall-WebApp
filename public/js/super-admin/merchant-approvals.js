@@ -253,7 +253,7 @@ confirmApproveBtn.onclick = async () => {
       title: "Merchant Approved",
       message:
         "Your merchant request has been approved. You can now manage your shop.",
-      link: "/public/admin/Admin-Dashboard.html",
+      link: "/admin/Admin-Dashboard.html",
     });
 
     // 3️⃣ Log action
