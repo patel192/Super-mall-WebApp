@@ -6,10 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Dashboard · SuperMall</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <script>
@@ -30,70 +28,66 @@
 
 <body data-required-role="user" class="bg-muted text-slate-700 dark:bg-slate-900 dark:text-slate-200">
 
-  <!-- 🔒 AUTH GUARD -->
   <script type="module" src="/js/auth/authGuard.js"></script>
 
   <div class="flex min-h-screen">
-
     <div id="sidebarMount"></div>
 
     <div class="flex-1 lg:ml-72">
-
       <div id="navbarMount"></div>
 
-      <main class="px-6 lg:px-8 py-8 space-y-10">
+      <main class="px-6 lg:px-8 py-10 space-y-12">
 
         <!-- HERO -->
-        <section class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-3xl p-7 shadow-sm lift">
-          <h1 class="text-2xl font-semibold">Welcome back 👋</h1>
-          <p class="text-sm text-slate-500 dark:text-slate-400">Discover trending offers and shops around you.</p>
+        <section class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-3xl p-8 shadow-sm lift">
+          <h1 class="text-2xl font-semibold text-slate-900 dark:text-white">
+            Welcome back
+          </h1>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Explore trending offers and discover quality shops near you.
+          </p>
         </section>
 
         <!-- KPIs -->
         <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
-
-          <div onclick="window.location.href='/user/Offers.html'"
-            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
-            <div class="flex justify-between">
-              <p class="text-xs text-slate-500">LIVE OFFERS</p>
+          <div onclick="window.location.href='/user/Offers.html'" class="kpi-card">
+            <div class="flex justify-between items-center">
+              <p class="kpi-label">Live Offers</p>
               <i class="fa-solid fa-tags text-primary"></i>
             </div>
-            <h2 id="kpiLiveOffers" class="mt-3 text-3xl font-bold">—</h2>
+            <h2 id="kpiLiveOffers" class="kpi-value">—</h2>
           </div>
 
-          <div onclick="window.location.href='/user/Shops.html'"
-            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
-            <div class="flex justify-between">
-              <p class="text-xs text-slate-500">SHOPS</p>
+          <div onclick="window.location.href='/user/Shops.html'" class="kpi-card">
+            <div class="flex justify-between items-center">
+              <p class="kpi-label">Shops</p>
               <i class="fa-solid fa-store text-primary"></i>
             </div>
-            <h2 id="kpiShops" class="mt-3 text-3xl font-bold">—</h2>
+            <h2 id="kpiShops" class="kpi-value">—</h2>
           </div>
 
-          <div onclick="window.location.href='/user/Categories.html'"
-            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
-            <div class="flex justify-between">
-              <p class="text-xs text-slate-500">CATEGORIES</p>
+          <div onclick="window.location.href='/user/Categories.html'" class="kpi-card">
+            <div class="flex justify-between items-center">
+              <p class="kpi-label">Categories</p>
               <i class="fa-solid fa-layer-group text-primary"></i>
             </div>
-            <h2 id="kpiCategories" class="mt-3 text-3xl font-bold">—</h2>
+            <h2 id="kpiCategories" class="kpi-value">—</h2>
           </div>
 
-          <div onclick="window.location.href='/user/Floors.html'"
-            class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl p-5 cursor-pointer lift">
-            <div class="flex justify-between">
-              <p class="text-xs text-slate-500">FLOORS</p>
+          <div onclick="window.location.href='/user/Floors.html'" class="kpi-card">
+            <div class="flex justify-between items-center">
+              <p class="kpi-label">Floors</p>
               <i class="fa-solid fa-building text-primary"></i>
             </div>
-            <h2 id="kpiFloors" class="mt-3 text-3xl font-bold">—</h2>
+            <h2 id="kpiFloors" class="kpi-value">—</h2>
           </div>
         </section>
 
-        <!-- TRENDING OFFERS -->
+        <!-- OFFERS -->
         <section class="space-y-5">
-          <div class="flex justify-between">
+          <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold">Trending Offers</h2>
-            <a href="/user/Offers.html" class="text-sm text-primary">View all</a>
+            <a href="/user/Offers.html" class="text-sm text-primary hover:underline">View all</a>
           </div>
 
           <div id="trendingOffersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -107,9 +101,9 @@
 
         <!-- SHOPS -->
         <section class="space-y-5">
-          <div class="flex justify-between">
+          <div class="flex justify-between items-center">
             <h2 class="text-lg font-semibold">Popular Shops</h2>
-            <a href="/user/Shops.html" class="text-sm text-primary">Browse all</a>
+            <a href="/user/Shops.html" class="text-sm text-primary hover:underline">Browse all</a>
           </div>
 
           <div id="shopsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -123,41 +117,62 @@
     </div>
   </div>
 
-  <!-- Layout Loader -->
   <script type="module" src="/js/layout/loadUserLayout.js"></script>
-
-  <!-- Page Logic -->
   <script type="module" src="/js/user/User-Dashboard.js"></script>
 
-  <!-- UI Effects -->
   <style>
     .lift {
       transition: transform .25s ease, box-shadow .25s ease;
     }
 
     .lift:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, .2);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 35px -10px rgba(0, 0, 0, .25);
     }
 
     .shimmer {
+      background: #e5e7eb;
       position: relative;
       overflow: hidden;
-      background: #e5e7eb;
     }
 
     .shimmer::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .5), transparent);
       animation: shimmer 1.4s infinite;
     }
 
     @keyframes shimmer {
-      100% {
-        transform: translateX(100%);
-      }
+      100% { transform: translateX(100%); }
+    }
+
+    .kpi-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px -10px rgba(0,0,0,.2);
+    }
+
+    .kpi-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #64748b;
+    }
+
+    .kpi-value {
+      margin-top: .5rem;
+      font-size: 2rem;
+      font-weight: 700;
     }
   </style>
 

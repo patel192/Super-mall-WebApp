@@ -80,8 +80,7 @@ async function loadTrendingOffers() {
       const o = docSnap.data();
 
       const card = document.createElement("div");
-      card.className =
-        "bg-white border rounded-2xl overflow-hidden lift cursor-pointer";
+      card.className = "bg-white border rounded-2xl overflow-hidden lift cursor-pointer";
 
       card.onclick = () => {
         window.location.href = `/user/Offer-Details.html?id=${docSnap.id}`;
@@ -96,12 +95,10 @@ async function loadTrendingOffers() {
             ${o.discountType === "percentage" ? o.discountValue + "% OFF" : "₹" + o.discountValue + " OFF"}
           </span>
 
-          <h3 class="absolute bottom-3 left-4 text-white font-medium">
+          <h3 class="absolute bottom-3 left-4 text-white font-medium text-sm">
             ${o.title}
           </h3>
-        </div>
-      `;
-
+        </div>`;
       grid.appendChild(card);
     });
   } catch (err) {
@@ -128,17 +125,23 @@ async function loadPopularShops() {
     const s = docSnap.data();
 
     const card = document.createElement("div");
-    card.className = "bg-white border rounded-2xl p-5 lift";
+    card.className = "bg-white border rounded-2xl p-5 lift cursor-pointer";
+
+    card.onclick = () => {
+      window.location.href = `/user/Shop-Details.html?id=${docSnap.id}`;
+    };
+
+    const logo = s.logoUrl || "https://ui-avatars.com/api/?name=" + encodeURIComponent(s.name);
 
     card.innerHTML = `
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center font-bold">
-          ${s.name.charAt(0)}
-        </div>
+        <img src="${logo}" class="w-14 h-14 rounded-xl object-cover border" />
 
-        <div>
-          <h3 class="font-medium text-dark">${s.name}</h3>
-          <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+        <div class="flex-1">
+          <h3 class="font-medium text-dark line-clamp-1">${s.name}</h3>
+          <p class="text-xs text-slate-500">${s.location?.city || "Unknown city"}</p>
+
+          <span class="inline-block mt-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
             ${s.category}
           </span>
         </div>
