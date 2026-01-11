@@ -11,6 +11,7 @@
 
   <script>
     tailwind.config = {
+      darkMode: "class",
       theme: {
         extend: {
           colors: {
@@ -24,17 +25,17 @@
   </script>
 </head>
 
-<body data-required-role="user" class="bg-muted min-h-screen text-slate-700">
+<body data-required-role="user" class="bg-muted dark:bg-slate-900 min-h-screen text-slate-700 dark:text-slate-200">
 
   <!-- 🔒 AUTH GUARD -->
   <script type="module" src="/js/auth/authGuard.js"></script>
 
-  <!-- 🔄 PAGE LOADER -->
+  <!-- Loader -->
   <div id="pageLoader"
-       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+       class="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900">
     <div class="flex items-center gap-3">
       <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
-      <span class="text-sm text-slate-600">
+      <span class="text-sm text-slate-600 dark:text-slate-400">
         Loading products…
       </span>
     </div>
@@ -42,38 +43,35 @@
 
   <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
     <div id="sidebarMount"></div>
 
-    <!-- MAIN -->
     <div class="flex-1 lg:ml-72">
 
-      <!-- NAVBAR -->
       <div id="navbarMount"></div>
 
-      <!-- CONTENT -->
-      <main class="px-6 lg:px-10 py-8 space-y-6">
+      <main class="px-6 lg:px-10 py-10 space-y-8">
 
-        <!-- HEADER -->
-        <div class="flex items-center justify-between">
-          <h1 class="text-xl font-semibold text-dark">
-            Products
-          </h1>
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+          <div>
+            <h1 class="text-2xl font-semibold text-dark dark:text-white">Products</h1>
+            <p class="text-sm text-slate-500">Browse available products</p>
+          </div>
 
-          <div class="flex items-center gap-3 bg-white border px-4 py-2 rounded-xl">
+          <div class="flex items-center gap-3 bg-white dark:bg-slate-800 border dark:border-slate-700 px-5 py-3 rounded-2xl shadow-sm">
             <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
             <input
               id="searchInput"
               type="text"
-              placeholder="Search by name or category"
-              class="outline-none text-sm bg-transparent w-64"/>
+              placeholder="Search products..."
+              class="outline-none text-sm bg-transparent w-64 placeholder:text-slate-400"/>
           </div>
         </div>
 
-        <!-- PRODUCTS GRID -->
+        <!-- Products Grid -->
         <section
           id="productsGrid"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
           <div class="col-span-full text-center text-slate-400 py-20">
             Loading products…
@@ -85,10 +83,7 @@
     </div>
   </div>
 
-  <!-- LAYOUT -->
   <script type="module" src="/js/layout/loadUserLayout.js"></script>
-
-  <!-- PAGE LOGIC -->
   <script type="module" src="/js/user/products.js"></script>
 
 </body>
