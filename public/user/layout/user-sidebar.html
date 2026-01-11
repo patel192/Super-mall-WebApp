@@ -1,5 +1,4 @@
-<aside id="sidebar"
-  class="fixed inset-y-0 left-0 z-40 w-72
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-72
          bg-gradient-to-b from-violet-50 via-white to-white
          border-r border-slate-200
          transform -translate-x-full lg:translate-x-0
@@ -30,8 +29,7 @@
       </p>
 
       <div class="flex flex-col space-y-2">
-        <a href="/user/User-Dashboard.html" data-link="User-Dashboard.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/User-Dashboard.html" data-link="User-Dashboard.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -40,8 +38,7 @@
           Dashboard
         </a>
 
-        <a href="/user/Offers.html" data-link="Offers.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Offers.html" data-link="Offers.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -50,8 +47,7 @@
           Offers
         </a>
 
-        <a href="/user/Products.html" data-link="Products.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Products.html" data-link="Products.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -60,8 +56,7 @@
           Products
         </a>
 
-        <a href="/user/Compare.html" data-link="Compare.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Compare.html" data-link="Compare.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -79,8 +74,7 @@
       </p>
 
       <div class="flex flex-col space-y-2">
-        <a href="/user/Shops.html" data-link="Shops.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Shops.html" data-link="Shops.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -89,8 +83,7 @@
           Shops
         </a>
 
-        <a href="/user/Categories.html" data-link="Categories.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Categories.html" data-link="Categories.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -99,8 +92,7 @@
           Categories
         </a>
 
-        <a href="/user/Floors.html" data-link="Floors.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Floors.html" data-link="Floors.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -118,8 +110,7 @@
       </p>
 
       <div class="flex flex-col space-y-2">
-        <a href="/user/Profile.html" data-link="Profile.html"
-           class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <a href="/user/Profile.html" data-link="Profile.html" class="sidebar-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                   text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center
                       bg-slate-100 group-hover:bg-violet-100 transition">
@@ -128,8 +119,7 @@
           Profile
         </a>
 
-        <button id="logoutBtn"
-          class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+        <button id="logoutBtn" class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl
                  text-red-600 hover:bg-red-50 transition">
           <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-red-100">
             <i class="fa-solid fa-right-from-bracket"></i>
@@ -143,12 +133,19 @@
 </aside>
 
 <script>
-  const currentPage = window.location.pathname.split("/").pop();
+  // Get current page safely
+  const currentPath = window.location.pathname
+    .split("/")
+    .pop()
+    .toLowerCase()
+    .replace(".html", "");
 
   document.querySelectorAll(".sidebar-link").forEach(link => {
-    const target = link.dataset.link;
+    const target = link.dataset.link
+      ?.toLowerCase()
+      ?.replace(".html", "");
 
-    if (target === currentPage) {
+    if (target === currentPath) {
       link.classList.add(
         "bg-gradient-to-r",
         "from-violet-500",
@@ -161,9 +158,14 @@
       const iconWrap = link.querySelector("div");
       const icon = link.querySelector("i");
 
-      if (iconWrap) iconWrap.classList.remove("bg-slate-100");
-      if (iconWrap) iconWrap.classList.add("bg-white/20");
-      if (icon) icon.classList.add("text-white");
+      if (iconWrap) {
+        iconWrap.classList.remove("bg-slate-100");
+        iconWrap.classList.add("bg-white/20");
+      }
+
+      if (icon) {
+        icon.classList.add("text-white");
+      }
     }
   });
 </script>
