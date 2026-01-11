@@ -18,133 +18,98 @@ const grid = document.getElementById("trendingOffersGrid");
 
 function animateCount(id, target) {
   const el = document.getElementById(id);
-  if (!el) return;
-
   let current = 0;
   const step = Math.max(1, Math.ceil(target / 30));
 
   function update() {
     current += step;
-    if (current >= target) {
-      el.textContent = target;
-    } else {
+    if (current >= target) el.textContent = target;
+    else {
       el.textContent = current;
       requestAnimationFrame(update);
     }
   }
-
   update();
 }
 
 async function loadUserKPIs() {
-  try {
-    const [offersSnap, shopsSnap, categoriesSnap, floorsSnap] = await Promise.all([
-      getDocs(query(collection(db, "offers"), where("status", "==", "active"))),
-      getDocs(query(collection(db, "shops"), where("status", "==", "active"))),
-      getDocs(collection(db, "categories")),
-      getDocs(collection(db, "floors")),
-    ]);
+  const [offersSnap, shopsSnap, categoriesSnap, floorsSnap] = await Promise.all([
+    getDocs(query(collection(db, "offers"), where("status", "==", "active"))),
+    getDocs(query(collection(db, "shops"), where("status", "==", "active"))),
+    getDocs(collection(db, "categories")),
+    getDocs(collection(db, "floors")),
+  ]);
 
-    animateCount("kpiLiveOffers", offersSnap.size);
-    animateCount("kpiShops", shopsSnap.size);
-    animateCount("kpiCategories", categoriesSnap.size);
-    animateCount("kpiFloors", floorsSnap.size);
-
-  } catch (err) {
-    console.error("Failed to load KPIs:", err);
-  }
+  animateCount("kpiLiveOffers", offersSnap.size);
+  animateCount("kpiShops", shopsSnap.size);
+  animateCount("kpiCategories", categoriesSnap.size);
+  animateCount("kpiFloors", floorsSnap.size);
 }
 
 async function loadTrendingOffers() {
-  try {
-    const q = query(
-      collection(db, "offers"),
-      where("status", "==", "active"),
-      orderBy("createdAt", "desc"),
-      limit(6)
-    );
+  const snap = await getDocs(query(
+    collection(db, "offers"),
+    where("status", "==", "active"),
+    orderBy("createdAt", "desc"),
+    limit(6)
+  ));
 
-    const snap = await getDocs(q);
-    grid.innerHTML = "";
+  grid.innerHTML = "";
 
-    if (snap.empty) {
-      grid.innerHTML = `
-        <div class="text-center py-10 text-slate-400">
-          <img src="https://illustrations.popsy.co/gray/empty-cart.svg" class="w-40 mx-auto mb-4">
-          <p class="text-sm">No active offers right now</p>
-        </div>`;
-      return;
-    }
+  snap.forEach(docSnap => {
+    const o = docSnap.data();
 
-    snap.forEach((docSnap) => {
-      const o = docSnap.data();
+    const card = document.createElement("div");
+    card.className =
+      "group relative overflow-hidden rounded-3xl shadow hover:shadow-xl transition cursor-pointer";
 
-      const card = document.createElement("div");
-      card.className = "bg-white border rounded-2xl overflow-hidden lift cursor-pointer";
+    card.onclick = () => location.href = `/user/Offer-Details.html?id=${docSnap.id}`;
 
-      card.onclick = () => {
-        window.location.href = `/user/Offer-Details.html?id=${docSnap.id}`;
-      };
+    card.innerHTML = `
+      <img src="${o.thumbnailUrl}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+      <div class="absolute bottom-4 left-4 right-4 text-white">
+        <span class="text-xs bg-white/20 px-3 py-1 rounded-full">
+          ${o.discountType === "percentage" ? o.discountValue + "% OFF" : "₹" + o.discountValue + " OFF"}
+        </span>
+        <h3 class="mt-3 font-semibold">${o.title}</h3>
+      </div>
+    `;
 
-      card.innerHTML = `
-        <div class="relative">
-          <img src="${o.thumbnailUrl}" class="w-full h-44 object-cover" />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-
-          <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-            ${o.discountType === "percentage" ? o.discountValue + "% OFF" : "₹" + o.discountValue + " OFF"}
-          </span>
-
-          <h3 class="absolute bottom-3 left-4 text-white font-medium text-sm">
-            ${o.title}
-          </h3>
-        </div>`;
-      grid.appendChild(card);
-    });
-  } catch (err) {
-    console.error("Trending offers error:", err);
-    grid.innerHTML = `<p class="text-sm text-red-500">Failed to load offers</p>`;
-  }
+    grid.appendChild(card);
+  });
 }
 
 async function loadPopularShops() {
-  shopsGrid.innerHTML = "";
-
   const snap = await getDocs(query(collection(db, "shops"), limit(8)));
 
-  if (snap.empty) {
-    shopsGrid.innerHTML = `
-      <div class="text-center py-10 text-slate-400">
-        <img src="https://illustrations.popsy.co/gray/storefront.svg" class="w-40 mx-auto mb-4">
-        <p>No shops found</p>
-      </div>`;
-    return;
-  }
+  shopsGrid.innerHTML = "";
 
-  snap.forEach((docSnap) => {
+  snap.forEach(docSnap => {
     const s = docSnap.data();
+    const logo = s.logoUrl || "https://ui-avatars.com/api/?name=" + s.name;
 
     const card = document.createElement("div");
-    card.className = "bg-white border rounded-2xl p-5 lift cursor-pointer";
+    card.className =
+      "group bg-white dark:bg-slate-800 rounded-3xl shadow hover:shadow-xl transition overflow-hidden cursor-pointer";
 
-    card.onclick = () => {
-      window.location.href = `/user/Shop-Details.html?id=${docSnap.id}`;
-    };
-
-    const logo = s.logoUrl || "https://ui-avatars.com/api/?name=" + encodeURIComponent(s.name);
+    card.onclick = () => location.href = `/user/Shop-Details.html?id=${docSnap.id}`;
 
     card.innerHTML = `
-      <div class="flex items-center gap-4">
-        <img src="${logo}" class="w-14 h-14 rounded-xl object-cover border" />
+      <div class="h-28 bg-gradient-to-br from-primary to-indigo-600"></div>
 
-        <div class="flex-1">
-          <h3 class="font-medium text-dark line-clamp-1">${s.name}</h3>
-          <p class="text-xs text-slate-500">${s.location?.city || "Unknown city"}</p>
+      <div class="relative p-5 -mt-10">
+        <img src="${logo}" class="w-20 h-20 rounded-2xl border-4 border-white object-cover shadow"/>
 
-          <span class="inline-block mt-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-            ${s.category}
-          </span>
-        </div>
+        <h3 class="mt-4 font-semibold text-slate-900 dark:text-white line-clamp-1">
+          ${s.name}
+        </h3>
+
+        <p class="text-xs text-slate-500">${s.location?.city || ""}</p>
+
+        <span class="inline-block mt-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+          ${s.category}
+        </span>
       </div>
     `;
 
