@@ -7,7 +7,7 @@ import {
   doc,
   getDoc,
   query,
-  where
+  where,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= DOM =================
@@ -62,12 +62,20 @@ function getEffectivePrice(price, offer) {
 // ================= UI HELPERS =================
 function renderRow(label, valA, valB, highlightA = false, highlightB = false) {
   return `
-    <tr class="border-t">
-      <td class="px-6 py-4 font-medium text-slate-700">${label}</td>
-      <td class="px-6 py-4 ${highlightA ? "bg-green-50 font-semibold" : ""}">
+    <tr class="hover:bg-slate-50 transition">
+      <td class="px-6 py-5 font-medium text-slate-700">
+        ${label}
+      </td>
+
+      <td class="px-6 py-5 text-center ${
+        highlightA ? "bg-green-50 text-green-700 font-semibold rounded-xl" : ""
+      }">
         ${valA || "—"}
       </td>
-      <td class="px-6 py-4 ${highlightB ? "bg-green-50 font-semibold" : ""}">
+
+      <td class="px-6 py-5 text-center ${
+        highlightB ? "bg-green-50 text-green-700 font-semibold rounded-xl" : ""
+      }">
         ${valB || "—"}
       </td>
     </tr>
@@ -134,10 +142,14 @@ async function compareProducts() {
     ${renderRow(
       "Offer",
       offerA
-        ? `${offerA.discountValue}${offerA.discountType === "percentage" ? "%" : "₹"} OFF`
+        ? `${offerA.discountValue}${
+            offerA.discountType === "percentage" ? "%" : "₹"
+          } OFF`
         : "—",
       offerB
-        ? `${offerB.discountValue}${offerB.discountType === "percentage" ? "%" : "₹"} OFF`
+        ? `${offerB.discountValue}${
+            offerB.discountType === "percentage" ? "%" : "₹"
+          } OFF`
         : "—"
     )}
 

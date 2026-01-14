@@ -13,7 +13,7 @@ import {
 import {
   trackProductView,
   trackProductClick
-} from "../utils/offerAnalytics.js";
+} from "../utils/productAnalytics.js";
 
 // ================= DOM =================
 const loader = document.getElementById("pageLoader");

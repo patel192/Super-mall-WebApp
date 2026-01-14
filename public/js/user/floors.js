@@ -39,30 +39,45 @@ async function loadFloors() {
     );
 
     const card = document.createElement("div");
-    card.className =
-      "bg-white border rounded-2xl p-6 hover:shadow-md transition cursor-pointer";
+    card.className = `
+  group bg-white 
+  border border-slate-200 
+  rounded-3xl 
+  p-8
+  shadow-sm
+  hover:shadow-xl 
+  hover:-translate-y-1 
+  transition-all duration-300
+  cursor-pointer
+`;
 
     card.innerHTML = `
-      <div class="flex items-start justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-dark">
-            ${floor.name}
-          </h3>
-          <p class="text-sm text-slate-500 mt-1">
-            ${shopsSnap.size} shop${shopsSnap.size !== 1 ? "s" : ""}
-          </p>
-        </div>
+  <div class="flex items-start justify-between">
+    <div class="space-y-2">
+      <h3 class="text-xl font-semibold text-slate-900">
+        ${floor.name}
+      </h3>
 
-        <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary
-                    flex items-center justify-center">
-          <i class="fa-solid fa-layer-group"></i>
-        </div>
-      </div>
-
-      <p class="text-xs text-slate-500 mt-4">
-        ${floor.description || "Explore shops on this floor"}
+      <p class="text-sm text-slate-500">
+        ${shopsSnap.size} shop${shopsSnap.size !== 1 ? "s" : ""}
       </p>
-    `;
+    </div>
+
+    <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary
+                flex items-center justify-center text-lg
+                group-hover:bg-primary group-hover:text-white transition">
+      <i class="fa-solid fa-layer-group"></i>
+    </div>
+  </div>
+
+  <p class="text-sm text-slate-500 mt-6 leading-relaxed">
+    ${floor.description || "Explore shops available on this floor"}
+  </p>
+
+  <div class="mt-6 text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition">
+    View shops →
+  </div>
+`;
 
     card.onclick = () => {
       window.location.href = `/user/Shops.html?floor=${docSnap.id}`;

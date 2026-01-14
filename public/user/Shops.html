@@ -29,9 +29,11 @@
 
   <script type="module" src="/js/auth/authGuard.js"></script>
 
+  <!-- Loader -->
   <div id="pageLoader"
-       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
-    <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+       class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+    <i class="fa-solid fa-spinner fa-spin text-primary text-3xl mb-3"></i>
+    <span class="text-sm text-slate-500">Loading shops...</span>
   </div>
 
   <div class="flex min-h-screen">
@@ -41,11 +43,12 @@
     <div class="flex-1 lg:ml-72">
       <div id="navbarMount"></div>
 
-      <main class="px-6 lg:px-10 py-8 space-y-6">
+      <main class="px-6 lg:px-10 py-10 space-y-10 max-w-7xl mx-auto">
 
+        <!-- Header -->
         <div>
           <h1 id="pageTitle"
-              class="text-xl font-semibold text-dark">
+              class="text-2xl font-semibold text-dark tracking-tight">
             Shops
           </h1>
           <p id="pageSubtitle"
@@ -54,8 +57,9 @@
           </p>
         </div>
 
+        <!-- Grid -->
         <div id="shopsGrid"
-             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         </div>
 
       </main>

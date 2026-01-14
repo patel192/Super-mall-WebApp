@@ -28,7 +28,7 @@ const descInput = document.getElementById("productDesc");
 const priceInput = document.getElementById("productPrice");
 const categoryInput = document.getElementById("productCategory");
 const imageInput = document.getElementById("productImage");
-
+const cancelBtn = document.getElementById("closeModal")
 // ================= STATE =================
 let currentUser = null;
 let editingId = null;
@@ -292,6 +292,6 @@ function closeModal() {
   existingImageUrl = null;
   form.reset();
 }
-
+cancelBtn.onclick = closeModal;
 openBtn.onclick = openModal;
 closeBtn.onclick = closeModal;

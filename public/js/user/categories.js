@@ -5,7 +5,7 @@ import {
   collection,
   getDocs,
   query,
-  where
+  where,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= DOM =================
@@ -21,7 +21,7 @@ const CATEGORIES = [
   "Groceries",
   "Beauty",
   "Services",
-  "Other"
+  "Other",
 ];
 
 // ================= LOAD CATEGORIES =================
@@ -41,33 +41,43 @@ async function loadCategories() {
 
     const card = document.createElement("div");
     card.className =
-      "bg-white border rounded-2xl p-6 hover:shadow-md transition cursor-pointer";
+      "group bg-white border rounded-3xl p-8 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl";
 
     card.innerHTML = `
-      <div class="flex items-start justify-between">
-        <div>
-          <h3 class="text-lg font-semibold text-dark">
-            ${category}
-          </h3>
-          <p class="text-sm text-slate-500 mt-1">
-            ${shopsSnap.size} shop${shopsSnap.size !== 1 ? "s" : ""}
-          </p>
-        </div>
+  <div class="flex items-start justify-between gap-6">
 
-        <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary
-                    flex items-center justify-center">
-          <i class="fa-solid fa-tags"></i>
-        </div>
-      </div>
+    <div class="space-y-2">
+      <h3 class="text-xl font-semibold text-dark group-hover:text-primary transition">
+        ${category}
+      </h3>
 
-      <p class="text-xs text-slate-500 mt-4">
-        Explore ${category.toLowerCase()} shops
+      <p class="text-sm text-slate-500">
+        ${shopsSnap.size} shop${shopsSnap.size !== 1 ? "s" : ""}
       </p>
-    `;
+    </div>
+
+    <div class="w-14 h-14 rounded-2xl
+                bg-gradient-to-tr from-primary to-violet-500
+                text-white flex items-center justify-center
+                shadow-md group-hover:scale-105 transition">
+      <i class="fa-solid fa-layer-group text-lg"></i>
+    </div>
+  </div>
+
+  <p class="text-xs text-slate-500 mt-6 leading-relaxed">
+    Explore top ${category.toLowerCase()} stores and discover offers curated for you.
+  </p>
+
+  <div class="mt-6 flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition">
+    Browse category
+    <i class="fa-solid fa-arrow-right text-xs"></i>
+  </div>
+`;
 
     card.onclick = () => {
-      window.location.href =
-        `/user/Shops.html?category=${encodeURIComponent(category)}`;
+      window.location.href = `/user/Shops.html?category=${encodeURIComponent(
+        category
+      )}`;
     };
 
     categoriesGrid.appendChild(card);

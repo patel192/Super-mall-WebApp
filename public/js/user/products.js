@@ -4,7 +4,7 @@ import {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const grid = document.getElementById("productsGrid");
@@ -30,7 +30,7 @@ async function loadProducts() {
 
   allProducts = snap.docs.map((docSnap) => ({
     id: docSnap.id,
-    ...docSnap.data()
+    ...docSnap.data(),
   }));
 
   renderProducts(allProducts);
@@ -44,42 +44,61 @@ function renderProducts(products) {
     const card = document.createElement("a");
     card.href = `/user/Product-Details.html?id=${p.id}`;
     card.className = `
-      group bg-white dark:bg-slate-800 
-      border dark:border-slate-700 
-      rounded-3xl overflow-hidden 
-      hover:-translate-y-1 hover:shadow-xl 
-      transition-all duration-300
-    `;
+    group bg-white dark:bg-slate-900
+    border border-slate-200 dark:border-slate-800
+    rounded-3xl overflow-hidden
+    shadow-sm hover:shadow-2xl
+    hover:-translate-y-1
+    transition-all duration-300
+  `;
 
     card.innerHTML = `
-      <div class="relative overflow-hidden">
-        <img
-          src="${p.imageUrl || "https://via.placeholder.com/400"}"
-          class="w-full h-52 object-cover group-hover:scale-105 transition duration-500"/>
+    <!-- Image -->
+    <div class="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
+      <img
+        src="${p.imageUrl || "https://via.placeholder.com/600"}"
+        loading="lazy"
+        class="
+          w-full h-full object-cover
+          transition-transform duration-500
+          group-hover:scale-[1.02]
+        "
+      />
 
-        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+      <!-- Soft gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+
+      <!-- Category badge -->
+      <div class="absolute top-4 left-4">
+        <span class="text-[11px] font-medium px-3 py-1 rounded-full
+          bg-white/90 backdrop-blur
+          text-slate-800 shadow">
+          ${p.category || "General"}
+        </span>
       </div>
+    </div>
 
-      <div class="p-5 space-y-3">
-        <h3 class="font-semibold text-dark dark:text-white truncate">
-          ${p.name}
-        </h3>
+    <!-- Content -->
+    <div class="p-5 space-y-3">
+      <h3 class="text-base font-semibold text-slate-900 dark:text-white truncate">
+        ${p.name}
+      </h3>
 
-        <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">
-          ${p.description || "No description available"}
-        </p>
+      <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 min-h-[40px]">
+        ${p.description || "No description available"}
+      </p>
 
-        <div class="flex justify-between items-center pt-2">
-          <span class="text-lg font-bold text-primary">
-            ₹${p.price}
-          </span>
+      <div class="flex items-center justify-between pt-2">
+        <span class="text-xl font-bold text-primary">
+          ₹${p.price}
+        </span>
 
-          <span class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">
-            ${p.category || "General"}
-          </span>
-        </div>
+        <span class="text-xs text-slate-400 group-hover:text-primary transition">
+          View →
+        </span>
       </div>
-    `;
+    </div>
+  `;
 
     grid.appendChild(card);
   });
@@ -88,9 +107,10 @@ function renderProducts(products) {
 searchInput.addEventListener("input", () => {
   const q = searchInput.value.toLowerCase();
 
-  const filtered = allProducts.filter((p) =>
-    p.name.toLowerCase().includes(q) ||
-    (p.category || "").toLowerCase().includes(q)
+  const filtered = allProducts.filter(
+    (p) =>
+      p.name.toLowerCase().includes(q) ||
+      (p.category || "").toLowerCase().includes(q)
   );
 
   renderProducts(filtered);

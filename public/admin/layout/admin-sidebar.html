@@ -1,57 +1,99 @@
 <aside
   id="adminSidebar"
-  class="fixed inset-y-0 left-0 z-40 w-72 bg-white border-r
+  class="fixed inset-y-0 left-0 z-40 w-72
+         bg-gradient-to-b from-violet-50 via-white to-white
+         border-r border-slate-200
          transform -translate-x-full lg:translate-x-0
-         transition-transform duration-300">
+         transition-all duration-300 ease-in-out">
 
   <!-- Brand -->
-  <div class="px-6 py-6 border-b">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-primary text-white
-                  flex items-center justify-center">
+  <div class="px-6 py-6 border-b bg-white/60 backdrop-blur">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl
+                  bg-gradient-to-tr from-primary to-violet-500
+                  text-white flex items-center justify-center shadow-md">
         <i class="fa-solid fa-store"></i>
       </div>
       <div>
-        <p class="font-semibold text-slate-900">SuperMall</p>
+        <p class="font-semibold text-slate-900 tracking-tight">SuperMall</p>
         <p class="text-xs text-slate-400">Merchant Panel</p>
       </div>
     </div>
   </div>
 
   <!-- Navigation -->
-  <nav class="px-5 py-6 space-y-2 text-sm">
+  <nav class="px-5 py-8 text-sm space-y-10">
 
-    <a href="/admin/Admin-Dashboard.html"
-       class="admin-link flex items-center gap-4 px-4 py-3 rounded-xl">
-      <i class="fa-solid fa-chart-line"></i>
-      Dashboard
-    </a>
+    <!-- MAIN -->
+    <div class="space-y-4">
+      <p class="text-xs font-semibold text-slate-400 tracking-widest uppercase">
+        Main
+      </p>
 
-    <a href="/admin/Shop-Profile.html"
-       class="admin-link flex items-center gap-4 px-4 py-3 rounded-xl">
-      <i class="fa-solid fa-shop"></i>
-      Shop Profile
-    </a>
+      <div class="flex flex-col space-y-2">
+        <a href="/admin/Admin-Dashboard.html"
+           data-link="Admin-Dashboard.html"
+           class="admin-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+                  text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center
+                      bg-slate-100 group-hover:bg-violet-100 transition">
+            <i class="fa-solid fa-chart-line text-slate-500 group-hover:text-violet-600"></i>
+          </div>
+          Dashboard
+        </a>
 
-    <a href="/admin/Offers.html"
-       class="admin-link flex items-center gap-4 px-4 py-3 rounded-xl">
-      <i class="fa-solid fa-tags"></i>
-      Offers
-    </a>
+        <a href="/admin/Shop-Profile.html"
+           data-link="Shop-Profile.html"
+           class="admin-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+                  text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center
+                      bg-slate-100 group-hover:bg-violet-100 transition">
+            <i class="fa-solid fa-shop text-slate-500 group-hover:text-violet-600"></i>
+          </div>
+          Shop Profile
+        </a>
 
-    <a href="/admin/Products.html"
-       class="admin-link flex items-center gap-4 px-4 py-3 rounded-xl">
-      <i class="fa-solid fa-box"></i>
-      Products
-    </a>
+        <a href="/admin/Offers.html"
+           data-link="Offers.html"
+           class="admin-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+                  text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center
+                      bg-slate-100 group-hover:bg-violet-100 transition">
+            <i class="fa-solid fa-tags text-slate-500 group-hover:text-violet-600"></i>
+          </div>
+          Offers
+        </a>
 
-    <button
-      id="logoutBtn"
-      class="w-full flex items-center gap-4 px-4 py-3 rounded-xl
-             text-red-600 hover:bg-red-50 transition">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      Logout
-    </button>
+        <a href="/admin/Products.html"
+           data-link="Products.html"
+           class="admin-link group w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+                  text-slate-600 transition hover:bg-violet-50 hover:text-slate-900 hover:shadow-sm">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center
+                      bg-slate-100 group-hover:bg-violet-100 transition">
+            <i class="fa-solid fa-box text-slate-500 group-hover:text-violet-600"></i>
+          </div>
+          Products
+        </a>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="space-y-4">
+      <p class="text-xs font-semibold text-slate-400 tracking-widest uppercase">
+        Account
+      </p>
+
+      <div class="flex flex-col space-y-2">
+        <button id="logoutBtn"
+          class="w-full flex items-center gap-4 px-4 py-3 rounded-2xl
+                 text-red-600 hover:bg-red-50 transition">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-red-100">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </div>
+          Logout
+        </button>
+      </div>
+    </div>
 
   </nav>
 </aside>

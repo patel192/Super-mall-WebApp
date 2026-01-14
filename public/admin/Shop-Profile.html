@@ -41,88 +41,118 @@
     <div class="flex-1 lg:ml-72">
       <div id="navbarMount"></div>
 
-      <main class="px-6 lg:px-10 py-8 max-w-4xl">
+      <main class="px-6 lg:px-10 py-10 max-w-5xl mx-auto space-y-8">
 
-        <h1 class="text-2xl font-semibold text-dark mb-1">
-          Shop Profile
-        </h1>
-        <p class="text-sm text-slate-500 mb-8">
-          Complete your shop identity
-        </p>
+        <!-- Header -->
+        <div>
+          <h1 class="text-3xl font-semibold text-dark">
+            Shop Profile
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">
+            Complete your shop identity to make it visible to customers
+          </p>
+        </div>
 
-        <form id="shopForm" class="bg-white border rounded-2xl p-6 space-y-6">
+        <!-- Form Card -->
+        <form id="shopForm" class="bg-white border rounded-3xl p-8 space-y-8">
 
-          <!-- LOGO -->
-          <div>
-            <label class="text-sm font-medium">Shop Logo</label>
+          <!-- LOGO SECTION -->
+          <section class="space-y-4">
+            <h2 class="text-sm font-semibold text-dark">Branding</h2>
 
-            <div class="mt-2 flex items-center gap-6">
-              <img id="logoPreview" src="https://via.placeholder.com/120"
-                class="w-24 h-24 rounded-xl object-cover border" />
+            <div class="flex items-center gap-8">
+              <div class="relative">
+                <img id="logoPreview" src="https://via.placeholder.com/120"
+                  class="w-28 h-28 rounded-2xl object-cover border shadow-sm" />
+              </div>
 
-              <label class="cursor-pointer px-4 py-2 rounded-xl border text-sm
-                       hover:bg-slate-50 transition">
-                Upload Logo
-                <input id="logoInput" type="file" accept="image/*" hidden />
-              </label>
+              <div class="space-y-2">
+                <label class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border text-sm
+                        hover:bg-slate-50 transition cursor-pointer">
+                  <i class="fa-solid fa-upload"></i>
+                  Upload Logo
+                  <input id="logoInput" type="file" accept="image/*" hidden />
+                </label>
+
+                <p class="text-xs text-slate-500">
+                  Recommended: Square image, minimum 300×300px
+                </p>
+              </div>
             </div>
-          </div>
+          </section>
 
-          <!-- NAME -->
-          <div>
-            <label class="text-sm font-medium">Shop Name</label>
-            <input id="shopName" class="mt-1 w-full px-4 py-3 border rounded-xl
-                     focus:ring-2 focus:ring-primary outline-none" />
-          </div>
+          <!-- BASIC INFO -->
+          <section class="space-y-5">
+            <h2 class="text-sm font-semibold text-dark">Basic Information</h2>
 
-          <!-- CATEGORY -->
-          <div>
-            <label class="text-sm font-medium">Category</label>
-            <select id="shopCategory" class="mt-1 w-full px-4 py-3 border rounded-xl
-                     focus:ring-2 focus:ring-primary outline-none">
-              <option value="">Select category</option>
-              <option>Fashion</option>
-              <option>Electronics</option>
-              <option>Food & Beverages</option>
-              <option>Groceries</option>
-              <option>Beauty</option>
-              <option>Services</option>
-            </select>
-          </div>
+            <div>
+              <label class="text-xs font-medium text-slate-600">Shop Name</label>
+              <input id="shopName" placeholder="Enter shop name" class="mt-1 w-full px-4 py-3 border rounded-xl
+                      focus:ring-2 focus:ring-primary outline-none" />
+            </div>
 
-          <!-- FLOOR (READ ONLY) -->
-          <div>
-            <label class="text-sm font-medium">Floor</label>
-            <input id="floorDisplay" disabled class="mt-1 w-full px-4 py-3 border rounded-xl
-                     bg-slate-100 text-slate-600" />
-          </div>
+            <div>
+              <label class="text-xs font-medium text-slate-600">Category</label>
+              <select id="shopCategory" class="mt-1 w-full px-4 py-3 border rounded-xl
+                       focus:ring-2 focus:ring-primary outline-none">
+                <option value="">Select category</option>
+                <option>Fashion</option>
+                <option>Electronics</option>
+                <option>Food & Beverages</option>
+                <option>Groceries</option>
+                <option>Beauty</option>
+                <option>Services</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-xs font-medium text-slate-600">Assigned Floor</label>
+              <input id="floorDisplay" disabled class="mt-1 w-full px-4 py-3 border rounded-xl
+                      bg-slate-100 text-slate-600" />
+            </div>
+          </section>
 
           <!-- LOCATION -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input id="city" placeholder="City" class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2" />
-            <input id="state" placeholder="State" class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2" />
-            <input id="pincode" placeholder="Pincode"
-              class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2" />
-          </div>
+          <section class="space-y-5">
+            <h2 class="text-sm font-semibold text-dark">Location</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input id="city" placeholder="City"
+                class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2 outline-none" />
+
+              <input id="state" placeholder="State"
+                class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2 outline-none" />
+
+              <input id="pincode" placeholder="Pincode"
+                class="px-4 py-3 border rounded-xl focus:ring-primary focus:ring-2 outline-none" />
+            </div>
+          </section>
 
           <!-- DESCRIPTION -->
-          <div>
-            <label class="text-sm font-medium">Description</label>
-            <textarea id="shopDescription" rows="4" class="mt-1 w-full px-4 py-3 border rounded-xl
-                     focus:ring-2 focus:ring-primary outline-none"></textarea>
-          </div>
+          <section class="space-y-4">
+            <h2 class="text-sm font-semibold text-dark">About Your Shop</h2>
 
-          <!-- ACTION -->
-          <div class="flex justify-end">
-            <button id="saveBtn" type="submit" class="px-6 py-3 rounded-xl bg-primary text-white
+            <textarea id="shopDescription" rows="4"
+              placeholder="Describe your shop, products, and what makes you special..." class="w-full px-4 py-3 border rounded-xl
+                       focus:ring-2 focus:ring-primary outline-none"></textarea>
+          </section>
+
+          <!-- ACTION BAR -->
+          <div class="flex items-center justify-between pt-6 border-t">
+
+            <p class="text-xs text-slate-400">
+              Your profile must be completed before accessing the dashboard
+            </p>
+
+            <button id="saveBtn" type="submit" class="px-8 py-3 rounded-xl bg-primary text-white
                      font-medium hover:bg-blue-700 transition">
-              Save & Continue
+              Save & Continue →
             </button>
           </div>
 
         </form>
-
       </main>
+
     </div>
   </div>
 

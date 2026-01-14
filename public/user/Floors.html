@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mall Floors · SuperMall</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Icons -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
@@ -29,58 +27,44 @@
 
 <body data-required-role="user" class="bg-muted min-h-screen text-slate-700">
 
-  <!-- 🔒 AUTH GUARD -->
   <script type="module" src="/js/auth/authGuard.js"></script>
 
-  <!-- 🔄 PAGE LOADER -->
+  <!-- Loader -->
   <div id="pageLoader"
-       class="fixed inset-0 z-50 flex items-center justify-center bg-white">
-    <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+       class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+    <i class="fa-solid fa-spinner fa-spin text-primary text-3xl mb-3"></i>
+    <span class="text-sm text-slate-500">Loading floors...</span>
   </div>
 
   <div class="flex min-h-screen">
 
-    <!-- USER SIDEBAR -->
     <div id="sidebarMount"></div>
 
-    <!-- MAIN -->
     <div class="flex-1 lg:ml-72">
-
-      <!-- USER NAVBAR -->
       <div id="navbarMount"></div>
 
-      <main class="px-6 lg:px-10 py-8 space-y-6">
+      <main class="px-6 lg:px-10 py-10 space-y-10 max-w-7xl mx-auto">
 
         <!-- HEADER -->
         <div>
-          <h1 class="text-xl font-semibold text-dark">
+          <h1 class="text-2xl font-semibold text-slate-900 tracking-tight">
             Mall Floors
           </h1>
           <p class="text-sm text-slate-500 mt-1">
-            Browse shops floor by floor
+            Browse the mall floor by floor
           </p>
         </div>
 
         <!-- FLOORS GRID -->
         <div id="floorsGrid"
-             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          <!-- Skeleton -->
-          <div class="bg-white border rounded-2xl p-6 animate-pulse">
-            <div class="h-5 w-32 bg-slate-200 rounded mb-3"></div>
-            <div class="h-4 w-20 bg-slate-200 rounded"></div>
-          </div>
-
+             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         </div>
 
       </main>
     </div>
   </div>
 
-  <!-- USER LAYOUT -->
   <script type="module" src="/js/layout/loadUserLayout.js"></script>
-
-  <!-- PAGE LOGIC -->
   <script type="module" src="/js/user/floors.js"></script>
 
 </body>

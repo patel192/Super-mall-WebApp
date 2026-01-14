@@ -7,7 +7,7 @@ import {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ================= DOM =================
@@ -45,8 +45,7 @@ async function loadShop() {
   const shop = snap.data();
 
   shopName.textContent = shop.name;
-  shopDesc.textContent =
-    shop.description || "Explore products from this shop";
+  shopDesc.textContent = shop.description || "Explore products from this shop";
 
   if (shop.logoUrl) {
     shopLogo.src = shop.logoUrl;
@@ -61,8 +60,7 @@ async function loadShop() {
     }
   }
 
-  shopMeta.textContent =
-    `${shop.category || "Shop"}${floorText}`;
+  shopMeta.textContent = `${shop.category || "Shop"}${floorText}`;
 }
 
 // ================= LOAD PRODUCTS =================
@@ -70,10 +68,7 @@ async function loadProducts() {
   productsGrid.innerHTML = "";
 
   const snap = await getDocs(
-    query(
-      collection(db, "products"),
-      where("shopId", "==", shopId)
-    )
+    query(collection(db, "products"), where("shopId", "==", shopId))
   );
 
   if (snap.empty) {
@@ -111,26 +106,44 @@ async function loadProducts() {
     }
 
     const card = document.createElement("div");
-    card.className =
-      "bg-white border rounded-2xl p-4 hover:shadow-md transition cursor-pointer";
+    card.className = `
+  group bg-white 
+  border border-slate-200
+  rounded-3xl overflow-hidden
+  shadow-sm hover:shadow-xl
+  hover:-translate-y-1
+  transition-all duration-300
+  cursor-pointer
+`;
 
     card.innerHTML = `
-      <div class="relative">
-        ${offerBadge}
-        <img
-          src="${p.imageUrl || "https://via.placeholder.com/300"}"
-          class="w-full h-40 rounded-xl object-cover border"/>
-      </div>
+  <div class="relative h-52 bg-slate-100 overflow-hidden">
+    ${offerBadge}
 
-      <div class="mt-4">
-        <h3 class="font-medium text-dark">
-          ${p.name}
-        </h3>
-        <p class="text-sm text-slate-500">
-          ₹${p.price}
-        </p>
-      </div>
-    `;
+    <img
+      src="${p.imageUrl || "https://via.placeholder.com/600"}"
+      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+    />
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
+  </div>
+
+  <div class="p-6 space-y-3">
+    <h3 class="font-semibold text-lg text-slate-900 truncate">
+      ${p.name}
+    </h3>
+
+    <div class="flex items-center justify-between">
+      <span class="text-lg font-bold text-primary">
+        ₹${p.price}
+      </span>
+
+      <span class="text-xs text-slate-400 group-hover:text-primary transition">
+        View →
+      </span>
+    </div>
+  </div>
+`;
 
     card.onclick = () => {
       window.location.href = `/user/Product-Details.html?id=${docSnap.id}`;
