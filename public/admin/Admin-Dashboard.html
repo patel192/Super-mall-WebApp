@@ -56,150 +56,587 @@
       <div id="navbarMount"></div>
 
       <!-- Content -->
-      <main class="px-6 lg:px-10 py-8 space-y-10">
+      <main class="px-6 lg:px-8 py-8 space-y-6">
 
-        <!-- Header -->
-        <div class="space-y-1">
-          <h1 id="shopName" class="text-2xl font-semibold text-dark">—</h1>
-          <p class="text-sm text-slate-500">
-            Welcome to your merchant dashboard overview
-          </p>
-        </div>
+        <h1 id="shopName" class="text-xl font-semibold text-dark">
+          —
+        </h1>
 
-        <!-- SMART KPI CARDS -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <p class="text-sm text-slate-500">
+          Welcome to your merchant dashboard.
+        </p>
+        <!-- OFFER PERFORMANCE -->
+        <section class="space-y-4">
 
-          <a href="/admin/Products.html" class="group bg-white border rounded-3xl p-6 hover:shadow-lg transition">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Offer Performance
+            </h2>
 
-            <div class="flex justify-between">
-              <div>
-                <p class="text-xs text-slate-500">Products</p>
-                <h2 id="kpiProducts" class="text-3xl font-semibold text-dark mt-1">—</h2>
-              </div>
-
-              <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center">
-                <i class="fa-solid fa-box"></i>
-              </div>
-            </div>
-
-            <p id="kpiProductsHint" class="mt-4 text-xs text-slate-500">
-              Add products to start selling
-            </p>
-          </a>
-
-          <a href="/admin/Offers.html" class="group bg-white border rounded-3xl p-6 hover:shadow-lg transition">
-
-            <div class="flex justify-between">
-              <div>
-                <p class="text-xs text-slate-500">Active Offers</p>
-                <h2 id="kpiOffers" class="text-3xl font-semibold text-dark mt-1">—</h2>
-              </div>
-
-              <div class="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
-                <i class="fa-solid fa-tags"></i>
-              </div>
-            </div>
-
-            <p id="kpiOffersHint" class="mt-4 text-xs text-slate-500">
-              No active offers
-            </p>
-          </a>
-
-          <div class="bg-white border rounded-3xl p-6">
-            <div class="flex justify-between">
-              <div>
-                <p class="text-xs text-slate-500">Shop Status</p>
-                <h2 id="kpiStatus" class="text-xl font-semibold mt-1">—</h2>
-              </div>
-
-              <div id="kpiStatusIcon"
-                class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center">
-                <i class="fa-solid fa-circle-info"></i>
-              </div>
-            </div>
+            <a href="/admin/Offers.html" class="text-sm text-primary font-medium hover:underline">
+              Manage Offers →
+            </a>
           </div>
 
-          <div class="bg-white border rounded-3xl p-6">
-            <div class="flex justify-between">
-              <div>
-                <p class="text-xs text-slate-500">Shop Since</p>
-                <h2 id="kpiCreated" class="text-lg font-semibold mt-1">—</h2>
-              </div>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
 
-              <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center">
-                <i class="fa-solid fa-calendar"></i>
-              </div>
+            <!-- Total Offers -->
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Offers</p>
+              <h3 id="kpiTotalOffers" class="text-2xl font-semibold text-dark mt-1">—</h3>
             </div>
+
+            <!-- Live Offers -->
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Live Offers</p>
+              <h3 id="kpiLiveOffers" class="text-2xl font-semibold text-green-600 mt-1">—</h3>
+            </div>
+
+            <!-- Views -->
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Views</p>
+              <h3 id="kpiOfferViews" class="text-2xl font-semibold text-dark mt-1">—</h3>
+            </div>
+
+            <!-- Clicks -->
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Clicks</p>
+              <h3 id="kpiOfferClicks" class="text-2xl font-semibold text-dark mt-1">—</h3>
+            </div>
+
+            <!-- CTR -->
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">CTR</p>
+              <h3 id="kpiOfferCTR" class="text-2xl font-semibold text-primary mt-1">—</h3>
+            </div>
+
+          </div>
+        </section>
+        <!-- PRODUCT PERFORMANCE -->
+        <section class="space-y-4">
+
+          <h2 class="text-lg font-semibold text-dark">
+            Product Performance
+          </h2>
+
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Products</p>
+              <h3 id="kpiProductTotal" class="text-2xl font-semibold text-dark mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Active Products</p>
+              <h3 id="kpiProductActive" class="text-2xl font-semibold text-green-600 mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Views</p>
+              <h3 id="kpiProductViews" class="text-2xl font-semibold mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Total Clicks</p>
+              <h3 id="kpiProductClicks" class="text-2xl font-semibold mt-1">—</h3>
+            </div>
+
+            <div class="bg-white border rounded-2xl p-5">
+              <p class="text-xs text-slate-500">Avg CTR</p>
+              <h3 id="kpiProductCTR" class="text-2xl font-semibold text-primary mt-1">—</h3>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TOP PERFORMING OFFERS -->
+        <section class="space-y-4">
+
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Top Performing Offers
+            </h2>
+
+            <a href="/admin/Offers.html" class="text-sm text-primary font-medium hover:underline">
+              View all →
+            </a>
+          </div>
+
+          <div class="bg-white border rounded-2xl overflow-hidden">
+
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-slate-500">
+                <tr>
+                  <th class="px-6 py-4 text-left">Offer</th>
+                  <th class="px-6 py-4">Views</th>
+                  <th class="px-6 py-4">Clicks</th>
+                  <th class="px-6 py-4">CTR</th>
+                  <th class="px-6 py-4">Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="topOffersTable">
+                <tr>
+                  <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+                    Loading top offers…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </section>
+        <!-- TOP PERFORMING PRODUCTS -->
+        <section class="space-y-4">
+
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Top Performing Products
+            </h2>
+
+            <a href="/admin/Products.html" class="text-sm text-primary font-medium hover:underline">
+              View all →
+            </a>
+          </div>
+
+          <div class="bg-white border rounded-2xl overflow-hidden">
+
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-slate-500">
+                <tr>
+                  <th class="px-6 py-4 text-left">Product</th>
+                  <th class="px-6 py-4">Views</th>
+                  <th class="px-6 py-4">Clicks</th>
+                  <th class="px-6 py-4">CTR</th>
+                  <th class="px-6 py-4">Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="topProductsTable">
+                <tr>
+                  <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+                    Loading top products…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
 
         </section>
 
-        <!-- PERFORMANCE CHARTS -->
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- OFFER TREND -->
+        <section class="space-y-4">
 
-          <div class="bg-white border rounded-3xl p-6 space-y-4">
-            <h2 class="text-sm font-semibold text-dark">
-              Offer Performance (Last 7 Days)
-            </h2>
+          <h2 class="text-lg font-semibold text-dark">
+            Offer Performance Trend
+          </h2>
+
+          <div class="bg-white border rounded-2xl p-6">
             <canvas id="offerTrendChart" height="120"></canvas>
           </div>
 
-          <div class="bg-white border rounded-3xl p-6 space-y-4">
-            <h2 class="text-sm font-semibold text-dark">
-              Product Performance (Last 7 Days)
+        </section>
+
+        <!-- SMART KPI CARDS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+          <!-- PRODUCTS -->
+          <a href="/admin/Products.html" class="group bg-white border rounded-2xl p-5
+            hover:shadow-md transition cursor-pointer">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Products</p>
+                <h2 id="kpiProducts" class="text-2xl font-semibold text-dark mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-box"></i>
+              </div>
+            </div>
+
+            <p id="kpiProductsHint" class="mt-3 text-xs text-slate-500">
+              Add products to start selling
+            </p>
+          </a>
+
+          <!-- OFFERS -->
+          <a href="/admin/Offers.html" class="group bg-white border rounded-2xl p-5
+            hover:shadow-md transition cursor-pointer">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Active Offers</p>
+                <h2 id="kpiOffers" class="text-2xl font-semibold text-dark mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div class="w-10 h-10 rounded-xl bg-green-100 text-green-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-tags"></i>
+              </div>
+            </div>
+
+            <p id="kpiOffersHint" class="mt-3 text-xs text-slate-500">
+              No active offers
+            </p>
+          </a>
+
+          <!-- SHOP STATUS -->
+          <div class="bg-white border rounded-2xl p-5">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Shop Status</p>
+                <h2 id="kpiStatus" class="text-xl font-semibold mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div id="kpiStatusIcon" class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-500">
+              Visibility & access state
+            </p>
+          </div>
+
+          <!-- SHOP AGE -->
+          <div class="bg-white border rounded-2xl p-5">
+
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500">Shop Since</p>
+                <h2 id="kpiCreated" class="text-lg font-semibold text-dark mt-1">
+                  —
+                </h2>
+              </div>
+
+              <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600
+                  flex items-center justify-center">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+            </div>
+
+            <p class="mt-3 text-xs text-slate-500">
+              Account creation date
+            </p>
+          </div>
+
+        </section>
+        <!-- OFFERS PERFORMANCE -->
+        <section class="bg-white border rounded-2xl p-6 space-y-5">
+
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-dark">
+              Offers Performance
             </h2>
+
+            <a href="/admin/offers.html" class="text-sm text-primary font-medium hover:underline">
+              View all offers →
+            </a>
+          </div>
+
+          <!-- METRICS -->
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+            <div class="rounded-xl bg-muted p-4">
+              <p class="text-xs text-slate-500">Total Offers</p>
+              <h3 id="dashTotalOffers" class="text-xl font-semibold">—</h3>
+            </div>
+
+            <div class="rounded-xl bg-muted p-4">
+              <p class="text-xs text-slate-500">Active</p>
+              <h3 id="dashActiveOffers" class="text-xl font-semibold">—</h3>
+            </div>
+
+            <div class="rounded-xl bg-muted p-4">
+              <p class="text-xs text-slate-500">Views</p>
+              <h3 id="dashOfferViews" class="text-xl font-semibold">—</h3>
+            </div>
+
+            <div class="rounded-xl bg-muted p-4">
+              <p class="text-xs text-slate-500">Clicks</p>
+              <h3 id="dashOfferClicks" class="text-xl font-semibold">—</h3>
+            </div>
+
+            <div class="rounded-xl bg-muted p-4">
+              <p class="text-xs text-slate-500">Avg CTR</p>
+              <h3 id="dashOfferCTR" class="text-xl font-semibold text-green-600">
+                —
+              </h3>
+            </div>
+
+          </div>
+
+          <!-- TOP OFFER -->
+          <div class="border rounded-xl p-4">
+            <p class="text-xs text-slate-500 mb-2">
+              Top Performing Offer
+            </p>
+
+            <div id="topOffer" class="flex items-center justify-between text-sm text-slate-400">
+              —
+            </div>
+          </div>
+
+        </section>
+        <!-- PRODUCT PERFORMANCE TREND -->
+        <section class="space-y-4">
+
+          <h2 class="text-lg font-semibold text-dark">
+            Product Performance Trend
+          </h2>
+
+          <div class="bg-white border rounded-2xl p-6">
             <canvas id="productTrendChart" height="120"></canvas>
           </div>
 
         </section>
 
-        <!-- TABLES -->
-        <section class="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-          <div class="bg-white border rounded-3xl overflow-hidden">
-            <div class="px-6 py-4 border-b flex justify-between">
-              <h2 class="text-sm font-semibold">Top Offers</h2>
-              <a href="/admin/Offers.html" class="text-xs text-primary hover:underline">View all</a>
+        <!-- QUICK ACTIONS -->
+        <section class="bg-white border rounded-2xl p-5">
+
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+            <!-- Left -->
+            <div>
+              <h2 class="text-sm font-semibold text-dark">
+                Quick Actions
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">
+                Manage your shop faster
+              </p>
             </div>
 
-            <table class="w-full text-sm">
-              <thead class="bg-slate-50 text-slate-500">
-                <tr>
-                  <th class="px-6 py-3 text-left">Offer</th>
-                  <th class="px-6 py-3">Views</th>
-                  <th class="px-6 py-3">Clicks</th>
-                  <th class="px-6 py-3">CTR</th>
-                  <th class="px-6 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody id="topOffersTable"></tbody>
-            </table>
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-3">
+
+              <a href="/admin/Products.html" class="inline-flex items-center gap-2 px-4 py-2.5
+                rounded-xl bg-blue-600 text-white text-sm font-medium
+                hover:bg-blue-700 transition">
+                <i class="fa-solid fa-plus"></i>
+                Add Product
+              </a>
+
+              <a href="/admin/Offers.html" class="inline-flex items-center gap-2 px-4 py-2.5
+                rounded-xl bg-green-600 text-white text-sm font-medium
+                hover:bg-green-700 transition">
+                <i class="fa-solid fa-tag"></i>
+                Create Offer
+              </a>
+
+              <a href="/admin/Shop-Profile.html" class="inline-flex items-center gap-2 px-4 py-2.5
+                rounded-xl border text-slate-700 text-sm font-medium
+                hover:bg-slate-100 transition">
+                <i class="fa-solid fa-store"></i>
+                Edit Shop Profile
+              </a>
+
+            </div>
           </div>
 
-          <div class="bg-white border rounded-3xl overflow-hidden">
-            <div class="px-6 py-4 border-b flex justify-between">
-              <h2 class="text-sm font-semibold">Top Products</h2>
-              <a href="/admin/Products.html" class="text-xs text-primary hover:underline">View all</a>
+        </section>
+
+        <!-- MERCHANT HEALTH -->
+        <section class="bg-white border rounded-2xl p-5 space-y-4">
+
+          <!-- Header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-semibold text-dark">
+                Merchant Health
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">
+                Issues affecting your shop visibility and performance
+              </p>
             </div>
 
-            <table class="w-full text-sm">
-              <thead class="bg-slate-50 text-slate-500">
-                <tr>
-                  <th class="px-6 py-3 text-left">Product</th>
-                  <th class="px-6 py-3">Views</th>
-                  <th class="px-6 py-3">Clicks</th>
-                  <th class="px-6 py-3">CTR</th>
-                  <th class="px-6 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody id="topProductsTable"></tbody>
-            </table>
+            <span class="text-xs text-slate-400">
+              Auto-updated
+            </span>
+          </div>
+
+          <!-- Health Items -->
+          <div class="space-y-3">
+
+            <!-- Missing Images -->
+            <div class="flex items-center justify-between gap-4
+             border rounded-xl p-4 bg-amber-50 border-amber-200">
+
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700
+                 flex items-center justify-center">
+                  <i class="fa-solid fa-image"></i>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-amber-900">
+                    Products missing images
+                  </p>
+                  <p class="text-xs text-amber-700">
+                    Products without images get significantly fewer views
+                  </p>
+                </div>
+              </div>
+
+              <a href="/admin/Products.html" class="text-xs font-medium text-amber-800 hover:underline">
+                Fix now
+              </a>
+            </div>
+
+            <!-- No Active Offers -->
+            <div class="flex items-center justify-between gap-4
+             border rounded-xl p-4 bg-red-50 border-red-200">
+
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-red-100 text-red-700
+                 flex items-center justify-center">
+                  <i class="fa-solid fa-tag"></i>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-red-900">
+                    No active offers
+                  </p>
+                  <p class="text-xs text-red-700">
+                    Shops with offers get higher customer engagement
+                  </p>
+                </div>
+              </div>
+
+              <a href="/admin/Offers.html" class="text-xs font-medium text-red-800 hover:underline">
+                Create offer
+              </a>
+            </div>
+
+            <!-- Profile Completeness -->
+            <div class="flex items-center justify-between gap-4
+             border rounded-xl p-4 bg-slate-50 border-slate-200">
+
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-slate-200 text-slate-700
+                 flex items-center justify-center">
+                  <i class="fa-solid fa-store"></i>
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-slate-900">
+                    Shop profile incomplete
+                  </p>
+                  <p class="text-xs text-slate-500">
+                    Complete profiles appear higher in search results
+                  </p>
+                </div>
+              </div>
+
+              <a href="/admin/Shop-Profile.html" class="text-xs font-medium text-slate-700 hover:underline">
+                Complete profile
+              </a>
+            </div>
+
+          </div>
+
+        </section>
+        <!-- RECENT ACTIVITY -->
+        <section class="bg-white border rounded-2xl p-5 space-y-4">
+
+          <!-- Header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-semibold text-dark">
+                Recent Activity
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">
+                Latest changes in your shop
+              </p>
+            </div>
+
+            <a href="#" class="text-xs font-medium text-primary hover:underline">
+              View all
+            </a>
+          </div>
+
+          <!-- Activity List -->
+          <div class="divide-y">
+
+            <!-- Activity Item -->
+            <div class="flex items-start gap-4 py-4">
+              <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-700
+               flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-box"></i>
+              </div>
+
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">
+                  Product added
+                </p>
+                <p class="text-xs text-slate-500 mt-1">
+                  “Men’s Denim Jacket” was added to your shop
+                </p>
+              </div>
+
+              <span class="text-xs text-slate-400 whitespace-nowrap">
+                2h ago
+              </span>
+            </div>
+
+            <!-- Activity Item -->
+            <div class="flex items-start gap-4 py-4">
+              <div class="w-9 h-9 rounded-lg bg-green-100 text-green-700
+               flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-tag"></i>
+              </div>
+
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">
+                  Offer created
+                </p>
+                <p class="text-xs text-slate-500 mt-1">
+                  “Flat 20% OFF” applied to Electronics
+                </p>
+              </div>
+
+              <span class="text-xs text-slate-400 whitespace-nowrap">
+                Yesterday
+              </span>
+            </div>
+
+            <!-- Activity Item -->
+            <div class="flex items-start gap-4 py-4">
+              <div class="w-9 h-9 rounded-lg bg-slate-200 text-slate-700
+               flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-pen"></i>
+              </div>
+
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">
+                  Shop profile updated
+                </p>
+                <p class="text-xs text-slate-500 mt-1">
+                  Location and description were updated
+                </p>
+              </div>
+
+              <span class="text-xs text-slate-400 whitespace-nowrap">
+                3 days ago
+              </span>
+            </div>
+
           </div>
 
         </section>
 
       </main>
-
     </div>
   </div>
 
