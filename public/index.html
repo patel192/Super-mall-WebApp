@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script>
     tailwind.config = {
       theme: {
@@ -22,31 +22,28 @@
   </script>
 </head>
 
-<body class="font-poppins text-slate-700 bg-white scroll-smooth">
+<body class="font-poppins text-slate-700 bg-gradient-to-br from-indigo-50 via-white to-blue-50 scroll-smooth">
 
   <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
+  <header class="sticky top-0 z-50 bg-white/70 backdrop-blur border-b">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-
       <h1 class="font-bold text-xl text-primary">🏬 SuperMall</h1>
 
       <nav class="hidden md:flex gap-8 text-sm font-medium">
-        <a href="#home" class="hover:text-primary">Home</a>
-        <a href="#features" class="hover:text-primary">Features</a>
-        <a href="#modules" class="hover:text-primary">Modules</a>
-        <a href="#roles" class="hover:text-primary">Roles</a>
-        <a href="#contact" class="hover:text-primary">Contact</a>
-
+        <a href="#home" class="self-center hover:text-primary">Home</a>
+        <a href="#features" class="self-center hover:text-primary">Features</a>
+        <a href="#modules" class="self-center hover:text-primary">Modules</a>
+        <a href="#roles" class="self-center hover:text-primary">Roles</a>
+        <a href="#contact" class="self-center hover:text-primary">Contact</a>
         <a href="auth.html" class="px-5 py-2 rounded-xl bg-primary text-white hover:bg-indigo-700 shadow">
           Login
         </a>
       </nav>
-
     </div>
   </header>
 
   <!-- ================= HERO ================= -->
-  <section id="home" class="bg-gradient-to-br from-indigo-50 via-white to-blue-50 py-24">
+  <section id="home" class="py-24">
 
     <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
 
@@ -74,59 +71,86 @@
             Learn More
           </a>
         </div>
-
-        <div class="mt-8 flex gap-8">
-          <div>
-            <p class="text-2xl font-extrabold text-primary">100+</p>
-            <p class="text-sm text-slate-500">Shops Managed</p>
-          </div>
-          <div>
-            <p class="text-2xl font-extrabold text-primary">10K+</p>
-            <p class="text-sm text-slate-500">Products Tracked</p>
-          </div>
-          <div>
-            <p class="text-2xl font-extrabold text-primary">24/7</p>
-            <p class="text-sm text-slate-500">Operations Control</p>
-          </div>
-        </div>
       </div>
 
+      <!-- ✅ FIXED IMAGE PATH -->
       <div>
-        <img src="/public/assests/supermall-hero.jpg" alt="Mall Management" class="rounded-3xl shadow-2xl border">
+        <img src="/public/assets/supermallHero.jpg" alt="Mall Management Dashboard"
+          class="rounded-3xl shadow-2xl border" />
       </div>
 
     </div>
   </section>
 
   <!-- ================= FEATURES ================= -->
-  <section id="features" class="py-20 bg-white">
+  <section id="features" class="py-24">
+
     <div class="max-w-7xl mx-auto px-6 text-center">
 
-      <h2 class="text-3xl font-extrabold">
+      <h2 class="text-4xl font-extrabold">
         Everything You Need to Run a Mall Efficiently
       </h2>
 
-      <div class="grid md:grid-cols-3 gap-10 mt-12">
+      <p class="mt-4 text-slate-500 max-w-2xl mx-auto">
+        SuperMall centralizes shop management, inventory control,
+        and operational workflows into one intelligent platform.
+      </p>
 
-        <div>
-          <h3 class="font-bold text-primary">Shop Management</h3>
-          <p class="text-sm text-slate-600 mt-2">
-            Register tenants, assign spaces, and manage occupancy.
+      <!-- FEATURE GRID -->
+      <div class="grid md:grid-cols-3 gap-8 mt-16">
+
+        <!-- CARD 1 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-store"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-xl text-slate-900">
+            Shop & Tenant Management
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+            Register shops, assign locations, manage tenants, and monitor
+            occupancy across the entire mall ecosystem.
           </p>
+
         </div>
 
-        <div>
-          <h3 class="font-bold text-primary">Product & Inventory</h3>
-          <p class="text-sm text-slate-600 mt-2">
-            Track products and stock across multiple stores.
+        <!-- CARD 2 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-xl text-slate-900">
+            Product & Inventory Tracking
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+            Track products across stores, monitor stock levels, and gain
+            real-time insights into inventory performance.
           </p>
+
         </div>
 
-        <div>
-          <h3 class="font-bold text-primary">Operations Control</h3>
-          <p class="text-sm text-slate-600 mt-2">
-            Manage announcements, maintenance, and activities.
+        <!-- CARD 3 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-gear"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-xl text-slate-900">
+            Operations & Control Center
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+            Manage announcements, maintenance requests, events,
+            and daily operational activities from one dashboard.
           </p>
+
         </div>
 
       </div>
@@ -135,19 +159,108 @@
   </section>
 
   <!-- ================= MODULES ================= -->
-  <section id="modules" class="py-20 bg-slate-50">
+  <section id="modules" class="py-24">
+
     <div class="max-w-7xl mx-auto px-6 text-center">
 
-      <h2 class="text-3xl font-extrabold">
-        Core Modules
+      <h2 class="text-4xl font-extrabold">
+        Core Platform Modules
       </h2>
 
-      <div class="grid md:grid-cols-4 gap-8 mt-12">
+      <p class="mt-4 text-slate-500 max-w-2xl mx-auto">
+        SuperMall is built as a modular system, allowing mall administrators
+        to manage every aspect of operations from a single unified platform.
+      </p>
 
-        <div class="bg-white p-6 rounded-xl shadow">Shop Directory</div>
-        <div class="bg-white p-6 rounded-xl shadow">Product Catalog</div>
-        <div class="bg-white p-6 rounded-xl shadow">User Management</div>
-        <div class="bg-white p-6 rounded-xl shadow">Analytics Dashboard</div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
+
+        <!-- MODULE 1 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-store"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-lg text-slate-900">
+            Shop Directory
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600">
+            Maintain a complete database of shops, locations, categories,
+            and tenant details across the mall.
+          </p>
+
+          <span class="inline-block mt-4 text-xs font-semibold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">
+            Tenant Management
+          </span>
+
+        </div>
+
+        <!-- MODULE 2 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-lg text-slate-900">
+            Product Catalog
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600">
+            Track inventory across stores, manage pricing,
+            and monitor product availability in real time.
+          </p>
+
+          <span class="inline-block mt-4 text-xs font-semibold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">
+            Inventory Control
+          </span>
+
+        </div>
+
+        <!-- MODULE 3 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-users"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-lg text-slate-900">
+            User Management
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600">
+            Role-based access for administrators, shop owners,
+            and staff with secure authentication controls.
+          </p>
+
+          <span class="inline-block mt-4 text-xs font-semibold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">
+            RBAC Security
+          </span>
+
+        </div>
+
+        <!-- MODULE 4 -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div class="w-14 h-14 mx-auto flex items-center justify-center rounded-xl bg-indigo-100 text-primary text-xl">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-lg text-slate-900">
+            Analytics Dashboard
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600">
+            Gain insights into shop performance, occupancy,
+            and operational efficiency through visual reports.
+          </p>
+
+          <span class="inline-block mt-4 text-xs font-semibold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">
+            Business Insights
+          </span>
+
+        </div>
 
       </div>
 
@@ -155,34 +268,94 @@
   </section>
 
   <!-- ================= ROLES ================= -->
-  <section id="roles" class="py-20 bg-white">
+  <section id="roles" class="py-24">
+
     <div class="max-w-7xl mx-auto px-6 text-center">
 
-      <h2 class="text-3xl font-extrabold">
-        Built for Every Stakeholder
+      <h2 class="text-4xl font-extrabold">
+        Built for Every Stakeholder in the Mall Ecosystem
       </h2>
 
-      <div class="grid md:grid-cols-3 gap-8 mt-12">
+      <p class="mt-4 text-slate-500 max-w-2xl mx-auto">
+        SuperMall provides tailored dashboards and permissions
+        for administrators, shop owners, and operational staff.
+      </p>
 
-        <div class="bg-slate-50 p-6 rounded-xl shadow">
-          <h3 class="font-bold text-primary">Mall Admin</h3>
-          <p class="text-sm text-slate-600 mt-2">
-            Full control over shops and operations.
+      <div class="grid md:grid-cols-3 gap-10 mt-16">
+
+        <!-- ADMIN -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div
+            class="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-indigo-100 text-primary text-2xl">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-xl text-slate-900">
+            Mall Administrator
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+            Oversees all mall operations including tenant management,
+            shop allocation, analytics, and system-wide controls.
           </p>
+
+          <ul class="mt-5 text-sm text-slate-500 space-y-1">
+            <li>✔ Manage tenants & leases</li>
+            <li>✔ Monitor mall performance</li>
+            <li>✔ Configure system settings</li>
+          </ul>
+
         </div>
 
-        <div class="bg-slate-50 p-6 rounded-xl shadow">
-          <h3 class="font-bold text-primary">Shop Owner</h3>
-          <p class="text-sm text-slate-600 mt-2">
-            Manage products and store information.
+        <!-- SHOP OWNER -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div
+            class="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-indigo-100 text-primary text-2xl">
+            <i class="fa-solid fa-store"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-xl text-slate-900">
+            Shop Owner
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+            Manages store information, product inventory, pricing,
+            and daily retail operations within the mall.
           </p>
+
+          <ul class="mt-5 text-sm text-slate-500 space-y-1">
+            <li>✔ Update product catalog</li>
+            <li>✔ Track inventory</li>
+            <li>✔ Manage store details</li>
+          </ul>
+
         </div>
 
-        <div class="bg-slate-50 p-6 rounded-xl shadow">
-          <h3 class="font-bold text-primary">Staff</h3>
-          <p class="text-sm text-slate-600 mt-2">
-            Handle daily operational tasks.
+        <!-- STAFF -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-1">
+
+          <div
+            class="w-16 h-16 mx-auto flex items-center justify-center rounded-full bg-indigo-100 text-primary text-2xl">
+            <i class="fa-solid fa-people-group"></i>
+          </div>
+
+          <h3 class="mt-6 font-bold text-xl text-slate-900">
+            Operational Staff
+          </h3>
+
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+            Supports daily mall activities such as maintenance,
+            announcements, and coordination between departments.
           </p>
+
+          <ul class="mt-5 text-sm text-slate-500 space-y-1">
+            <li>✔ Handle maintenance tasks</li>
+            <li>✔ Manage events & notices</li>
+            <li>✔ Assist operations team</li>
+          </ul>
+
         </div>
 
       </div>
@@ -191,29 +364,111 @@
   </section>
 
   <!-- ================= CTA ================= -->
-  <section class="py-20 bg-primary text-white text-center">
+  <section class="py-24 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-center">
+
     <div class="max-w-3xl mx-auto px-6">
 
-      <h2 class="text-3xl font-extrabold">
-        Transform Your Mall Operations Today
+      <h2 class="text-4xl font-extrabold leading-tight">
+        Ready to Simplify Mall Management?
       </h2>
 
-      <p class="mt-4 text-indigo-100">
-        Centralize management, reduce manual work, and gain real-time insights.
+      <p class="mt-5 text-indigo-100 text-lg">
+        Join modern malls that use SuperMall to streamline operations,
+        manage tenants, and gain real-time business insights.
       </p>
 
-      <a href="auth.html" class="inline-block mt-8 px-8 py-3 bg-white text-primary rounded-xl font-bold shadow">
-        Get Started
-      </a>
+      <!-- BUTTONS -->
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+
+        <a href="auth.html"
+          class="px-8 py-3 bg-white text-primary rounded-xl font-bold shadow hover:bg-slate-100 transition">
+          Get Started Free
+        </a>
+
+        <a href="#features"
+          class="px-8 py-3 border border-white/60 rounded-xl font-semibold hover:bg-white/10 transition">
+          View Features
+        </a>
+
+      </div>
+
+      <!-- TRUST NOTE -->
+      <p class="mt-6 text-sm text-indigo-200">
+        No setup fees • Secure platform • Role-based access
+      </p>
 
     </div>
+
   </section>
 
+
   <!-- ================= FOOTER ================= -->
-  <footer id="contact" class="bg-slate-900 text-slate-300 py-14 text-center">
-    <p class="font-semibold text-white text-lg">SuperMall</p>
-    <p class="mt-3">Smart mall operations platform for modern retail environments.</p>
-    <p class="mt-6 text-slate-500">© 2025 SuperMall. All rights reserved.</p>
+  <footer id="contact" class="bg-slate-900 text-slate-300 pt-16 pb-8">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- TOP FOOTER -->
+      <div class="grid md:grid-cols-4 gap-12">
+
+        <!-- BRAND -->
+        <div>
+          <h3 class="text-xl font-extrabold text-white">
+            🏬 SuperMall
+          </h3>
+
+          <p class="mt-4 text-sm text-slate-400">
+            Smart mall operations platform designed to manage tenants,
+            inventory, and daily activities from a centralized system.
+          </p>
+        </div>
+
+        <!-- PRODUCT -->
+        <div>
+          <h4 class="font-semibold text-white">Product</h4>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li><a href="#features" class="hover:text-white">Features</a></li>
+            <li><a href="#modules" class="hover:text-white">Modules</a></li>
+            <li><a href="#roles" class="hover:text-white">Roles</a></li>
+          </ul>
+        </div>
+
+        <!-- COMPANY -->
+        <div>
+          <h4 class="font-semibold text-white">Company</h4>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white">About</a></li>
+            <li><a href="#" class="hover:text-white">Careers</a></li>
+            <li><a href="#" class="hover:text-white">Support</a></li>
+          </ul>
+        </div>
+
+        <!-- CONTACT -->
+        <div>
+          <h4 class="font-semibold text-white">Contact</h4>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li>Email: support@supermall.com</li>
+            <li>Location: India</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="border-t border-slate-700 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+
+        <small class="text-slate-500">
+          © 2025 SuperMall. All rights reserved.
+        </small>
+
+        <div class="flex gap-6 text-sm text-slate-400">
+          <a href="#" class="hover:text-white">Privacy Policy</a>
+          <a href="#" class="hover:text-white">Terms of Service</a>
+        </div>
+
+      </div>
+
+    </div>
+
   </footer>
 
 </body>
