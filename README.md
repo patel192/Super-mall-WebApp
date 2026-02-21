@@ -3,7 +3,7 @@ Repository: **Super-mall-WebApp**
 
 ```markdown
 # 🛍️ SuperMall Web Application
-
+```
 SuperMall is a multi-role e-commerce mall management system built using HTML, CSS, JavaScript, and Firebase.  
 It allows Super Admins, Merchants, and Users to interact in a structured marketplace environment.
 
@@ -106,77 +106,58 @@ Copy code
 ```bash
 git clone https://github.com/patel192/Super-mall-WebApp.git
 cd Super-mall-WebApp
+```
 Install Firebase CLI:
-
-bash
-Copy code
+```bash
 npm install -g firebase-tools
+```
 Login to Firebase:
-
-bash
-Copy code
+```bash
 firebase login
+```
+
 Run locally:
-
-bash
-Copy code
+```bash
 firebase serve
+```
 Deploy:
-
-bash
-Copy code
+```bash
 firebase deploy
-📊 Implemented Dashboards
-Super Admin Dashboard
+```
 
-Merchant Dashboard
+## 📊 Implemented Dashboards
 
-User Dashboard
-
-Analytics KPIs
-
-Charts for trends
-
-Notification system
-
-📌 Project Status
-This project is actively under development.
-Planned improvements:
-
-Advanced search and filters
-
-Recommendation system
-
-UI improvements
-
-Performance optimizations
-
-Firestore security rules hardening
-
-👨‍💻 Author
-Muhammad Patel
-GitHub: https://github.com/patel192
-
-📄 License
-This project is built for learning, portfolio, and internship demonstration purposes.
-
-yaml
-Copy code
+- Super Admin Dashboard  
+- Merchant Dashboard  
+- User Dashboard  
+- Analytics KPIs  
+- Charts for trends  
+- Notification system  
 
 ---
 
-## ✅ These READMEs are:
-- Recruiter friendly  
-- Properly structured  
-- ATS and portfolio optimized  
-- Professional language  
-- Clean Markdown formatting  
-- Ready to paste directly  
+## 📌 Project Status
+
+This project is **actively under development**.
+
+### Planned Improvements
+- Advanced search and filters  
+- Recommendation system  
+- UI improvements  
+- Performance optimizations  
+- Firestore security rules hardening  
 
 ---
 
-If you want next, I can also help you with:
-- Resume project descriptions  
-- LinkedIn project section  
-- Interview explanation scripts  
-- Internship report writing
+## 👨‍💻 Author
+
+**Muhammad Patel**
+
+- **GitHub:** https://github.com/patel192  
+
+---
+
+## 📄 License
+
+This project is built for **learning, portfolio, and internship demonstration purposes**.
+
